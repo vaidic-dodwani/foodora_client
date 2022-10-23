@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import '../../designing.dart';
+import 'package:foodora/app_routes.dart';
 
 class signin_screen extends StatefulWidget {
   const signin_screen({super.key});
@@ -10,6 +10,7 @@ class signin_screen extends StatefulWidget {
 }
 
 class _signin_screenState extends State<signin_screen> {
+  bool _checker = false;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -22,7 +23,7 @@ class _signin_screenState extends State<signin_screen> {
         child: Column(
           children: [
             SizedBox(height: 10),
-            skip_button(),
+            skip_button(context),
             SizedBox(height: 10),
             welcome_back(),
             SizedBox(
@@ -38,15 +39,50 @@ class _signin_screenState extends State<signin_screen> {
               password: true,
               icon: Icon(Icons.visibility),
             ),
-            SizedBox(height: 30),
-            button_style("Sign In", context),
             SizedBox(height: 10),
-            button_style("OTP Login", context, color: Color(0xFFFB882C)),
+            if (_checker) validation(),
             SizedBox(height: 10),
-            button_style("New User", context, color: Color(0xFF813531)),
+            button_style(
+              "Sign In",
+              context,
+              function: () {
+                _checker = true;
+                setState(() {});
+              },
+            ),
+            SizedBox(height: 10),
+            button_style("OTP Login", context, color: Color(0xFFFB882C),
+                function: () {
+              Navigator.pushNamed(context, app_routes.otp_screen);
+            }),
+            SizedBox(height: 10),
+            button_style(
+              "New User",
+              context,
+              color: Color(0xFF813531),
+              function: () {
+                Navigator.pushNamed(context, app_routes.new_user_screen);
+              },
+            ),
           ],
         ),
       ),
     ));
   }
+}
+
+validation() {
+  if (true) {
+    return const Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: EdgeInsets.only(left: 10.0),
+        child: Text(
+          'Invalid Password',
+          style: TextStyle(fontSize: 16, color: font_red_color),
+        ),
+      ),
+    );
+  } else
+    return SizedBox(height: 22);
 }

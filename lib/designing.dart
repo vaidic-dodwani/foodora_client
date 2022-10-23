@@ -1,13 +1,12 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:foodora/app_routes.dart';
 
 const background_top = Color(0xFFE3C766);
 const background_bottom = Color(0xFFFFCC00);
 const logo_brown_color = Color(0xFF61481C);
 const font_brown_color = Color(0xFF61481C);
+const font_red_color = Color(0xFFE30303);
 const button_background = Color(0xFF61481C);
-
 BoxDecoration background_design() {
   return const BoxDecoration(
     gradient: LinearGradient(
@@ -17,11 +16,13 @@ BoxDecoration background_design() {
   );
 }
 
-Widget skip_button({function}) {
+Widget skip_button(BuildContext context) {
   return Align(
     alignment: Alignment.centerRight,
     child: TextButton(
-      onPressed: function,
+      onPressed: () {
+        Navigator.pushNamed(context, app_routes.home_screen);
+      },
       child: const Padding(
         padding: EdgeInsets.all(5),
         child: Text(
@@ -113,6 +114,8 @@ Widget form_field(BuildContext context, String text,
         width: size.width * 0.9,
         child: TextFormField(
           obscureText: password,
+          keyboardType: TextInputType.emailAddress,
+          autocorrect: !password,
           style: const TextStyle(
             fontSize: 16,
           ),
