@@ -15,13 +15,10 @@ class auth_choice extends StatelessWidget {
         decoration: background_design(),
         child: Column(
           children: [
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: () {},
-                child: skip_button(),
-              ),
-            ),
+            SizedBox(height: 10),
+            skip_button(function: () {
+              Navigator.pushNamed(context, app_routes.signout_screen);
+            }),
             SizedBox(height: size.height * 0.1),
             Padding(
               padding: const EdgeInsets.all(5.0),
@@ -31,11 +28,11 @@ class auth_choice extends StatelessWidget {
               ),
             ),
             SizedBox(height: size.height * 0.15),
-            button_style("Sign In", context, () {
+            button_style("Sign In", context, function: () {
               Navigator.pushNamed(context, app_routes.signin_screen);
             }),
             const SizedBox(height: 10),
-            button_style("Sign Up", context, () {
+            button_style("Sign Up", context, function: () {
               Navigator.pushNamed(context, app_routes.signout_screen);
             }),
           ],
