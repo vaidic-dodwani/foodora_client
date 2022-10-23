@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:foodora/designing.dart';
-import 'package:foodora/screens/app_routes.dart';
+import 'package:foodora/app_routes.dart';
 
 class auth_choice extends StatelessWidget {
   const auth_choice({super.key});
