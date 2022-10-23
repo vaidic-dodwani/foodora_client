@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:foodora/colors.dart';
-import 'package:foodora/screens/Auth_Page/auth_choice.dart';
+import 'package:foodora/designing.dart';
 import 'package:foodora/screens/app_routes.dart';
 
 class splash_screen extends StatelessWidget {
@@ -17,12 +16,7 @@ class splash_screen extends StatelessWidget {
     );
 
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-            colors: [background_top, background_bottom],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter),
-      ),
+      decoration: background_design(),
       child: Center(
         child: SvgPicture.asset(
           'assets/images/logo.svg',
