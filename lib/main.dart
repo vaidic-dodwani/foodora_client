@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodora/screens/app_routes.dart';
+import 'app_routes.dart';
 
 void main() {
   runApp(const MyApp());

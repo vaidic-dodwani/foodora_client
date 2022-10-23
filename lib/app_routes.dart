@@ -3,7 +3,7 @@ import 'package:foodora/screens/Auth_Page/Sign_In.dart';
 import 'package:foodora/screens/Auth_Page/Sign_Up.dart';
 import 'package:foodora/screens/Auth_Page/auth_choice.dart';
 import 'package:foodora/screens/Splash_Screen/splash_screen.dart';
-import 'package:foodora/screens/error.dart';
+import 'error.dart';
 
 class app_routes {
   static const splash_screen = '/splash_screen';

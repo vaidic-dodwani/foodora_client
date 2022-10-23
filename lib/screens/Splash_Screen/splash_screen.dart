@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/designing.dart';
-import 'package:foodora/screens/app_routes.dart';
+import 'package:foodora/app_routes.dart';
 
 class splash_screen extends StatelessWidget {
   const splash_screen({super.key});
