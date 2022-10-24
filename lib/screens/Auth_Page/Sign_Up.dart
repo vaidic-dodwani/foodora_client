@@ -12,6 +12,7 @@ class signup_screen extends StatefulWidget {
 class _signup_screenState extends State<signup_screen> {
   bool _show_password = false;
   bool _show_retype_password = false;
+  bool _checker = false;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -63,7 +64,7 @@ class _signup_screenState extends State<signup_screen> {
               form_text('Retype Password'),
               form_field(
                 context,
-                'Password',
+                'Please retype the same password',
                 password: !_show_retype_password,
                 icon: IconButton(
                   onPressed: () {
@@ -75,10 +76,13 @@ class _signup_screenState extends State<signup_screen> {
                       : Icon(Icons.visibility_off),
                 ),
               ),
-              SizedBox(
-                height: size.height * 0.05,
-              ),
-              button_style('SignUP', context),
+              SizedBox(height: 10),
+              if (_checker) error_line(),
+              SizedBox(height: 10),
+              button_style('Sign Up', context, function: () {
+                _checker = true;
+                setState(() {});
+              }),
               SizedBox(height: 10),
               button_style(
                 'Existing User',
@@ -94,4 +98,20 @@ class _signup_screenState extends State<signup_screen> {
       ),
     );
   }
+}
+
+error_line() {
+  if (true) {
+    return const Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: EdgeInsets.only(left: 10.0),
+        child: Text(
+          'Unmatched Passwords',
+          style: TextStyle(fontSize: 16, color: font_red_color),
+        ),
+      ),
+    );
+  } else
+    return SizedBox(height: 22);
 }
