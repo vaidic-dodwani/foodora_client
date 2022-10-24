@@ -16,9 +16,7 @@ class auth_choice extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(height: 10),
-            skip_button(function: () {
-              Navigator.pushNamed(context, app_routes.signout_screen);
-            }),
+            skip_button(context),
             SizedBox(height: size.height * 0.1),
             Padding(
               padding: const EdgeInsets.all(5.0),
@@ -33,7 +31,7 @@ class auth_choice extends StatelessWidget {
             }),
             const SizedBox(height: 10),
             button_style("Sign Up", context, function: () {
-              Navigator.pushNamed(context, app_routes.signout_screen);
+              Navigator.pushNamed(context, app_routes.signup_screen);
             }),
           ],
         ),
