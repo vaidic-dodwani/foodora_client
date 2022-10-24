@@ -52,7 +52,7 @@ class _signin_screenState extends State<signin_screen> {
               ),
             ),
             SizedBox(height: 10),
-            if (_checker) validation(),
+            if (_checker) error_line(),
             SizedBox(height: 10),
             button_style(
               "Sign In",
@@ -63,7 +63,7 @@ class _signin_screenState extends State<signin_screen> {
               },
             ),
             SizedBox(height: 10),
-            button_style("OTP Login", context, color: Color(0xFFFB882C),
+            button_style("OTP Login", context, color: orange_button_color,
                 function: () {
               Navigator.pushNamed(context, app_routes.otp_screen);
             }),
@@ -71,7 +71,7 @@ class _signin_screenState extends State<signin_screen> {
             button_style(
               "New User",
               context,
-              color: Color(0xFF813531),
+              color: new_user_color,
               function: () {
                 Navigator.pushNamed(context, app_routes.signup_screen);
               },
@@ -83,7 +83,7 @@ class _signin_screenState extends State<signin_screen> {
   }
 }
 
-validation() {
+error_line() {
   if (true) {
     return const Align(
       alignment: Alignment.centerLeft,

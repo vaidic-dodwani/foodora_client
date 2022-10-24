@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodora/app_routes.dart';
+import 'package:otp_text_field/otp_text_field.dart';
+import 'package:otp_text_field/style.dart';
 
 const background_top = Color(0xFFE3C766);
 const background_bottom = Color(0xFFFFCC00);
@@ -7,6 +9,8 @@ const logo_brown_color = Color(0xFF61481C);
 const font_brown_color = Color(0xFF61481C);
 const font_red_color = Color(0xFFE30303);
 const button_background = Color(0xFF61481C);
+const orange_button_color = Color(0xFFFB882C);
+const new_user_color = Color(0xFF813531);
 BoxDecoration background_design() {
   return const BoxDecoration(
     gradient: LinearGradient(
@@ -140,5 +144,90 @@ Widget form_field(BuildContext context, String text,
         ),
       ),
     ),
+  );
+}
+
+Widget phone_number_field(BuildContext context) {
+  final size = MediaQuery.of(context).size;
+  return SizedBox(
+    height: 50,
+    width: size.width > 330 ? 330 : size.width - 10,
+    child: TextField(
+      textAlign: TextAlign.center,
+      keyboardType: TextInputType.phone,
+      decoration: InputDecoration(
+        focusedBorder:
+            OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+        enabledBorder:
+            OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+        hintText: 'Enter Mobile Number',
+        hintStyle: const TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+        ),
+      ),
+    ),
+  );
+}
+
+Widget otp_field(BuildContext context) {
+  final size = MediaQuery.of(context).size;
+  return OTPTextField(
+    length: 5,
+    width: size.width > 330 ? 330 : size.width - 10,
+    fieldWidth: size.width > 330 ? 330 / 6 : (size.width - 10) / 6,
+    style: TextStyle(fontSize: 20),
+    textFieldAlignment: MainAxisAlignment.spaceAround,
+    fieldStyle: FieldStyle.box,
+    onCompleted: (pin) {},
+  );
+}
+
+Column send_otp(BuildContext context, {function}) {
+  return Column(children: [
+    SizedBox(height: 30),
+    phone_number_field(context),
+    SizedBox(height: 10),
+    button_style('SEND OTP', context, function: function),
+    const SizedBox(height: 10),
+  ]);
+}
+
+Column otp_input(BuildContext context) {
+  final size = MediaQuery.of(context).size;
+  return Column(
+    children: [
+      SizedBox(
+        width: size.width > 330 ? 330 : size.width - 10,
+        child: const Padding(
+          padding: EdgeInsets.only(left: 5.0),
+          child: Text(
+            "Please Enter The OTP",
+            style: TextStyle(
+              fontSize: 17,
+              fontFamily: 'Montserrat',
+              color: font_brown_color,
+            ),
+          ),
+        ),
+      ),
+      SizedBox(height: 10),
+      otp_field(context),
+      SizedBox(
+        width: size.width > 330 ? 330 : size.width - 10,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: TextButton(
+            onPressed: () {},
+            child: const Text(
+              "Resend",
+              style: TextStyle(fontSize: 15),
+            ),
+          ),
+        ),
+      ),
+      button_style("Submit", context),
+      SizedBox(height: 10),
+    ],
   );
 }
