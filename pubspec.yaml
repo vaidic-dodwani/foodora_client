@@ -68,11 +68,16 @@ flutter:
   fonts:
     - family: Inter
       fonts:
-        - asset: lib/fonts/Inter-Regular.ttf
-
+        - asset: lib/fonts/Inter_Regular.ttf
+        - asset: lib/fonts/Inter_Bold.ttf
+          weight: 700
+        - asset: lib/fonts/Inter_SemiBold.ttf
+          weight: 600
     - family: Montserrat
       fonts:
-        - asset: lib/fonts/Montserrat-Regular.ttf
+        - asset: lib/fonts/Montserrat_Regular.ttf
+        - asset: lib/fonts/Montserrat_Bold.ttf
+          weight: 700
 
   # example:
   # fonts:
