@@ -73,14 +73,17 @@ SizedBox button_style(String text, BuildContext context,
 }
 
 Widget welcome_back() {
-  return Padding(
-    padding: const EdgeInsets.only(left: 10.0),
-    child: const Align(
+  return const Padding(
+    padding: EdgeInsets.only(left: 10.0),
+    child: Align(
       alignment: Alignment.centerLeft,
       child: Text(
         'Welcome Back!',
         style: TextStyle(
-            fontSize: 24, color: font_brown_color, fontWeight: FontWeight.w700),
+            fontSize: 24,
+            color: font_brown_color,
+            fontWeight: FontWeight.w700,
+            fontFamily: 'Montserrat'),
       ),
     ),
   );
@@ -104,7 +107,7 @@ Widget form_text(String text) {
 }
 
 Widget form_field(BuildContext context, String text,
-    {bool password = false, icon}) {
+    {bool password = false, icon, bool isEmail = false}) {
   final size = MediaQuery.of(context).size;
   return Padding(
     padding: const EdgeInsets.only(left: 10.0),
@@ -114,12 +117,23 @@ Widget form_field(BuildContext context, String text,
         width: size.width * 0.9,
         child: TextFormField(
           obscureText: password,
-          keyboardType: TextInputType.emailAddress,
+          keyboardType:
+              isEmail ? TextInputType.emailAddress : TextInputType.text,
           autocorrect: !password,
           style: const TextStyle(
             fontSize: 16,
           ),
           decoration: InputDecoration(
+            enabledBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black),
+            ),
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black),
+            ),
+            border: const UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black),
+            ),
+            suffixIconColor: Colors.black,
             suffixIcon: icon,
             hintText: text,
           ),

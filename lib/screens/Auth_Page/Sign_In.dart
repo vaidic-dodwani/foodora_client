@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import '../../designing.dart';
 import 'package:foodora/app_routes.dart';
@@ -10,7 +12,9 @@ class signin_screen extends StatefulWidget {
 }
 
 class _signin_screenState extends State<signin_screen> {
+  bool _show_password = false;
   bool _checker = false;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -30,14 +34,22 @@ class _signin_screenState extends State<signin_screen> {
               height: size.height * 0.3,
             ),
             form_text('Email'),
-            form_field(context, 'example@email.com'),
+            form_field(context, 'example@email.com', isEmail: true),
             SizedBox(height: 10),
             form_text('Password'),
             form_field(
               context,
               'Password',
-              password: true,
-              icon: Icon(Icons.visibility),
+              password: _show_password,
+              icon: IconButton(
+                onPressed: () {
+                  _show_password = !_show_password;
+                  setState(() {});
+                },
+                icon: _show_password
+                    ? Icon(Icons.visibility)
+                    : Icon(Icons.visibility_off),
+              ),
             ),
             SizedBox(height: 10),
             if (_checker) validation(),
@@ -61,7 +73,7 @@ class _signin_screenState extends State<signin_screen> {
               context,
               color: Color(0xFF813531),
               function: () {
-                Navigator.pushNamed(context, app_routes.new_user_screen);
+                Navigator.pushNamed(context, app_routes.signup_screen);
               },
             ),
           ],
