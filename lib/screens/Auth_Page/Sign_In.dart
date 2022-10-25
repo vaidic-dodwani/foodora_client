@@ -29,7 +29,7 @@ class _signin_screenState extends State<signin_screen> {
             SizedBox(height: 10),
             skip_button(context),
             SizedBox(height: 10),
-            welcome_back(),
+            top_welcome_text('Welcome Back!'),
             SizedBox(
               height: size.height * 0.3,
             ),
