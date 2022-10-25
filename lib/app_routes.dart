@@ -4,6 +4,7 @@ import 'package:foodora/screens/Auth_Page/Sign_In.dart';
 import 'package:foodora/screens/Auth_Page/Sign_Up.dart';
 import 'package:foodora/screens/Auth_Page/auth_choice.dart';
 import 'package:foodora/screens/Home_Page/Home_Screen.dart';
+import 'package:foodora/screens/Location_Page/location_screen.dart';
 import 'package:foodora/screens/Splash_Screen/splash_screen.dart';
 import 'error.dart';
 
@@ -14,6 +15,7 @@ class app_routes {
   static const signup_screen = '/signup_screen';
   static const otp_screen = '/otp_screen';
   static const home_screen = '/home_screen';
+  static const location_screen = '/location_screen';
 }
 
 Route getRoute(RouteSettings settings) {
@@ -48,6 +50,11 @@ Route getRoute(RouteSettings settings) {
       return MaterialPageRoute(
         settings: settings,
         builder: (context) => const home_screen(),
+      );
+    case app_routes.location_screen:
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (context) => const location_screen(),
       );
     default:
       return MaterialPageRoute(

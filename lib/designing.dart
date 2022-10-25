@@ -25,7 +25,7 @@ Widget skip_button(BuildContext context) {
     alignment: Alignment.centerRight,
     child: TextButton(
       onPressed: () {
-        Navigator.pushNamed(context, app_routes.home_screen);
+        Navigator.pushNamed(context, app_routes.location_screen);
       },
       child: const Padding(
         padding: EdgeInsets.all(5),
@@ -42,12 +42,12 @@ Widget skip_button(BuildContext context) {
   );
 }
 
-Widget sign_button(String text) {
+Widget sign_button(String text, {fontcolor = Colors.white}) {
   return Text(
     text,
-    style: const TextStyle(
+    style: TextStyle(
       fontSize: 24,
-      color: Colors.white,
+      color: fontcolor,
       fontWeight: FontWeight.w700,
       fontFamily: 'Inter',
     ),
@@ -55,7 +55,7 @@ Widget sign_button(String text) {
 }
 
 SizedBox button_style(String text, BuildContext context,
-    {Color color = button_background, function}) {
+    {Color color = button_background, function, fontcolor = Colors.white}) {
   final size = MediaQuery.of(context).size;
   return SizedBox(
     height: 50,
@@ -71,19 +71,19 @@ SizedBox button_style(String text, BuildContext context,
           ),
         ),
       ),
-      child: sign_button(text),
+      child: sign_button(text, fontcolor: fontcolor),
     ),
   );
 }
 
-Widget welcome_back() {
-  return const Padding(
-    padding: EdgeInsets.only(left: 10.0),
+Widget top_welcome_text(String text) {
+  return Padding(
+    padding: const EdgeInsets.only(left: 10.0),
     child: Align(
       alignment: Alignment.centerLeft,
       child: Text(
-        'Welcome Back!',
-        style: TextStyle(
+        text,
+        style: const TextStyle(
             fontSize: 24,
             color: font_brown_color,
             fontWeight: FontWeight.w700,
