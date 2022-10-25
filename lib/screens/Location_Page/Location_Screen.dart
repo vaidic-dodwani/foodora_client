@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/designing.dart';
@@ -39,15 +37,18 @@ class _location_screenState extends State<location_screen> {
               //
               SizedBox(height: 5),
               //
-              const Padding(
-                padding: EdgeInsets.only(left: 10),
-                child: Text(
-                  'To suggest better results, we need your location.....',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w400,
-                    color: font_brown_color,
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Text(
+                    'To suggest better results, we need your location.....',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w400,
+                      color: font_brown_color,
+                    ),
                   ),
                 ),
               ),
@@ -78,7 +79,6 @@ class _location_screenState extends State<location_screen> {
                       function: () async {
                         if (await Permission.location.request().isGranted) {
                           current_location = await location.getLocation();
-                          log(current_location.toString());
                           _location_recieved = true;
                           setState(() {});
                         }
