@@ -26,7 +26,7 @@ class _otp_screenState extends State<otp_screen> {
               SizedBox(height: 10),
               skip_button(context),
               SizedBox(height: 10),
-              welcome_back(),
+              top_welcome_text('Welcome Back!'),
               SizedBox(height: size.height * 0.4),
               //
               //
