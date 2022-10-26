@@ -11,6 +11,10 @@ class otp_screen extends StatefulWidget {
 
 class _otp_screenState extends State<otp_screen> {
   bool _otp_entered = false;
+  bool _phone_number_entered = false;
+
+  bool? _full_Otp;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -32,12 +36,33 @@ class _otp_screenState extends State<otp_screen> {
               //
               //
               //
-              _otp_entered
-                  ? otp_input(context)
+              _otp_entered && _phone_number_entered
+                  ? otp_input(
+                      context,
+                      _full_Otp,
+                      otp_controller_function: (pin) {
+
+                        if (pin.toString().isEmpty) {
+                          _full_Otp = null;
+                        } else {
+                          pin.toString().length == 5
+                              ? _full_Otp = true
+                              : _full_Otp = false;
+                        }
+
+                        setState(() {});
+                      },
+                    )
                   : send_otp(
                       context,
                       function: () {
-                        _otp_entered = !_otp_entered;
+                        if (_phone_number_entered) _otp_entered = !_otp_entered;
+                        setState(() {});
+                      },
+                      phone_number_controller_function: (String input_number) {
+                        input_number.toString().length == 10
+                            ? _phone_number_entered = true
+                            : _phone_number_entered = false;
                         setState(() {});
                       },
                     ),
