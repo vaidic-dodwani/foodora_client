@@ -21,7 +21,7 @@ class _location_screenState extends State<location_screen> {
   late Placemark _placemark;
   @override
   Widget build(BuildContext context) {
-    final location = location_package.Location();
+    final location = location_package.location_package.Location();
 
     final size = MediaQuery.of(context).size;
     return Scaffold(
