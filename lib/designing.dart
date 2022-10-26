@@ -256,7 +256,9 @@ Column otp_input(BuildContext context, bool? full_otp,
                 style: TextStyle(fontSize: 15),
               ),
             ),
+            
             (full_otp == null || full_otp)
+
                 ? SizedBox(width: 50)
                 : const Text(
                     "Enter The Entire OTP",

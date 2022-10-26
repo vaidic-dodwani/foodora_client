@@ -13,7 +13,9 @@ class _signin_screenState extends State<signin_screen> {
   TextEditingController emailController = TextEditingController();
   bool _show_password = false;
   bool _checker = false;
+
   bool? _isEmail;
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +46,7 @@ class _signin_screenState extends State<signin_screen> {
                 isEmail: true,
                 controller: emailController,
                 function: (String input_text) {
+
                   if (input_text.isEmpty)
                     _isEmail = null;
                   else {
@@ -55,6 +58,7 @@ class _signin_screenState extends State<signin_screen> {
               _isEmail == true || _isEmail == null
                   ? SizedBox(height: 21)
                   : error_line("Invalid Email"),
+
               form_text('Password'),
               form_field(
                 context,
@@ -73,7 +77,9 @@ class _signin_screenState extends State<signin_screen> {
               SizedBox(height: 10),
               _checker
                   ? error_line("Invalid Password")
+
                   : const SizedBox(
+
                       height: 21,
                     ),
               SizedBox(height: 10),
@@ -81,7 +87,9 @@ class _signin_screenState extends State<signin_screen> {
                 "Sign In",
                 context,
                 function: () {
+
                   if (_isEmail == true) _checker = true;
+
                   setState(() {});
                 },
               ),
