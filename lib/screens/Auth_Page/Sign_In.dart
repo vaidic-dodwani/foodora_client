@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:foodora/config/api_integration.dart';
+import 'package:http/http.dart';
 import '../../designing.dart';
 import 'package:foodora/app_routes.dart';
 
@@ -11,11 +13,13 @@ class signin_screen extends StatefulWidget {
 
 class _signin_screenState extends State<signin_screen> {
   TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  String? _error_reason;
   bool _show_password = false;
   bool _checker = false;
+  bool? _isloading;
 
   bool? _isEmail;
-
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +50,6 @@ class _signin_screenState extends State<signin_screen> {
                 isEmail: true,
                 controller: emailController,
                 function: (String input_text) {
-
                   if (input_text.isEmpty)
                     _isEmail = null;
                   else {
@@ -63,7 +66,8 @@ class _signin_screenState extends State<signin_screen> {
               form_field(
                 context,
                 'Password',
-                password: _show_password,
+                password: !_show_password,
+                controller: passwordController,
                 icon: IconButton(
                   onPressed: () {
                     _show_password = !_show_password;
@@ -75,20 +79,40 @@ class _signin_screenState extends State<signin_screen> {
                 ),
               ),
               SizedBox(height: 10),
-              _checker
-                  ? error_line("Invalid Password")
 
-                  : const SizedBox(
-
+              (_isloading == null || _isloading == false)
+                  ? SizedBox(
                       height: 21,
+                      child: _error_reason != null
+                          ? error_line(_error_reason!)
+                          : Text(" "),
+                    )
+                  : SizedBox(
+                      child: CircularProgressIndicator(color: font_brown_color),
+                      height: 21,
+                      width: 21,
                     ),
+
               SizedBox(height: 10),
               button_style(
                 "Sign In",
                 context,
-                function: () {
-
-                  if (_isEmail == true) _checker = true;
+                function: () async {
+                  if (_isEmail == true) {
+                    setState(() {
+                      _isloading = true;
+                    });
+                    final response = await sign_in(
+                        emailController.text, passwordController.text);
+                    setState(() {
+                      _isloading = false;
+                    });
+                    _error_reason = response['msg'];
+                    _checker = true;
+                    if (response['success']) {
+                      Navigator.pushNamed(context, app_routes.location_screen);
+                    }
+                  }
 
                   setState(() {});
                 },

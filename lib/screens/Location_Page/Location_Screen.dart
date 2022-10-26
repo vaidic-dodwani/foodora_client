@@ -1,5 +1,3 @@
-
-import 'dart:developer';
 import 'package:geocoding/geocoding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,6 +14,7 @@ class location_screen extends StatefulWidget {
 
 class _location_screenState extends State<location_screen> {
   bool _location_recieved = false;
+  bool? IsLoading;
   late location_package.LocationData _current_location;
   late List<Placemark> _placemarks;
   late Placemark _placemark;
@@ -77,24 +76,33 @@ class _location_screenState extends State<location_screen> {
 
               _location_recieved
                   ? lat_long_display(_placemark)
-                  : button_style(
-                      'Current Location',
-                      context,
-                      color: orange_button_color,
-                      function: () async {
-                        if (await Permission.location.request().isGranted) {
-                          _current_location = await location.getLocation();
-                          _placemarks = await placemarkFromCoordinates(
-                              _current_location.latitude!,
-                              _current_location.longitude!);
-
-                          _location_recieved = true;
-                          _placemark = _placemarks[1];
-                          log(_placemark.toString());
-                          setState(() {});
-                        }
-                      },
-                    )
+                  : (IsLoading == null || IsLoading == false)
+                      ? button_style(
+                          'Current Location',
+                          context,
+                          color: orange_button_color,
+                          function: () async {
+                            if (await Permission.location.request().isGranted) {
+                              setState(() {
+                                IsLoading = true;
+                              });
+                              _current_location = await location.getLocation();
+                              _placemarks = await placemarkFromCoordinates(
+                                  _current_location.latitude!,
+                                  _current_location.longitude!);
+                              IsLoading = false;
+                              _location_recieved = true;
+                              _placemark = _placemarks[1];
+                              setState(() {});
+                            }
+                          },
+                        )
+                      : SizedBox(
+                          width: 21,
+                          height: 21,
+                          child: CircularProgressIndicator(
+                            color: font_brown_color,
+                          ))
             ],
           ),
         ),

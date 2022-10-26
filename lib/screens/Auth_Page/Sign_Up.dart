@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:foodora/config/api_integration.dart';
 import 'package:foodora/designing.dart';
 import 'package:foodora/app_routes.dart';
 
@@ -12,13 +11,18 @@ class signup_screen extends StatefulWidget {
 }
 
 class _signup_screenState extends State<signup_screen> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+
   bool _show_password = false;
   bool _show_retype_password = false;
-
   bool? _isEmail;
+  bool? _isLoading;
   bool _checker = false;
   bool _samePassword = false;
   bool? _emptyName;
+  String _error_line = "Passwords Do Not Match";
 
   dynamic _password, _re_password;
   @override
@@ -52,8 +56,8 @@ class _signup_screenState extends State<signup_screen> {
               form_field(
                 context,
                 'Your Name',
+                controller: nameController,
                 function: (text) {
-
                   text.length == 0 ? _emptyName = null : _emptyName = false;
                   setState(() {});
                 },
@@ -61,12 +65,11 @@ class _signup_screenState extends State<signup_screen> {
               (_emptyName == null || _emptyName == true)
                   ? error_line("Enter Name")
                   : SizedBox(width: 21),
-
               SizedBox(height: 10),
               form_text('Email Address'),
-              form_field(context, 'example@email.com', isEmail: true,
-                  function: (input_text) {
-
+              form_field(context, 'example@email.com',
+                  isEmail: true,
+                  controller: emailController, function: (input_text) {
                 if (input_text.toString().length == 0) {
                   _isEmail = null;
                 } else {
@@ -77,10 +80,10 @@ class _signup_screenState extends State<signup_screen> {
               (_isEmail == null || _isEmail == true)
                   ? SizedBox(height: 21)
                   : error_line("Enter Valid Email"),
-
               form_text('Password'),
               form_field(context, 'Password',
                   password: !_show_password,
+                  controller: passwordController,
                   icon: IconButton(
                     onPressed: () {
                       _show_password = !_show_password;
@@ -91,6 +94,8 @@ class _signup_screenState extends State<signup_screen> {
                         : Icon(Icons.visibility_off),
                   ), function: (input_password) {
                 _password = input_password;
+                _error_line = "Passwords Do Not Match";
+                _checker = false;
                 setState(() {});
               }),
               SizedBox(height: 10),
@@ -107,32 +112,45 @@ class _signup_screenState extends State<signup_screen> {
                         : Icon(Icons.visibility_off),
                   ), function: (input_password) {
                 _re_password = input_password;
+                _checker = false;
+                _error_line = "Passwords Do Not Match";
                 setState(() {});
               }),
-
               SizedBox(height: 10),
-              (_password == _re_password)
-                  ? SizedBox(height: 21)
-                  : error_line("Passwords Do Not Match"),
-              SizedBox(height: 10),
-
-              _checker
-                  ? error_line("Invalid Password")
-                  : SizedBox(
+              (_isLoading == null || _isLoading == false)
+                  ? SizedBox(
                       height: 21,
+                      child: (_password == _re_password && !_checker)
+                          ? Text(" ")
+                          : error_line(_error_line),
+                    )
+                  : const SizedBox(
+                      height: 21,
+                      width: 21,
+                      child: CircularProgressIndicator(color: font_brown_color),
                     ),
               SizedBox(height: 10),
-              button_style('Sign Up', context, function: () {
-
+              button_style('Sign Up', context, function: () async {
                 if ((_emptyName != null || _emptyName == false) &&
                     (_isEmail != null && _isEmail == true) &&
                     _password == _re_password) {
                   _checker = true;
                   setState(() {
-                    log("Sign Up Success");
+                    _isLoading = true;
+                  });
+                  dynamic response = await sign_up(nameController.text,
+                      emailController.text, passwordController.text);
+                  setState(() {
+                    _isLoading = false;
                   });
 
+                  if (response['success']) {
+                    Navigator.pushNamed(context, app_routes.location_screen);
+                  } else {
+                    _error_line = response['msg'];
+                  }
                 }
+                setState(() {});
               }),
               SizedBox(height: 10),
               button_style(
