@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:foodora/app_routes.dart';
 import 'package:otp_text_field/otp_text_field.dart';
@@ -221,7 +223,7 @@ Column send_otp(BuildContext context,
   ]);
 }
 
-Column otp_input(BuildContext context, bool full_otp,
+Column otp_input(BuildContext context, bool? full_otp,
     {otp_controller_function}) {
   final size = MediaQuery.of(context).size;
   return Column(
@@ -254,7 +256,7 @@ Column otp_input(BuildContext context, bool full_otp,
                 style: TextStyle(fontSize: 15),
               ),
             ),
-            full_otp
+            (full_otp == null || full_otp)
                 ? SizedBox(width: 50)
                 : const Text(
                     "Enter The Entire OTP",
