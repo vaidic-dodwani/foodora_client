@@ -18,14 +18,12 @@ class Register {
     final String email;
     final String password;
     final String cpassword;
-    final String contact;
 
     factory Register.fromJson(Map<String, dynamic> json) => Register(
         username: json["username"],
         email: json["email"],
         password: json["password"],
         cpassword: json["cpassword"],
-        contact: json["contact"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -33,6 +31,5 @@ class Register {
         "email": email,
         "password": password,
         "cpassword": cpassword,
-        "contact": contact,
     };
 }
