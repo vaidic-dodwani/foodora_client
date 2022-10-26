@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:foodora/app_routes.dart';
 import 'package:otp_text_field/otp_text_field.dart';
@@ -111,7 +113,7 @@ Widget form_text(String text) {
 }
 
 Widget form_field(BuildContext context, String text,
-    {bool password = false, icon, bool isEmail = false}) {
+    {bool password = false, icon, bool isEmail = false, controller, function}) {
   final size = MediaQuery.of(context).size;
   return Padding(
     padding: const EdgeInsets.only(left: 10.0),
@@ -120,6 +122,10 @@ Widget form_field(BuildContext context, String text,
       child: SizedBox(
         width: size.width * 0.9,
         child: TextFormField(
+          controller: controller,
+          onChanged: (String input_value) {
+            function(input_value);
+          },
           obscureText: password,
           keyboardType:
               isEmail ? TextInputType.emailAddress : TextInputType.text,
@@ -147,7 +153,7 @@ Widget form_field(BuildContext context, String text,
   );
 }
 
-Widget phone_number_field(BuildContext context) {
+Widget phone_number_field(BuildContext context, {function}) {
   final size = MediaQuery.of(context).size;
   return SizedBox(
     height: 50,
@@ -155,7 +161,12 @@ Widget phone_number_field(BuildContext context) {
     child: TextField(
       textAlign: TextAlign.center,
       keyboardType: TextInputType.phone,
+      maxLength: 10,
+      onChanged: (String input_number) {
+        function(input_number);
+      },
       decoration: InputDecoration(
+        counterText: "",
         focusedBorder:
             OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
         enabledBorder:
@@ -170,7 +181,7 @@ Widget phone_number_field(BuildContext context) {
   );
 }
 
-Widget otp_field(BuildContext context) {
+Widget otp_field(BuildContext context, {function}) {
   final size = MediaQuery.of(context).size;
   return OTPTextField(
     length: 5,
@@ -179,21 +190,41 @@ Widget otp_field(BuildContext context) {
     style: TextStyle(fontSize: 20),
     textFieldAlignment: MainAxisAlignment.spaceAround,
     fieldStyle: FieldStyle.box,
-    onCompleted: (pin) {},
+    onChanged: (pin) {
+      function(pin);
+    },
   );
 }
 
-Column send_otp(BuildContext context, {function}) {
+error_line(String text) {
+  if (true) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: EdgeInsets.only(left: 10.0),
+        child: Text(
+          text,
+          style: TextStyle(fontSize: 16, color: font_red_color),
+        ),
+      ),
+    );
+  } else
+    return SizedBox(height: 22);
+}
+
+Column send_otp(BuildContext context,
+    {function, phone_number_controller_function}) {
   return Column(children: [
     SizedBox(height: 30),
-    phone_number_field(context),
+    phone_number_field(context, function: phone_number_controller_function),
     SizedBox(height: 10),
     button_style('SEND OTP', context, function: function),
     const SizedBox(height: 10),
   ]);
 }
 
-Column otp_input(BuildContext context) {
+Column otp_input(BuildContext context, bool? full_otp,
+    {otp_controller_function}) {
   final size = MediaQuery.of(context).size;
   return Column(
     children: [
@@ -212,22 +243,41 @@ Column otp_input(BuildContext context) {
         ),
       ),
       SizedBox(height: 10),
-      otp_field(context),
+      otp_field(context, function: otp_controller_function),
       SizedBox(
         width: size.width > 330 ? 330 : size.width - 10,
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: TextButton(
-            onPressed: () {},
-            child: const Text(
-              "Resend",
-              style: TextStyle(fontSize: 15),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextButton(
+              onPressed: () {},
+              child: const Text(
+                "Resend",
+                style: TextStyle(fontSize: 15),
+              ),
             ),
-          ),
+            
+            (full_otp == null || full_otp)
+
+                ? SizedBox(width: 50)
+                : const Text(
+                    "Enter The Entire OTP",
+                    style: TextStyle(fontSize: 16, color: Colors.red),
+                  )
+          ],
         ),
       ),
       button_style("Submit", context),
       SizedBox(height: 10),
     ],
   );
+}
+
+bool isEmail(String email) {
+  if (RegExp(
+          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+      .hasMatch(email))
+    return true;
+  else
+    return false;
 }
