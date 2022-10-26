@@ -1,8 +1,11 @@
+
+import 'dart:developer';
+import 'package:geocoding/geocoding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/designing.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:location/location.dart';
+import 'package:location/location.dart' as location_package;
 
 class location_screen extends StatefulWidget {
   const location_screen({super.key});
@@ -13,10 +16,12 @@ class location_screen extends StatefulWidget {
 
 class _location_screenState extends State<location_screen> {
   bool _location_recieved = false;
-  LocationData? current_location;
+  late location_package.LocationData _current_location;
+  late List<Placemark> _placemarks;
+  late Placemark _placemark;
   @override
   Widget build(BuildContext context) {
-    final location = Location();
+    final location = location_package.Location();
 
     final size = MediaQuery.of(context).size;
     return Scaffold(
@@ -71,15 +76,21 @@ class _location_screenState extends State<location_screen> {
               ),
 
               _location_recieved
-                  ? lat_long_display(current_location)
+                  ? lat_long_display(_placemark)
                   : button_style(
                       'Current Location',
                       context,
                       color: orange_button_color,
                       function: () async {
                         if (await Permission.location.request().isGranted) {
-                          current_location = await location.getLocation();
+                          _current_location = await location.getLocation();
+                          _placemarks = await placemarkFromCoordinates(
+                              _current_location.latitude!,
+                              _current_location.longitude!);
+
                           _location_recieved = true;
+                          _placemark = _placemarks[1];
+                          log(_placemark.toString());
                           setState(() {});
                         }
                       },
@@ -92,19 +103,16 @@ class _location_screenState extends State<location_screen> {
   }
 }
 
-Widget lat_long_display(LocationData? current_location) {
-  return (current_location == null
-      ? Text("null")
-      : Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Lattitude=" + current_location.latitude.toString(),
-            ),
-            SizedBox(width: 10),
-            Text(
-              "Longitude " + current_location.longitude.toString(),
-            ),
-          ],
-        ));
+Widget lat_long_display(Placemark placemark) {
+  return Text(
+    "You Are At:  " +
+        placemark.subLocality.toString() +
+        " , " +
+        placemark.locality.toString(),
+    style: TextStyle(
+        fontSize: 16,
+        color: font_brown_color,
+        fontFamily: 'Montserrat',
+        fontWeight: FontWeight.w700),
+  );
 }
