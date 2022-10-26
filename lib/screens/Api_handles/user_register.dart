@@ -11,7 +11,6 @@ class Register {
         required this.email,
         required this.password,
         required this.cpassword,
-        required this.contact,
     });
 
     final String username;
