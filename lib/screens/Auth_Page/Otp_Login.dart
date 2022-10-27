@@ -78,7 +78,6 @@ class _otp_screenState extends State<otp_screen> {
               button_style(
                 'NEW USER',
                 context,
-                color: new_user_color,
                 function: () {
                   Navigator.pushNamed(context, app_routes.signup_screen);
                 },

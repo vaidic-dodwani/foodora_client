@@ -20,7 +20,7 @@ class _location_screenState extends State<location_screen> {
   late Placemark _placemark;
   @override
   Widget build(BuildContext context) {
-    final location = location_package.location_package.Location();
+    final location = location_package.Location();
 
     final size = MediaQuery.of(context).size;
     return Scaffold(
@@ -51,7 +51,7 @@ class _location_screenState extends State<location_screen> {
                       fontSize: 15,
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w400,
-                      color: font_brown_color,
+                      color: logo_brown_color,
                     ),
                   ),
                 ),
@@ -68,7 +68,6 @@ class _location_screenState extends State<location_screen> {
                 'ENTER MANUALLY',
                 context,
                 color: Color(0x00000000),
-                fontcolor: font_brown_color,
               ),
               SizedBox(
                 height: size.height * 0.025,
@@ -81,7 +80,6 @@ class _location_screenState extends State<location_screen> {
                           'CURRENT LOCATION',
                           context,
                           fontcolor: Colors.white,
-                          color: orange_button_color,
                           function: () async {
                             if (await Permission.location.request().isGranted) {
                               setState(() {
@@ -101,9 +99,7 @@ class _location_screenState extends State<location_screen> {
                       : const SizedBox(
                           width: 21,
                           height: 21,
-                          child: CircularProgressIndicator(
-                            color: font_brown_color,
-                          ))
+                          child: CircularProgressIndicator())
             ],
           ),
         ),
@@ -119,9 +115,6 @@ Widget lat_long_display(Placemark placemark) {
         " , " +
         placemark.locality.toString(),
     style: TextStyle(
-        fontSize: 16,
-        color: font_brown_color,
-        fontFamily: 'Montserrat',
-        fontWeight: FontWeight.w700),
+        fontSize: 16, fontFamily: 'Montserrat', fontWeight: FontWeight.w700),
   );
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/config/api_integration.dart';
 import 'package:http/http.dart';
 import '../../designing.dart';
@@ -37,11 +38,10 @@ class _signin_screenState extends State<signin_screen> {
               skip_button(context),
               //
               SizedBox(height: 10),
-              top_welcome_text('Welcome Back!'),
               //
-              SizedBox(
-                height: size.height * 0.3,
-              ),
+              SvgPicture.asset("assets/images/sign_in_vector.svg"),
+              SizedBox(height: 10),
+
               form_text('Email'),
               //
               form_field(
@@ -89,7 +89,7 @@ class _signin_screenState extends State<signin_screen> {
                           : Text(" "),
                     )
                   : SizedBox(
-                      child: CircularProgressIndicator(color: font_brown_color),
+                      child: CircularProgressIndicator(color: logo_brown_color),
                       height: 21,
                       width: 21,
                     ),
@@ -118,22 +118,14 @@ class _signin_screenState extends State<signin_screen> {
                   setState(() {});
                 },
               ),
-              SizedBox(height: 10),
-              button_style("OTP Login", context,
-                  color: orange_button_color,
-                  fontcolor: Colors.white, function: () {
+              SizedBox(height: 20),
+              button_style("OTP Login", context, function: () {
                 Navigator.pushNamed(context, app_routes.otp_screen);
               }),
               SizedBox(height: 10),
-              button_style(
-                "New User",
-                context,
-                color: new_user_color,
-                function: () {
-                  Navigator.pushReplacementNamed(
-                      context, app_routes.signup_screen);
-                },
-              ),
+              forgot_password_button(context),
+              SizedBox(height: 10),
+              new_user_button(context),
             ],
           ),
         ),
