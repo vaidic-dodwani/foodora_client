@@ -22,7 +22,7 @@ class auth_choice extends StatelessWidget {
               padding: const EdgeInsets.all(5.0),
               child: SvgPicture.asset(
                 'assets/images/logo.svg',
-                color: logo_brown_color,
+                color: Colors.black,
               ),
             ),
             SizedBox(height: size.height * 0.15),

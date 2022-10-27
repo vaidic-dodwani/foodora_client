@@ -3,20 +3,16 @@ import 'package:foodora/app_routes.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 
-const background_top = Color(0xFFE3C766);
-const background_bottom = Color(0xFFFFCC00);
+const background_color = Colors.white;
 const logo_brown_color = Color(0xFF61481C);
 const font_brown_color = Color(0xFF61481C);
-const font_red_color = Color(0xFFE30303);
-const button_background = Color(0xFF61481C);
+const font_red_color = Color(0xFFDB0007);
+const button_background = Color(0xFFF7BCBD);
 const orange_button_color = Color(0xFFFB882C);
-const new_user_color = Color(0xFF813531);
+const new_user_color = Color(0xFFFFBC0D);
 BoxDecoration background_design() {
   return const BoxDecoration(
-    gradient: LinearGradient(
-        colors: [background_top, background_bottom],
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter),
+    color: background_color,
   );
 }
 
@@ -28,13 +24,13 @@ Widget skip_button(BuildContext context) {
         Navigator.pushNamed(context, app_routes.location_screen);
       },
       child: const Padding(
-        padding: EdgeInsets.all(5),
+        padding: EdgeInsets.only(top: 10),
         child: Text(
           "SKIP",
           style: TextStyle(
-              fontFamily: 'Montserrat',
-              fontSize: 24,
-              color: font_brown_color,
+              fontFamily: 'Inner',
+              fontSize: 16,
+              color: font_red_color,
               fontWeight: FontWeight.w700),
         ),
       ),
@@ -55,7 +51,7 @@ Widget sign_button(String text, {fontcolor = Colors.white}) {
 }
 
 SizedBox button_style(String text, BuildContext context,
-    {Color color = button_background, function, fontcolor = Colors.white}) {
+    {Color color = button_background, function, fontcolor = font_red_color}) {
   final size = MediaQuery.of(context).size;
   return SizedBox(
     height: 50,
@@ -67,7 +63,7 @@ SizedBox button_style(String text, BuildContext context,
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
-            side: const BorderSide(width: 1),
+            side: const BorderSide(width: 1, color: font_red_color),
           ),
         ),
       ),
@@ -169,8 +165,9 @@ Widget phone_number_field(BuildContext context, {function}) {
         enabledBorder:
             OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
         hintText: 'Enter Mobile Number',
+        hintMaxLines: 1,
         hintStyle: const TextStyle(
-          color: Colors.white,
+          color: Colors.black,
           fontSize: 20,
         ),
       ),

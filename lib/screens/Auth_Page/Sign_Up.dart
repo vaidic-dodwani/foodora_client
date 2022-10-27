@@ -64,8 +64,7 @@ class _signup_screenState extends State<signup_screen> {
               ),
               (_emptyName == null || _emptyName == true)
                   ? error_line("Enter Name")
-                  : SizedBox(width: 21),
-              SizedBox(height: 10),
+                  : SizedBox(width: 22),
               form_text('Email Address'),
               form_field(context, 'example@email.com',
                   isEmail: true,
@@ -78,38 +77,40 @@ class _signup_screenState extends State<signup_screen> {
                 setState(() {});
               }),
               (_isEmail == null || _isEmail == true)
-                  ? SizedBox(height: 21)
+                  ? SizedBox(height: 22)
                   : error_line("Enter Valid Email"),
               form_text('Password'),
               form_field(context, 'Password',
                   password: !_show_password,
                   controller: passwordController,
                   icon: IconButton(
+                    color: logo_brown_color,
                     onPressed: () {
                       _show_password = !_show_password;
                       setState(() {});
                     },
                     icon: _show_password
-                        ? Icon(Icons.visibility)
-                        : Icon(Icons.visibility_off),
+                        ? Icon(Icons.visibility_off)
+                        : Icon(Icons.visibility),
                   ), function: (input_password) {
                 _password = input_password;
                 _error_line = "Passwords Do Not Match";
                 _checker = false;
                 setState(() {});
               }),
-              SizedBox(height: 10),
+              SizedBox(height: 22),
               form_text('Retype Password'),
               form_field(context, 'Please retype the same password',
                   password: !_show_retype_password,
                   icon: IconButton(
+                    color: logo_brown_color,
                     onPressed: () {
                       _show_retype_password = !_show_retype_password;
                       setState(() {});
                     },
                     icon: _show_retype_password
-                        ? Icon(Icons.visibility)
-                        : Icon(Icons.visibility_off),
+                        ? Icon(Icons.visibility_off)
+                        : Icon(Icons.visibility),
                   ), function: (input_password) {
                 _re_password = input_password;
                 _checker = false;
@@ -119,14 +120,14 @@ class _signup_screenState extends State<signup_screen> {
               SizedBox(height: 10),
               (_isLoading == null || _isLoading == false)
                   ? SizedBox(
-                      height: 21,
+                      height: 22,
                       child: (_password == _re_password && !_checker)
                           ? Text(" ")
                           : error_line(_error_line),
                     )
                   : const SizedBox(
-                      height: 21,
-                      width: 21,
+                      height: 22,
+                      width: 22,
                       child: CircularProgressIndicator(color: font_brown_color),
                     ),
               SizedBox(height: 10),
@@ -156,7 +157,7 @@ class _signup_screenState extends State<signup_screen> {
               button_style(
                 'Existing User',
                 context,
-                color: Color(0xFF813531),
+                color: new_user_color,
                 function: () {
                   Navigator.pushNamed(context, app_routes.signin_screen);
                 },

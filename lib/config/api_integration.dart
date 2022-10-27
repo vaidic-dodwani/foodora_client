@@ -5,6 +5,7 @@ import 'package:http/http.dart';
 
 dynamic sign_in(String email, String password) async {
   try {
+    log("Attempting Sign IN");
     final response = await post(Uri.parse(sign_in_link),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -13,7 +14,10 @@ dynamic sign_in(String email, String password) async {
           "email": email,
           "password": password,
         }));
+
     final output = jsonDecode(response.body);
+    if (response != null)
+      log("Response Recieved as " + output['success'].toString());
     return output;
   } catch (er) {
     log("eror: " + er.toString());

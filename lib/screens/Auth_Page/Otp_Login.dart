@@ -41,7 +41,6 @@ class _otp_screenState extends State<otp_screen> {
                       context,
                       _full_Otp,
                       otp_controller_function: (pin) {
-
                         if (pin.toString().isEmpty) {
                           _full_Otp = null;
                         } else {
@@ -71,14 +70,13 @@ class _otp_screenState extends State<otp_screen> {
               button_style(
                 'Email Login',
                 context,
-                color: orange_button_color,
                 function: () {
                   Navigator.pushNamed(context, app_routes.signin_screen);
                 },
               ),
               SizedBox(height: 10),
               button_style(
-                'New User',
+                'NEW USER',
                 context,
                 color: new_user_color,
                 function: () {
