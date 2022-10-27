@@ -40,14 +40,7 @@ class _signup_screenState extends State<signup_screen> {
               SizedBox(height: 10),
               skip_button(context),
               SizedBox(height: 10),
-              const Text(
-                "WELCOME TO FOODORA",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
+              top_welcome_text("Welcome to FOODORA"),
               SizedBox(
                 height: size.height * 0.1,
               ),
@@ -145,7 +138,8 @@ class _signup_screenState extends State<signup_screen> {
                   });
 
                   if (response['success']) {
-                    Navigator.pushNamed(context, app_routes.location_screen);
+                    Navigator.pushNamed(
+                        context, app_routes.email_verification_screen);
                   } else {
                     _error_line = response['msg'];
                   }
@@ -153,13 +147,7 @@ class _signup_screenState extends State<signup_screen> {
                 setState(() {});
               }),
               SizedBox(height: 10),
-              button_style(
-                'Existing User',
-                context,
-                function: () {
-                  Navigator.pushNamed(context, app_routes.signin_screen);
-                },
-              )
+              existing_user_button(context)
             ],
           ),
         ),

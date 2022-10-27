@@ -72,15 +72,13 @@ SizedBox button_style(String text, BuildContext context,
 Widget top_welcome_text(String text) {
   return Padding(
     padding: const EdgeInsets.only(left: 10.0),
-    child: Align(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        text,
-        style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w700,
-            fontFamily: 'Montserrat'),
-      ),
+    child: Text(
+      text,
+      style: const TextStyle(
+          color: font_red_color,
+          fontSize: 24,
+          fontWeight: FontWeight.w700,
+          fontFamily: 'Montserrat'),
     ),
   );
 }
@@ -211,17 +209,51 @@ Widget new_user_button(BuildContext context) {
   );
 }
 
-Widget phone_number_field(BuildContext context, {function}) {
+Widget existing_user_button(BuildContext context) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      const Text(
+        "Already Registered?",
+        style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 24),
+      ),
+      TextButton(
+        onPressed: () {
+          Navigator.pushNamed(context, app_routes.signin_screen);
+        },
+        child: Text(
+          "SIGN IN",
+          style: TextStyle(
+              fontSize: 24,
+              color: font_red_color,
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.w700),
+        ),
+      )
+    ],
+  );
+}
+
+Widget phone_number_field(BuildContext context, {function, controller}) {
   final size = MediaQuery.of(context).size;
   return SizedBox(
     height: 50,
     width: size.width > 330 ? 330 : size.width - 10,
     child: TextField(
+      controller: controller,
+      scrollPadding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       textAlign: TextAlign.center,
-      keyboardType: TextInputType.phone,
-      maxLength: 10,
+      keyboardType: TextInputType.emailAddress,
       onChanged: (String input_number) {
-        function(input_number);
+        if (function == null)
+          function() {}
+        else
+          function(input_number);
       },
       decoration: InputDecoration(
         counterText: "",
@@ -229,7 +261,7 @@ Widget phone_number_field(BuildContext context, {function}) {
             OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
         enabledBorder:
             OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-        hintText: 'Enter Mobile Number',
+        hintText: 'Enter Email Address',
         hintMaxLines: 1,
         hintStyle: const TextStyle(
           color: Colors.black,
@@ -287,7 +319,7 @@ Widget email_otp_verify(BuildContext context, bool? full_otp,
   );
 }
 
-error_line(String text) {
+Widget error_line(String text) {
   if (true) {
     return Align(
       alignment: Alignment.centerLeft,
