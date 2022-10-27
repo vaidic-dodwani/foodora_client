@@ -1,20 +1,19 @@
 import 'dart:developer';
 
+import 'package:foodora/config/api_integration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:foodora/app_routes.dart';
 import 'package:foodora/designing.dart';
 
-import '../../config/api_integration.dart';
-
-class forgot_password_screen extends StatefulWidget {
-  const forgot_password_screen({super.key});
+class email_verification_screen extends StatefulWidget {
+  const email_verification_screen({super.key});
 
   @override
-  State<forgot_password_screen> createState() => _forgot_password_screenState();
+  State<email_verification_screen> createState() =>
+      _email_verification_screenState();
 }
 
-class _forgot_password_screenState extends State<forgot_password_screen> {
+class _email_verification_screenState extends State<email_verification_screen> {
   TextEditingController emailController = TextEditingController();
   bool? _isEmail;
   bool? _isloading;
@@ -29,15 +28,17 @@ class _forgot_password_screenState extends State<forgot_password_screen> {
           decoration: background_design(),
           width: size.width,
           child: Column(children: [
+            SizedBox(height: 100),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: top_welcome_text("CONTACT DETAIL"),
+              ),
+            ),
+            SizedBox(height: 10),
+            SvgPicture.asset("assets/images/email_verification.svg"),
             SizedBox(height: 30),
-            skip_button(context),
-            SizedBox(height: 10),
-            SvgPicture.asset("assets/images/forget_password_vector.svg"),
-            SizedBox(height: 10),
-            screen_heading("Forgot Password"),
-            SizedBox(height: 10),
-            screen_center_text("Please enter your Email to verify"),
-            SizedBox(height: 50),
             phone_number_field(context, controller: emailController,
                 function: (input_text) {
               if (input_text.toString().length == 0) {
@@ -82,8 +83,7 @@ class _forgot_password_screenState extends State<forgot_password_screen> {
                   _isloading = false;
                 });
                 if (response['success']) {
-                  Navigator.pushReplacementNamed(
-                      context, app_routes.forget_pass_verify_screen);
+                  log("sent brooo");
                 } else {
                   setState(() {
                     _error_text = response['msg'];
@@ -92,7 +92,7 @@ class _forgot_password_screenState extends State<forgot_password_screen> {
               }
             }),
             SizedBox(height: 20),
-            new_user_button(context),
+            existing_user_button(context),
           ]),
         ),
       ),

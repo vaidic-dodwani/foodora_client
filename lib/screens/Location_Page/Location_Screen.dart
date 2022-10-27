@@ -33,11 +33,15 @@ class _location_screenState extends State<location_screen> {
             children: [
               SizedBox(height: 62),
               //
-              top_welcome_text('Hello USER!!'),
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: top_welcome_text('Hello USER!!')),
               //
               SizedBox(height: 8),
               //
-              top_welcome_text('What\'s your location?'),
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: top_welcome_text('What\'s your location?')),
               //
               SizedBox(height: 5),
               //
@@ -79,7 +83,6 @@ class _location_screenState extends State<location_screen> {
                       ? button_style(
                           'CURRENT LOCATION',
                           context,
-                          fontcolor: Colors.white,
                           function: () async {
                             if (await Permission.location.request().isGranted) {
                               setState(() {
@@ -99,7 +102,9 @@ class _location_screenState extends State<location_screen> {
                       : const SizedBox(
                           width: 21,
                           height: 21,
-                          child: CircularProgressIndicator())
+                          child: CircularProgressIndicator(
+                            color: font_red_color,
+                          ))
             ],
           ),
         ),

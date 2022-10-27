@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:foodora/screens/Auth_Page/Otp_Login.dart';
 import 'package:foodora/screens/Auth_Page/Sign_In.dart';
 import 'package:foodora/screens/Auth_Page/Sign_Up.dart';
 import 'package:foodora/screens/Auth_Page/auth_choice.dart';
+import 'package:foodora/screens/Auth_Page/email_verification_screen.dart';
 import 'package:foodora/screens/Auth_Page/forgot_password_screen.dart';
-import 'package:foodora/screens/Auth_Page/otp_verify_screen.dart';
+import 'package:foodora/screens/Auth_Page/forget_pass_verify_screen.dart';
 import 'package:foodora/screens/Home_Page/Home_Screen.dart';
 import 'package:foodora/screens/Location_Page/location_screen.dart';
 import 'package:foodora/screens/Splash_Screen/splash_screen.dart';
@@ -15,11 +15,11 @@ class app_routes {
   static const auth_choice = '/auth_choice';
   static const signin_screen = '/signin_screen';
   static const signup_screen = '/signup_screen';
-  static const otp_screen = '/otp_screen';
   static const home_screen = '/home_screen';
   static const location_screen = '/location_screen';
   static const forgot_password_screen = '/forgot_password_screen';
-  static const otp_verify_screen = '/otp_verify_screen';
+  static const forget_pass_verify_screen = '/forget_pass_verify_screen';
+  static const email_verification_screen = '/email_verification_screen';
 }
 
 Route getRoute(RouteSettings settings) {
@@ -45,11 +45,7 @@ Route getRoute(RouteSettings settings) {
         settings: settings,
         builder: (context) => const signup_screen(),
       );
-    case app_routes.otp_screen:
-      return MaterialPageRoute(
-        settings: settings,
-        builder: (context) => const otp_screen(),
-      );
+
     case app_routes.home_screen:
       return MaterialPageRoute(
         settings: settings,
@@ -65,10 +61,15 @@ Route getRoute(RouteSettings settings) {
         settings: settings,
         builder: (context) => const forgot_password_screen(),
       );
-    case app_routes.otp_verify_screen:
+    case app_routes.forget_pass_verify_screen:
       return MaterialPageRoute(
         settings: settings,
-        builder: (context) => const otp_verify_screen(),
+        builder: (context) => const forget_pass_verify_screen(),
+      );
+    case app_routes.email_verification_screen:
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (context) => const email_verification_screen(),
       );
     default:
       return MaterialPageRoute(

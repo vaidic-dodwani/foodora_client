@@ -19,7 +19,6 @@ class _signin_screenState extends State<signin_screen> {
   bool _show_password = false;
   bool _checker = false;
   bool? _isloading;
-
   bool? _isEmail;
 
   @override
@@ -119,9 +118,6 @@ class _signin_screenState extends State<signin_screen> {
                 },
               ),
               SizedBox(height: 20),
-              button_style("OTP Login", context, function: () {
-                Navigator.pushNamed(context, app_routes.otp_screen);
-              }),
               SizedBox(height: 10),
               forgot_password_button(context),
               SizedBox(height: 10),
