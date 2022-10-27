@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/app_routes.dart';
 import 'package:foodora/designing.dart';
 
@@ -29,29 +32,27 @@ class _otp_screenState extends State<otp_screen> {
             children: [
               SizedBox(height: 10),
               skip_button(context),
-              SizedBox(height: 10),
-              top_welcome_text('Welcome Back!'),
-              SizedBox(height: size.height * 0.4),
-              //
-              //
-              //
-              //
-              _otp_entered && _phone_number_entered
-                  ? otp_input(
-                      context,
-                      _full_Otp,
-                      otp_controller_function: (pin) {
-                        if (pin.toString().isEmpty) {
-                          _full_Otp = null;
-                        } else {
-                          pin.toString().length == 5
-                              ? _full_Otp = true
-                              : _full_Otp = false;
-                        }
+              SizedBox(height: 30),
 
-                        setState(() {});
-                      },
-                    )
+              SvgPicture.asset("assets/images/sign_in_vector.svg"),
+              SizedBox(height: size.height * 0.075),
+              _otp_entered && _phone_number_entered
+                  ? otp_input(context, _full_Otp,
+                      otp_controller_function: (pin) {
+                      if (pin.toString().isEmpty) {
+                        _full_Otp = null;
+                      } else {
+                        pin.toString().length == 5
+                            ? _full_Otp = true
+                            : _full_Otp = false;
+                      }
+
+                      setState(() {});
+                    }, submit_button_function: () {
+                      if (_full_Otp != null && _full_Otp == true) {
+                        log("sign in with otp triggered");
+                      }
+                    })
                   : send_otp(
                       context,
                       function: () {
@@ -67,21 +68,20 @@ class _otp_screenState extends State<otp_screen> {
                     ),
               //
               //
+
+              SizedBox(height: 10),
               button_style(
-                'Email Login',
+                'Login With Email',
                 context,
                 function: () {
-                  Navigator.pushNamed(context, app_routes.signin_screen);
+                  Navigator.pushReplacementNamed(
+                      context, app_routes.signin_screen);
                 },
               ),
               SizedBox(height: 10),
-              button_style(
-                'NEW USER',
-                context,
-                function: () {
-                  Navigator.pushNamed(context, app_routes.signup_screen);
-                },
-              )
+              forgot_password_button(context),
+              SizedBox(height: 10),
+              new_user_button(context),
             ],
           ),
         ),

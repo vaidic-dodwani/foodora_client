@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:foodora/app_routes.dart';
 import 'package:foodora/designing.dart';
 
 class forgot_password_screen extends StatefulWidget {
@@ -36,7 +37,10 @@ class _forgot_password_screenState extends State<forgot_password_screen> {
                   form_text("EMAIL"),
                   form_field(context, "email@example.com"),
                   SizedBox(height: 50),
-                  button_style("CONTINUE", context),
+                  button_style("CONTINUE", context, function: () {
+                    Navigator.pushReplacementNamed(
+                        context, app_routes.otp_verify_screen);
+                  }),
                 ]),
               ),
               SizedBox(height: 50),
