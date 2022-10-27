@@ -4,6 +4,7 @@ import 'package:foodora/config/api_links.dart';
 import 'package:http/http.dart';
 
 dynamic sign_in(String email, String password) async {
+
   try {
     log("Attempting Sign IN");
     final response = await post(Uri.parse(sign_in_link),
@@ -42,4 +43,5 @@ dynamic sign_up(String name, String email, String password) async {
   } catch (er) {
     log("eror: " + er.toString());
   }
+
 }
