@@ -44,7 +44,6 @@ class _signup_screenState extends State<signup_screen> {
                 "WELCOME TO FOODORA",
                 style: TextStyle(
                   fontSize: 24,
-                  color: font_brown_color,
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.w700,
                 ),
@@ -128,7 +127,7 @@ class _signup_screenState extends State<signup_screen> {
                   : const SizedBox(
                       height: 22,
                       width: 22,
-                      child: CircularProgressIndicator(color: font_brown_color),
+                      child: CircularProgressIndicator(color: logo_brown_color),
                     ),
               SizedBox(height: 10),
               button_style('Sign Up', context, function: () async {
@@ -157,7 +156,6 @@ class _signup_screenState extends State<signup_screen> {
               button_style(
                 'Existing User',
                 context,
-                color: new_user_color,
                 function: () {
                   Navigator.pushNamed(context, app_routes.signin_screen);
                 },

@@ -5,11 +5,8 @@ import 'package:otp_text_field/style.dart';
 
 const background_color = Colors.white;
 const logo_brown_color = Color(0xFF61481C);
-const font_brown_color = Color(0xFF61481C);
 const font_red_color = Color(0xFFDB0007);
 const button_background = Color(0xFFF7BCBD);
-const orange_button_color = Color(0xFFFB882C);
-const new_user_color = Color(0xFFFFBC0D);
 BoxDecoration background_design() {
   return const BoxDecoration(
     color: background_color,
@@ -81,7 +78,6 @@ Widget top_welcome_text(String text) {
         text,
         style: const TextStyle(
             fontSize: 24,
-            color: font_brown_color,
             fontWeight: FontWeight.w700,
             fontFamily: 'Montserrat'),
       ),
@@ -143,6 +139,51 @@ Widget form_field(BuildContext context, String text,
         ),
       ),
     ),
+  );
+}
+
+Widget forgot_password_button(BuildContext context) {
+  return TextButton(
+    onPressed: () {
+      Navigator.pushNamed(context, app_routes.forgot_password_screen);
+    },
+    child: Text(
+      "Forgot Password",
+      style: TextStyle(
+          fontSize: 24,
+          color: font_red_color,
+          fontFamily: 'Montserrat',
+          fontWeight: FontWeight.w700),
+    ),
+  );
+}
+
+Widget new_user_button(BuildContext context) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Text(
+        "New to Foodora?",
+        style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 24),
+      ),
+      TextButton(
+        onPressed: () {
+          Navigator.pushNamed(context, app_routes.signup_screen);
+        },
+        child: Text(
+          "SIGN UP",
+          style: TextStyle(
+              fontSize: 24,
+              color: font_red_color,
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.w700),
+        ),
+      )
+    ],
   );
 }
 
@@ -231,7 +272,7 @@ Column otp_input(BuildContext context, bool? full_otp,
             style: TextStyle(
               fontSize: 17,
               fontFamily: 'Montserrat',
-              color: font_brown_color,
+              color: logo_brown_color,
             ),
           ),
         ),
