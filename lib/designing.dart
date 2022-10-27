@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodora/app_routes.dart';
+import 'package:foodora/config/api_integration.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 
@@ -169,7 +170,7 @@ Widget screen_heading(String text) {
   );
 }
 
-screen_center_text(String text) {
+Widget screen_center_text(String text) {
   return Text(
     text,
     style: TextStyle(
@@ -275,9 +276,10 @@ Widget phone_number_field(BuildContext context, {function, controller}) {
 Widget otp_field(BuildContext context, {function}) {
   final size = MediaQuery.of(context).size;
   return OTPTextField(
-    length: 5,
+    keyboardType: TextInputType.text,
+    length: 6,
     width: size.width > 330 ? 330 : size.width - 10,
-    fieldWidth: size.width > 330 ? 330 / 6 : (size.width - 10) / 6,
+    fieldWidth: size.width > 330 ? 330 / 7 : (size.width - 10) / 7,
     style: TextStyle(fontSize: 20),
     textFieldAlignment: MainAxisAlignment.spaceAround,
     fieldStyle: FieldStyle.box,
@@ -288,7 +290,10 @@ Widget otp_field(BuildContext context, {function}) {
 }
 
 Widget email_otp_verify(BuildContext context, bool? full_otp,
-    {otp_controller_function}) {
+    {otp_controller_function,
+    error_line = " ",
+    int sent = 0,
+    resend_function}) {
   final size = MediaQuery.of(context).size;
   return Column(
     children: [
@@ -298,24 +303,33 @@ Widget email_otp_verify(BuildContext context, bool? full_otp,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            TextButton(
-              onPressed: () {},
-              child: const Text(
-                "Resend",
-                style: TextStyle(fontSize: 15),
-              ),
-            ),
-            (full_otp == null || full_otp)
-                ? SizedBox(width: 50)
+            sent == 0
+                ? TextButton(
+                    onPressed: resend_function, child: resend(resend_function))
                 : const Text(
-                    "Enter The Entire OTP",
-                    style: TextStyle(fontSize: 16, color: Colors.red),
-                  )
+                    "Resent the OTP",
+                    style: TextStyle(color: logo_brown_color),
+                  ),
+            Text(
+              error_line,
+              style: TextStyle(fontSize: 16, color: Colors.red),
+            )
           ],
         ),
       ),
       SizedBox(height: 10),
     ],
+  );
+}
+
+Widget resend(Function function) {
+  return TextButton(
+    onPressed: function(),
+    child: const Text(
+      "Resend",
+      style: TextStyle(
+          fontSize: 15, fontWeight: FontWeight.w400, color: logo_brown_color),
+    ),
   );
 }
 

@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Foodora',
-      initialRoute: app_routes.forgot_password_screen,
+      initialRoute: app_routes.splash_screen,
       onGenerateRoute: getRoute,
     );
   }

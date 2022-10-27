@@ -1,9 +1,11 @@
 import 'dart:developer';
 
+import 'package:foodora/app_routes.dart';
 import 'package:foodora/config/api_integration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/designing.dart';
+import 'package:foodora/screens/Auth_Page/otp_verify_screen.dart';
 
 class email_verification_screen extends StatefulWidget {
   const email_verification_screen({super.key});
@@ -83,7 +85,9 @@ class _email_verification_screenState extends State<email_verification_screen> {
                   _isloading = false;
                 });
                 if (response['success']) {
-                  log("sent brooo");
+                  Navigator.pushReplacementNamed(
+                      context, app_routes.otp_verify_screen,
+                      arguments: emailController.text);
                 } else {
                   setState(() {
                     _error_text = response['msg'];
