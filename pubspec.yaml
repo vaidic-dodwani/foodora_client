@@ -34,6 +34,7 @@ dependencies:
     sdk: flutter
   flutter_svg: ^1.1.5
   geocoding: ^2.0.5
+  http: ^0.13.5
   location: ^4.4.0
   meta: ^1.8.0
   otp_text_field: ^1.1.3

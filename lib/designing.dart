@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:foodora/app_routes.dart';
 import 'package:otp_text_field/otp_text_field.dart';
@@ -124,7 +122,7 @@ Widget form_field(BuildContext context, String text,
         child: TextFormField(
           controller: controller,
           onChanged: (String input_value) {
-            function(input_value);
+            if (function != null) function(input_value);
           },
           obscureText: password,
           keyboardType:
@@ -143,7 +141,6 @@ Widget form_field(BuildContext context, String text,
             border: const UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.black),
             ),
-            suffixIconColor: Colors.black,
             suffixIcon: icon,
             hintText: text,
           ),
@@ -256,9 +253,7 @@ Column otp_input(BuildContext context, bool? full_otp,
                 style: TextStyle(fontSize: 15),
               ),
             ),
-            
             (full_otp == null || full_otp)
-
                 ? SizedBox(width: 50)
                 : const Text(
                     "Enter The Entire OTP",
