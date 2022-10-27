@@ -65,7 +65,7 @@ class _location_screenState extends State<location_screen> {
               //
 
               button_style(
-                'Enter Manually',
+                'ENTER MANUALLY',
                 context,
                 color: Color(0x00000000),
                 fontcolor: font_brown_color,
@@ -78,8 +78,9 @@ class _location_screenState extends State<location_screen> {
                   ? lat_long_display(_placemark)
                   : (IsLoading == null || IsLoading == false)
                       ? button_style(
-                          'Current Location',
+                          'CURRENT LOCATION',
                           context,
+                          fontcolor: Colors.white,
                           color: orange_button_color,
                           function: () async {
                             if (await Permission.location.request().isGranted) {
@@ -97,7 +98,7 @@ class _location_screenState extends State<location_screen> {
                             }
                           },
                         )
-                      : SizedBox(
+                      : const SizedBox(
                           width: 21,
                           height: 21,
                           child: CircularProgressIndicator(

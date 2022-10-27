@@ -59,7 +59,7 @@ class _signin_screenState extends State<signin_screen> {
                 },
               ),
               _isEmail == true || _isEmail == null
-                  ? SizedBox(height: 21)
+                  ? SizedBox(height: 22)
                   : error_line("Invalid Email"),
 
               form_text('Password'),
@@ -69,13 +69,14 @@ class _signin_screenState extends State<signin_screen> {
                 password: !_show_password,
                 controller: passwordController,
                 icon: IconButton(
+                  color: logo_brown_color,
                   onPressed: () {
                     _show_password = !_show_password;
                     setState(() {});
                   },
                   icon: _show_password
-                      ? Icon(Icons.visibility)
-                      : Icon(Icons.visibility_off),
+                      ? Icon(Icons.visibility_off)
+                      : Icon(Icons.visibility),
                 ),
               ),
               SizedBox(height: 10),
@@ -118,8 +119,9 @@ class _signin_screenState extends State<signin_screen> {
                 },
               ),
               SizedBox(height: 10),
-              button_style("OTP Login", context, color: orange_button_color,
-                  function: () {
+              button_style("OTP Login", context,
+                  color: orange_button_color,
+                  fontcolor: Colors.white, function: () {
                 Navigator.pushNamed(context, app_routes.otp_screen);
               }),
               SizedBox(height: 10),
@@ -128,7 +130,8 @@ class _signin_screenState extends State<signin_screen> {
                 context,
                 color: new_user_color,
                 function: () {
-                  Navigator.pushNamed(context, app_routes.signup_screen);
+                  Navigator.pushReplacementNamed(
+                      context, app_routes.signup_screen);
                 },
               ),
             ],
