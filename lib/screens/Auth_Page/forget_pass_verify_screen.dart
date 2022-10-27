@@ -97,11 +97,12 @@ class _forget_pass_verify_screenState extends State<forget_pass_verify_screen> {
                       : email_otp_verify(
                           context,
                           _full_Otp,
+                          resend_function: () {},
                           otp_controller_function: (pin) {
                             if (pin.toString().isEmpty) {
                               _full_Otp = null;
                             } else {
-                              pin.toString().length == 5
+                              pin.toString().length == 6
                                   ? _full_Otp = true
                                   : _full_Otp = false;
                             }

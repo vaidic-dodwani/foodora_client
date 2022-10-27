@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:foodora/config/api_integration.dart';
 import 'package:foodora/designing.dart';
@@ -30,10 +32,10 @@ class _signup_screenState extends State<signup_screen> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
           width: size.width,
-          height: size.height,
           decoration: background_design(),
           child: Column(
             children: [
@@ -138,8 +140,9 @@ class _signup_screenState extends State<signup_screen> {
                   });
 
                   if (response['success']) {
-                    Navigator.pushNamed(
-                        context, app_routes.email_verification_screen);
+                    Navigator.pushReplacementNamed(
+                        context, app_routes.otp_verify_screen,
+                        arguments: emailController.text);
                   } else {
                     _error_line = response['msg'];
                   }
