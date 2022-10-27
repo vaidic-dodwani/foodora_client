@@ -112,6 +112,8 @@ Widget form_field(BuildContext context, String text,
       child: SizedBox(
         width: size.width * 0.9,
         child: TextFormField(
+          scrollPadding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           controller: controller,
           onChanged: (String input_value) {
             if (function != null) function(input_value);
@@ -253,6 +255,38 @@ Widget otp_field(BuildContext context, {function}) {
   );
 }
 
+Widget email_otp_verify(BuildContext context, bool? full_otp,
+    {otp_controller_function}) {
+  final size = MediaQuery.of(context).size;
+  return Column(
+    children: [
+      otp_field(context, function: otp_controller_function),
+      SizedBox(
+        width: size.width > 330 ? 330 : size.width - 10,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextButton(
+              onPressed: () {},
+              child: const Text(
+                "Resend",
+                style: TextStyle(fontSize: 15),
+              ),
+            ),
+            (full_otp == null || full_otp)
+                ? SizedBox(width: 50)
+                : const Text(
+                    "Enter The Entire OTP",
+                    style: TextStyle(fontSize: 16, color: Colors.red),
+                  )
+          ],
+        ),
+      ),
+      SizedBox(height: 10),
+    ],
+  );
+}
+
 error_line(String text) {
   if (true) {
     return Align(
@@ -281,7 +315,7 @@ Column send_otp(BuildContext context,
 }
 
 Column otp_input(BuildContext context, bool? full_otp,
-    {otp_controller_function}) {
+    {otp_controller_function, submit_button_function}) {
   final size = MediaQuery.of(context).size;
   return Column(
     children: [
@@ -322,7 +356,7 @@ Column otp_input(BuildContext context, bool? full_otp,
           ],
         ),
       ),
-      button_style("Submit", context),
+      button_style("Submit", context, function: submit_button_function),
       SizedBox(height: 10),
     ],
   );
