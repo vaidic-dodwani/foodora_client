@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/designing.dart';
 
-class forgot_password_screen extends StatefulWidget {
-  const forgot_password_screen({super.key});
+class otp_verify_screen extends StatefulWidget {
+  const otp_verify_screen({super.key});
 
   @override
-  State<forgot_password_screen> createState() => _forgot_password_screenState();
+  State<otp_verify_screen> createState() => _otp_verify_screenState();
 }
 
-class _forgot_password_screenState extends State<forgot_password_screen> {
+class _otp_verify_screenState extends State<otp_verify_screen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

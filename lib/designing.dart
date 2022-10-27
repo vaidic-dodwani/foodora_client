@@ -158,12 +158,34 @@ Widget forgot_password_button(BuildContext context) {
   );
 }
 
+Widget screen_heading(String text) {
+  return Text(
+    text,
+    style: TextStyle(
+        fontSize: 24,
+        fontFamily: 'Montserrat',
+        color: font_red_color,
+        fontWeight: FontWeight.w700),
+  );
+}
+
+screen_center_text(String text) {
+  return Text(
+    text,
+    style: TextStyle(
+        fontSize: 18,
+        fontFamily: 'Montserrat',
+        color: font_red_color,
+        fontWeight: FontWeight.w500),
+  );
+}
+
 Widget new_user_button(BuildContext context) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Text(
-        "New to Foodora?",
+      const Text(
+        "New to Foodora??",
         style: TextStyle(
             color: Colors.black,
             fontFamily: 'Montserrat',
