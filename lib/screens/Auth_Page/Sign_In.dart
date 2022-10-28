@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/config/api_integration.dart';
 import 'package:http/http.dart';
 import '../../designing.dart';
@@ -18,7 +19,6 @@ class _signin_screenState extends State<signin_screen> {
   bool _show_password = false;
   bool _checker = false;
   bool? _isloading;
-
   bool? _isEmail;
 
   @override
@@ -37,11 +37,10 @@ class _signin_screenState extends State<signin_screen> {
               skip_button(context),
               //
               SizedBox(height: 10),
-              top_welcome_text('Welcome Back!'),
               //
-              SizedBox(
-                height: size.height * 0.3,
-              ),
+              SvgPicture.asset("assets/images/sign_in_vector.svg"),
+              SizedBox(height: 10),
+
               form_text('Email'),
               //
               form_field(
@@ -59,7 +58,7 @@ class _signin_screenState extends State<signin_screen> {
                 },
               ),
               _isEmail == true || _isEmail == null
-                  ? SizedBox(height: 21)
+                  ? SizedBox(height: 22)
                   : error_line("Invalid Email"),
 
               form_text('Password'),
@@ -69,13 +68,14 @@ class _signin_screenState extends State<signin_screen> {
                 password: !_show_password,
                 controller: passwordController,
                 icon: IconButton(
+                  color: logo_brown_color,
                   onPressed: () {
                     _show_password = !_show_password;
                     setState(() {});
                   },
                   icon: _show_password
-                      ? Icon(Icons.visibility)
-                      : Icon(Icons.visibility_off),
+                      ? Icon(Icons.visibility_off)
+                      : Icon(Icons.visibility),
                 ),
               ),
               SizedBox(height: 10),
@@ -88,7 +88,7 @@ class _signin_screenState extends State<signin_screen> {
                           : Text(" "),
                     )
                   : SizedBox(
-                      child: CircularProgressIndicator(color: font_brown_color),
+                      child: CircularProgressIndicator(color: logo_brown_color),
                       height: 21,
                       width: 21,
                     ),
@@ -117,20 +117,11 @@ class _signin_screenState extends State<signin_screen> {
                   setState(() {});
                 },
               ),
+              SizedBox(height: 20),
               SizedBox(height: 10),
-              button_style("OTP Login", context, color: orange_button_color,
-                  function: () {
-                Navigator.pushNamed(context, app_routes.otp_screen);
-              }),
+              forgot_password_button(context),
               SizedBox(height: 10),
-              button_style(
-                "New User",
-                context,
-                color: new_user_color,
-                function: () {
-                  Navigator.pushNamed(context, app_routes.signup_screen);
-                },
-              ),
+              new_user_button(context),
             ],
           ),
         ),

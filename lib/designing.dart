@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:foodora/app_routes.dart';
+import 'package:foodora/config/api_integration.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 
-const background_top = Color(0xFFE3C766);
-const background_bottom = Color(0xFFFFCC00);
+const background_color = Colors.white;
 const logo_brown_color = Color(0xFF61481C);
-const font_brown_color = Color(0xFF61481C);
-const font_red_color = Color(0xFFE30303);
-const button_background = Color(0xFF61481C);
-const orange_button_color = Color(0xFFFB882C);
-const new_user_color = Color(0xFF813531);
+const font_red_color = Color(0xFFDB0007);
+const button_background = Color(0xFFF7BCBD);
 BoxDecoration background_design() {
   return const BoxDecoration(
-    gradient: LinearGradient(
-        colors: [background_top, background_bottom],
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter),
+    color: background_color,
   );
 }
 
@@ -28,13 +22,13 @@ Widget skip_button(BuildContext context) {
         Navigator.pushNamed(context, app_routes.location_screen);
       },
       child: const Padding(
-        padding: EdgeInsets.all(5),
+        padding: EdgeInsets.only(top: 10),
         child: Text(
           "SKIP",
           style: TextStyle(
-              fontFamily: 'Montserrat',
-              fontSize: 24,
-              color: font_brown_color,
+              fontFamily: 'Inner',
+              fontSize: 16,
+              color: font_red_color,
               fontWeight: FontWeight.w700),
         ),
       ),
@@ -55,7 +49,7 @@ Widget sign_button(String text, {fontcolor = Colors.white}) {
 }
 
 SizedBox button_style(String text, BuildContext context,
-    {Color color = button_background, function, fontcolor = Colors.white}) {
+    {Color color = button_background, function, fontcolor = font_red_color}) {
   final size = MediaQuery.of(context).size;
   return SizedBox(
     height: 50,
@@ -67,7 +61,7 @@ SizedBox button_style(String text, BuildContext context,
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
-            side: const BorderSide(width: 1),
+            side: const BorderSide(width: 1, color: font_red_color),
           ),
         ),
       ),
@@ -79,16 +73,13 @@ SizedBox button_style(String text, BuildContext context,
 Widget top_welcome_text(String text) {
   return Padding(
     padding: const EdgeInsets.only(left: 10.0),
-    child: Align(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        text,
-        style: const TextStyle(
-            fontSize: 24,
-            color: font_brown_color,
-            fontWeight: FontWeight.w700,
-            fontFamily: 'Montserrat'),
-      ),
+    child: Text(
+      text,
+      style: const TextStyle(
+          color: font_red_color,
+          fontSize: 24,
+          fontWeight: FontWeight.w700,
+          fontFamily: 'Montserrat'),
     ),
   );
 }
@@ -120,6 +111,8 @@ Widget form_field(BuildContext context, String text,
       child: SizedBox(
         width: size.width * 0.9,
         child: TextFormField(
+          scrollPadding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           controller: controller,
           onChanged: (String input_value) {
             if (function != null) function(input_value);
@@ -150,17 +143,118 @@ Widget form_field(BuildContext context, String text,
   );
 }
 
-Widget phone_number_field(BuildContext context, {function}) {
+Widget forgot_password_button(BuildContext context) {
+  return TextButton(
+    onPressed: () {
+      Navigator.pushNamed(context, app_routes.forgot_password_screen);
+    },
+    child: Text(
+      "Forgot Password",
+      style: TextStyle(
+          fontSize: 24,
+          color: font_red_color,
+          fontFamily: 'Montserrat',
+          fontWeight: FontWeight.w700),
+    ),
+  );
+}
+
+Widget screen_heading(String text) {
+  return Text(
+    text,
+    style: TextStyle(
+        fontSize: 24,
+        fontFamily: 'Montserrat',
+        color: font_red_color,
+        fontWeight: FontWeight.w700),
+  );
+}
+
+Widget screen_center_text(String text) {
+  return Text(
+    text,
+    style: TextStyle(
+        fontSize: 18,
+        fontFamily: 'Montserrat',
+        color: font_red_color,
+        fontWeight: FontWeight.w500),
+  );
+}
+
+Widget new_user_button(BuildContext context) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      const Text(
+        "New to Foodora??",
+        style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 24),
+      ),
+      TextButton(
+        onPressed: () {
+          Navigator.pushNamed(context, app_routes.signup_screen);
+        },
+        child: Text(
+          "SIGN UP",
+          style: TextStyle(
+              fontSize: 24,
+              color: font_red_color,
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.w700),
+        ),
+      )
+    ],
+  );
+}
+
+Widget existing_user_button(BuildContext context) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      const Text(
+        "Already Registered?",
+        style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 24),
+      ),
+      TextButton(
+        onPressed: () {
+          Navigator.pushNamed(context, app_routes.signin_screen);
+        },
+        child: Text(
+          "SIGN IN",
+          style: TextStyle(
+              fontSize: 24,
+              color: font_red_color,
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.w700),
+        ),
+      )
+    ],
+  );
+}
+
+Widget phone_number_field(BuildContext context, {function, controller}) {
   final size = MediaQuery.of(context).size;
   return SizedBox(
     height: 50,
     width: size.width > 330 ? 330 : size.width - 10,
     child: TextField(
+      controller: controller,
+      scrollPadding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       textAlign: TextAlign.center,
-      keyboardType: TextInputType.phone,
-      maxLength: 10,
+      keyboardType: TextInputType.emailAddress,
       onChanged: (String input_number) {
-        function(input_number);
+        if (function == null)
+          function() {}
+        else
+          function(input_number);
       },
       decoration: InputDecoration(
         counterText: "",
@@ -168,9 +262,10 @@ Widget phone_number_field(BuildContext context, {function}) {
             OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
         enabledBorder:
             OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-        hintText: 'Enter Mobile Number',
+        hintText: 'Enter Email Address',
+        hintMaxLines: 1,
         hintStyle: const TextStyle(
-          color: Colors.white,
+          color: Colors.black,
           fontSize: 20,
         ),
       ),
@@ -181,9 +276,10 @@ Widget phone_number_field(BuildContext context, {function}) {
 Widget otp_field(BuildContext context, {function}) {
   final size = MediaQuery.of(context).size;
   return OTPTextField(
-    length: 5,
+    keyboardType: TextInputType.text,
+    length: 6,
     width: size.width > 330 ? 330 : size.width - 10,
-    fieldWidth: size.width > 330 ? 330 / 6 : (size.width - 10) / 6,
+    fieldWidth: size.width > 330 ? 330 / 7 : (size.width - 10) / 7,
     style: TextStyle(fontSize: 20),
     textFieldAlignment: MainAxisAlignment.spaceAround,
     fieldStyle: FieldStyle.box,
@@ -193,7 +289,51 @@ Widget otp_field(BuildContext context, {function}) {
   );
 }
 
-error_line(String text) {
+Widget email_otp_verify(BuildContext context, bool? full_otp,
+    {otp_controller_function,
+    error_line = " ",
+    int sent = 0,
+    resend_function}) {
+  final size = MediaQuery.of(context).size;
+  return Column(
+    children: [
+      otp_field(context, function: otp_controller_function),
+      SizedBox(
+        width: size.width > 330 ? 330 : size.width - 10,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            sent == 0
+                ? TextButton(
+                    onPressed: resend_function, child: resend(resend_function))
+                : const Text(
+                    "Resent the OTP",
+                    style: TextStyle(color: logo_brown_color),
+                  ),
+            Text(
+              error_line,
+              style: TextStyle(fontSize: 16, color: Colors.red),
+            )
+          ],
+        ),
+      ),
+      SizedBox(height: 10),
+    ],
+  );
+}
+
+Widget resend(Function function) {
+  return TextButton(
+    onPressed: function(),
+    child: const Text(
+      "Resend",
+      style: TextStyle(
+          fontSize: 15, fontWeight: FontWeight.w400, color: logo_brown_color),
+    ),
+  );
+}
+
+Widget error_line(String text) {
   if (true) {
     return Align(
       alignment: Alignment.centerLeft,
@@ -221,7 +361,7 @@ Column send_otp(BuildContext context,
 }
 
 Column otp_input(BuildContext context, bool? full_otp,
-    {otp_controller_function}) {
+    {otp_controller_function, submit_button_function}) {
   final size = MediaQuery.of(context).size;
   return Column(
     children: [
@@ -234,7 +374,7 @@ Column otp_input(BuildContext context, bool? full_otp,
             style: TextStyle(
               fontSize: 17,
               fontFamily: 'Montserrat',
-              color: font_brown_color,
+              color: logo_brown_color,
             ),
           ),
         ),
@@ -262,7 +402,7 @@ Column otp_input(BuildContext context, bool? full_otp,
           ],
         ),
       ),
-      button_style("Submit", context),
+      button_style("Submit", context, function: submit_button_function),
       SizedBox(height: 10),
     ],
   );
