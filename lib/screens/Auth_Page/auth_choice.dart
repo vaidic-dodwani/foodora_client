@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:foodora/designing.dart';
@@ -15,7 +17,7 @@ class auth_choice extends StatelessWidget {
         decoration: background_design(),
         child: Column(
           children: [
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             skip_button(context),
             SizedBox(height: size.height * 0.1),
             Padding(

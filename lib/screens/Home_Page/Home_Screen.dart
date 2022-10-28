@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
 
 class home_screen extends StatefulWidget {
@@ -10,7 +12,7 @@ class home_screen extends StatefulWidget {
 class _home_screenState extends State<home_screen> {
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text(
         "Home_Screen",
       ),
