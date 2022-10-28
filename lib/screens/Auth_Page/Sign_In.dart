@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/config/api_integration.dart';
-import 'package:http/http.dart';
 import '../../designing.dart';
 import 'package:foodora/app_routes.dart';
 
@@ -25,9 +24,9 @@ class _signin_screenState extends State<signin_screen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
-          height: size.height,
           width: size.width,
           decoration: background_design(),
           child: Column(
@@ -87,7 +86,7 @@ class _signin_screenState extends State<signin_screen> {
                           ? error_line(_error_reason!)
                           : Text(" "),
                     )
-                  : SizedBox(
+                  : const SizedBox(
                       child: CircularProgressIndicator(color: logo_brown_color),
                       height: 21,
                       width: 21,
