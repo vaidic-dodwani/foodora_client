@@ -123,3 +123,4 @@ Widget lat_long_display(Placemark placemark) {
         fontSize: 16, fontFamily: 'Montserrat', fontWeight: FontWeight.w700),
   );
 }
+
