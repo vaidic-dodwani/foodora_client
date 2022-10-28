@@ -111,6 +111,12 @@ class _signin_screenState extends State<signin_screen> {
                     if (response['success']) {
                       Navigator.pushNamed(context, app_routes.location_screen);
                     }
+                    if (response['msg'] == "User Not Verified") {
+                      send_api_otp(emailController.text);
+                      Navigator.pushReplacementNamed(
+                          context, app_routes.otp_verify_screen,
+                          arguments: emailController.text);
+                    }
                   }
 
                   setState(() {});

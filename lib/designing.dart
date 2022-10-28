@@ -195,7 +195,7 @@ Widget new_user_button(BuildContext context) {
       ),
       TextButton(
         onPressed: () {
-          Navigator.pushNamed(context, app_routes.signup_screen);
+          Navigator.pushReplacementNamed(context, app_routes.signup_screen);
         },
         child: Text(
           "SIGN UP",
@@ -224,7 +224,7 @@ Widget existing_user_button(BuildContext context) {
       ),
       TextButton(
         onPressed: () {
-          Navigator.pushNamed(context, app_routes.signin_screen);
+          Navigator.pushReplacementNamed(context, app_routes.signin_screen);
         },
         child: Text(
           "SIGN IN",
@@ -305,7 +305,8 @@ Widget email_otp_verify(BuildContext context, bool? full_otp,
           children: [
             sent == 0
                 ? TextButton(
-                    onPressed: resend_function, child: resend(resend_function))
+                    onPressed: resend_function,
+                    child: resend(function: resend_function))
                 : const Text(
                     "Resent the OTP",
                     style: TextStyle(color: logo_brown_color),
@@ -322,9 +323,9 @@ Widget email_otp_verify(BuildContext context, bool? full_otp,
   );
 }
 
-Widget resend(Function function) {
+Widget resend({function}) {
   return TextButton(
-    onPressed: function(),
+    onPressed: function,
     child: const Text(
       "Resend",
       style: TextStyle(
