@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/app_routes.dart';
 import 'package:foodora/designing.dart';
-
 import '../../config/api_integration.dart';
 
 class forgot_password_screen extends StatefulWidget {

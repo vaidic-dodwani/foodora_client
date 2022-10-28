@@ -49,7 +49,7 @@ class _otp_verify_screenState extends State<otp_verify_screen> {
                 context,
                 _full_Otp,
                 resend_function: () {
-                  if (_sent == 0) {
+                  if (_sent < 1) {
                     send_api_otp(widget.email);
                   }
 

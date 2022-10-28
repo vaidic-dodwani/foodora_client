@@ -32,6 +32,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+
   flutter_svg: ^1.1.5
   geocoding: ^2.0.5
   http: ^0.13.5
@@ -42,8 +43,13 @@ dependencies:
 
 dev_dependencies:
   flutter_lints: ^2.0.0
+  # flutter_native_splash: ^2.2.12
   flutter_test:
     sdk: flutter
+
+# flutter_native_splash:
+#   color: "#ffffff"
+#   image: "assets/images/splash_logo.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -66,6 +72,7 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+
   fonts:
     - family: Inter
       fonts:
@@ -96,5 +103,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-
-
