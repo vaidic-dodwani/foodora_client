@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types, non_constant_identifier_names, unused_field, prefer_final_fields, prefer_is_empty
+
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -39,9 +41,9 @@ class _signup_screenState extends State<signup_screen> {
           decoration: background_design(),
           child: Column(
             children: [
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               skip_button(context),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               top_welcome_text("Welcome to FOODORA"),
               SizedBox(
                 height: size.height * 0.1,
@@ -58,7 +60,7 @@ class _signup_screenState extends State<signup_screen> {
               ),
               (_emptyName == null || _emptyName == true)
                   ? error_line("Enter Name")
-                  : SizedBox(width: 22),
+                  : const SizedBox(width: 22),
               form_text('Email Address'),
               form_field(context, 'example@email.com',
                   isEmail: true,
@@ -71,7 +73,7 @@ class _signup_screenState extends State<signup_screen> {
                 setState(() {});
               }),
               (_isEmail == null || _isEmail == true)
-                  ? SizedBox(height: 22)
+                  ? const SizedBox(height: 22)
                   : error_line("Enter Valid Email"),
               form_text('Password'),
               form_field(context, 'Password',
@@ -84,15 +86,15 @@ class _signup_screenState extends State<signup_screen> {
                       setState(() {});
                     },
                     icon: _show_password
-                        ? Icon(Icons.visibility_off)
-                        : Icon(Icons.visibility),
+                        ? const Icon(Icons.visibility_off)
+                        : const Icon(Icons.visibility),
                   ), function: (input_password) {
                 _password = input_password;
                 _error_line = "Passwords Do Not Match";
                 _checker = false;
                 setState(() {});
               }),
-              SizedBox(height: 22),
+              const SizedBox(height: 22),
               form_text('Retype Password'),
               form_field(context, 'Please retype the same password',
                   password: !_show_retype_password,
@@ -103,20 +105,20 @@ class _signup_screenState extends State<signup_screen> {
                       setState(() {});
                     },
                     icon: _show_retype_password
-                        ? Icon(Icons.visibility_off)
-                        : Icon(Icons.visibility),
+                        ? const Icon(Icons.visibility_off)
+                        : const Icon(Icons.visibility),
                   ), function: (input_password) {
                 _re_password = input_password;
                 _checker = false;
                 _error_line = "Passwords Do Not Match";
                 setState(() {});
               }),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               (_isLoading == null || _isLoading == false)
                   ? SizedBox(
                       height: 22,
                       child: (_password == _re_password && !_checker)
-                          ? Text(" ")
+                          ? const Text(" ")
                           : error_line(_error_line),
                     )
                   : const SizedBox(
@@ -124,7 +126,7 @@ class _signup_screenState extends State<signup_screen> {
                       width: 22,
                       child: CircularProgressIndicator(color: logo_brown_color),
                     ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               button_style('Sign Up', context, function: () async {
                 if ((_emptyName != null || _emptyName == false) &&
                     (_isEmail != null && _isEmail == true) &&
@@ -140,6 +142,7 @@ class _signup_screenState extends State<signup_screen> {
                   });
 
                   if (response['success']) {
+                    // ignore: use_build_context_synchronously
                     Navigator.pushReplacementNamed(
                         context, app_routes.otp_verify_screen,
                         arguments: emailController.text);
@@ -149,7 +152,7 @@ class _signup_screenState extends State<signup_screen> {
                 }
                 setState(() {});
               }),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               existing_user_button(context)
             ],
           ),

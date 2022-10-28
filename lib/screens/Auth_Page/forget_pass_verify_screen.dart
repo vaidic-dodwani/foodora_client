@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, camel_case_types, non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/designing.dart';
@@ -31,21 +33,21 @@ class _forget_pass_verify_screenState extends State<forget_pass_verify_screen> {
           decoration: background_design(),
           child: Column(
             children: [
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               skip_button(context),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               SvgPicture.asset("assets/images/mail_vector.svg"),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               SizedBox(
                 width: size.width > 330 ? 330 : size.width - 10,
                 child: Column(children: [
                   screen_heading("Enter OTP"),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   _otp_verified
                       ? screen_center_text("Please enter new password")
                       : screen_center_text(
                           "Please Enter OTP Sent At Your Email"),
-                  SizedBox(height: 25),
+                  const SizedBox(height: 25),
                   _otp_verified
                       ? Column(
                           children: [
@@ -60,15 +62,15 @@ class _forget_pass_verify_screenState extends State<forget_pass_verify_screen> {
                                     setState(() {});
                                   },
                                   icon: _show_password
-                                      ? Icon(Icons.visibility_off)
-                                      : Icon(Icons.visibility),
+                                      ? const Icon(Icons.visibility_off)
+                                      : const Icon(Icons.visibility),
                                 ), function: (input_password) {
                               _password = input_password;
                               _error_line = "Passwords Do Not Match";
                               _checker = false;
                               setState(() {});
                             }),
-                            SizedBox(height: 22),
+                            const SizedBox(height: 22),
                             form_text('Retype Password'),
                             form_field(
                                 context, 'Please retype the same password',
@@ -81,8 +83,8 @@ class _forget_pass_verify_screenState extends State<forget_pass_verify_screen> {
                                     setState(() {});
                                   },
                                   icon: _show_retype_password
-                                      ? Icon(Icons.visibility_off)
-                                      : Icon(Icons.visibility),
+                                      ? const Icon(Icons.visibility_off)
+                                      : const Icon(Icons.visibility),
                                 ), function: (input_password) {
                               _re_password = input_password;
                               _checker = false;
@@ -90,7 +92,7 @@ class _forget_pass_verify_screenState extends State<forget_pass_verify_screen> {
                               setState(() {});
                             }),
                             (_password == _re_password && !_checker)
-                                ? Text(" ")
+                                ? const Text(" ")
                                 : error_line(_error_line),
                           ],
                         )
@@ -110,7 +112,7 @@ class _forget_pass_verify_screenState extends State<forget_pass_verify_screen> {
                             setState(() {});
                           },
                         ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   button_style("RESET PASSWORD", context, function: () {
                     if (_full_Otp != null && _full_Otp == true) {
                       setState(() {
