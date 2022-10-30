@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:geocoding/geocoding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -97,9 +95,7 @@ class _location_screenState extends State<location_screen> {
                                 _placemarks = await placemarkFromCoordinates(
                                     _current_location.latitude!,
                                     _current_location.longitude!);
-                              } catch (er) {
-                                log(er.toString());
-                              }
+                              } catch (er) {}
                               IsLoading = false;
                               _location_recieved = true;
                               _placemark = _placemarks[1];

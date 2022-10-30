@@ -77,13 +77,10 @@ flutter:
   fonts:
     - family: Inter
       fonts:
-        - asset: assets/fonts/Inter.ttf
+        - asset: lib/fonts/Inter.ttf
     - family: Montserrat
       fonts:
-        - asset: assets/fonts/Montserrat.ttf
-    - family: Fasthand
-      fonts:
-        - asset: assets/fonts/Fasthand.ttf
+        - asset: lib/fonts/Montserrat.ttf
 
   # example:
   # fonts:

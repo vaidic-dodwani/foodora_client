@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:foodora/app_routes.dart';
 import 'package:foodora/config/api_integration.dart';
 import 'package:flutter/material.dart';

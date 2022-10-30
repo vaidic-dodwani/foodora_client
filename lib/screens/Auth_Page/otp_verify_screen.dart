@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/app_routes.dart';
@@ -93,7 +91,6 @@ class _otp_verify_screenState extends State<otp_verify_screen> {
                   : SizedBox(height: 20),
               SizedBox(height: 20),
               button_style("Sign UP", context, function: () async {
-                log(_sent.toString());
                 if (_full_Otp != null && _full_Otp == true) {
                   setState(() {
                     _isloading = true;

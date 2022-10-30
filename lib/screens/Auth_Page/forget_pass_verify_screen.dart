@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/designing.dart';
-import 'package:foodora/error.dart';
 
 class forget_pass_verify_screen extends StatefulWidget {
   const forget_pass_verify_screen({super.key});

@@ -20,9 +20,9 @@ class _signup_screenState extends State<signup_screen> {
   bool? _isEmail;
   bool? _isLoading;
   bool _checker = false;
-  bool _samePassword = false;
+  PasswordChecker pass = new PasswordChecker(null, null);
   bool? _emptyName;
-  String _error_line = "Passwords Do Not Match";
+  String _error_line = " ";
 
   dynamic _password, _re_password;
   @override
@@ -51,13 +51,13 @@ class _signup_screenState extends State<signup_screen> {
                 'Your Name',
                 controller: nameController,
                 function: (text) {
-                  text.length == 0 ? _emptyName = null : _emptyName = false;
+                  text.length == 0 ? _emptyName = true : _emptyName = false;
                   setState(() {});
                 },
               ),
-              (_emptyName != null || _emptyName == true)
-                  ? error_line(context, "Enter Name")
-                  : SizedBox(height: 3 * height_block),
+              (_emptyName == null || _emptyName == false)
+                  ? SizedBox(height: 3 * height_block)
+                  : error_line(context, "Enter Name"),
               form_text(context, 'Email Address'),
               form_field(context, 'example@email.com',
                   isEmail: true,
@@ -87,7 +87,8 @@ class _signup_screenState extends State<signup_screen> {
                         : Icon(Icons.visibility),
                   ), function: (input_password) {
                 _password = input_password;
-                _error_line = "Passwords Do Not Match";
+                pass = new PasswordChecker(_password, _re_password);
+                _error_line = pass.error;
                 _checker = false;
                 setState(() {});
               }),
@@ -106,15 +107,16 @@ class _signup_screenState extends State<signup_screen> {
                         : Icon(Icons.visibility),
                   ), function: (input_password) {
                 _re_password = input_password;
+                pass = new PasswordChecker(_password, _re_password);
+                _error_line = pass.error;
                 _checker = false;
-                _error_line = "Passwords Do Not Match";
                 setState(() {});
               }),
               SizedBox(height: 10),
               (_isLoading == null || _isLoading == false)
                   ? SizedBox(
                       height: 3 * height_block,
-                      child: (_password == _re_password && !_checker)
+                      child: (pass.ifError && !_checker)
                           ? Text(" ")
                           : error_line(context, _error_line),
                     )
@@ -125,13 +127,19 @@ class _signup_screenState extends State<signup_screen> {
                     ),
               SizedBox(height: 10),
               button_style('SIGN UP', context, function: () async {
-                if ((_emptyName != null || _emptyName == false) &&
+                if (_emptyName == null) {
+                  setState(() {
+                    _emptyName = true;
+                  });
+                }
+                if ((_emptyName != true || _emptyName == false) &&
                     (_isEmail != null && _isEmail == true) &&
-                    _password == _re_password) {
+                    pass.ifError) {
                   _checker = true;
                   setState(() {
                     _isLoading = true;
                   });
+
                   dynamic response = await sign_up(nameController.text,
                       emailController.text, passwordController.text);
                   setState(() {
@@ -155,5 +163,38 @@ class _signup_screenState extends State<signup_screen> {
         ),
       ),
     );
+  }
+}
+
+class PasswordChecker {
+  late String? Password;
+  late String? Re_Password;
+  String error_line = " ";
+  bool valid = true;
+
+  PasswordChecker(String? Password, String? Re_Password) {
+    this.Password = Password;
+    this.Re_Password = Re_Password;
+
+    if (Password == null) {
+      error_line = " ";
+      valid = false;
+    } else if (!isStrong(Password)) {
+      error_line = "Weak Password";
+      valid = false;
+    } else if (Password != Re_Password) {
+      error_line = "Password Do No Match";
+      valid = false;
+    } else {
+      error_line = " ";
+      valid = true;
+    }
+  }
+  String get error {
+    return error_line;
+  }
+
+  bool get ifError {
+    return valid;
   }
 }

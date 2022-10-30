@@ -1,9 +1,6 @@
-import 'dart:io';
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:foodora/app_routes.dart';
-import 'package:foodora/config/api_integration.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 
@@ -452,4 +449,16 @@ bool isEmail(String email) {
     return true;
   else
     return false;
+}
+
+bool isStrong(String? password) {
+  if (password == null) {
+    return false;
+  } else if (RegExp(
+          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+      .hasMatch(password)) {
+    return true;
+  } else {
+    return false;
+  }
 }
