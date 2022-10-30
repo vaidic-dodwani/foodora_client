@@ -23,6 +23,8 @@ class _signin_screenState extends State<signin_screen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final width_block = size.width / 100;
+    final height_block = size.height / 100;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -31,16 +33,18 @@ class _signin_screenState extends State<signin_screen> {
           decoration: background_design(),
           child: Column(
             children: [
-              SizedBox(height: 10),
+              SizedBox(height: 2 * height_block),
               //
               skip_button(context),
               //
-              SizedBox(height: 10),
-              //
-              SvgPicture.asset("assets/images/sign_in_vector.svg"),
-              SizedBox(height: 10),
 
-              form_text('Email'),
+              //
+              SvgPicture.asset(
+                "assets/images/sign_in_vector.svg",
+                height: height_block * 40,
+              ),
+
+              form_text(context, 'Email'),
               //
               form_field(
                 context,
@@ -58,9 +62,9 @@ class _signin_screenState extends State<signin_screen> {
               ),
               _isEmail == true || _isEmail == null
                   ? SizedBox(height: 22)
-                  : error_line("Invalid Email"),
+                  : error_line(context, "Invalid Email"),
 
-              form_text('Password'),
+              form_text(context, 'Password'),
               form_field(
                 context,
                 'Password',
@@ -77,13 +81,12 @@ class _signin_screenState extends State<signin_screen> {
                       : Icon(Icons.visibility),
                 ),
               ),
-              SizedBox(height: 10),
 
               (_isloading == null || _isloading == false)
                   ? SizedBox(
                       height: 21,
                       child: _error_reason != null
-                          ? error_line(_error_reason!)
+                          ? error_line(context, _error_reason!)
                           : Text(" "),
                     )
                   : const SizedBox(
@@ -92,7 +95,7 @@ class _signin_screenState extends State<signin_screen> {
                       width: 21,
                     ),
 
-              SizedBox(height: 10),
+              SizedBox(height: 2 * height_block),
               button_style(
                 "Sign In",
                 context,

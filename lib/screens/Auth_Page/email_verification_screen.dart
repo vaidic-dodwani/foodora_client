@@ -23,6 +23,8 @@ class _email_verification_screenState extends State<email_verification_screen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final width_block = size.width / 100;
+    final height_block = size.height / 100;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -64,7 +66,7 @@ class _email_verification_screenState extends State<email_verification_screen> {
                         padding: const EdgeInsets.only(left: 24.0),
                         child: Column(
                           children: [
-                            error_line(_error_text!),
+                            error_line(context, _error_text!),
                             SizedBox(height: 11)
                           ],
                         ),

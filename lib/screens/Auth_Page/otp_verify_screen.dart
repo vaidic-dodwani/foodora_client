@@ -26,6 +26,8 @@ class _otp_verify_screenState extends State<otp_verify_screen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final width_block = size.width / 100;
+    final height_block = size.height / 100;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(

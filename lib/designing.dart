@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:foodora/app_routes.dart';
 import 'package:foodora/config/api_integration.dart';
@@ -15,45 +18,55 @@ BoxDecoration background_design() {
 }
 
 Widget skip_button(BuildContext context) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+
   return Align(
     alignment: Alignment.centerRight,
     child: TextButton(
       onPressed: () {
         Navigator.pushNamed(context, app_routes.location_screen);
       },
-      child: const Padding(
-        padding: EdgeInsets.only(top: 10),
-        child: Text(
-          "SKIP",
-          style: TextStyle(
-              fontFamily: 'Inner',
-              fontSize: 16,
-              color: font_red_color,
-              fontWeight: FontWeight.w700),
-        ),
+      child: Text(
+        "SKIP",
+        style: TextStyle(
+            fontFamily: 'Inner',
+            fontSize: 2.5 * height_block,
+            color: font_red_color,
+            fontVariations: <FontVariation>[FontVariation('wght', 700)]),
       ),
     ),
   );
 }
 
-Widget sign_button(String text, {fontcolor = Colors.white}) {
+Widget sign_button(String text, {fontcolor = Colors.white, double? fontsize}) {
   return Text(
     text,
     style: TextStyle(
-      fontSize: 24,
+      fontSize: fontsize,
       color: fontcolor,
-      fontWeight: FontWeight.w700,
+      fontVariations: <FontVariation>[FontVariation('wght', 700)],
       fontFamily: 'Inter',
     ),
   );
 }
 
-SizedBox button_style(String text, BuildContext context,
-    {Color color = button_background, function, fontcolor = font_red_color}) {
+SizedBox button_style(
+  String text,
+  BuildContext context, {
+  Color color = button_background,
+  function,
+  fontcolor = font_red_color,
+  double? fontsize,
+}) {
   final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+  fontsize = 3 * height_block;
   return SizedBox(
-    height: 50,
-    width: size.width > 330 ? 330 : size.width - 10,
+    height: 6 * height_block,
+    width: size.width > size.height ? height_block * 60 : width_block * 80,
     child: TextButton(
       onPressed: function,
       style: ButtonStyle(
@@ -65,7 +78,7 @@ SizedBox button_style(String text, BuildContext context,
           ),
         ),
       ),
-      child: sign_button(text, fontcolor: fontcolor),
+      child: sign_button(text, fontsize: fontsize, fontcolor: fontcolor),
     ),
   );
 }
@@ -78,24 +91,27 @@ Widget top_welcome_text(String text) {
       style: const TextStyle(
           color: font_red_color,
           fontSize: 24,
-          fontWeight: FontWeight.w700,
+          fontVariations: <FontVariation>[FontVariation('wght', 700)],
           fontFamily: 'Montserrat'),
     ),
   );
 }
 
-Widget form_text(String text) {
+Widget form_text(BuildContext context, String text) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
   return Padding(
-    padding: const EdgeInsets.only(left: 10),
+    padding: EdgeInsets.only(left: width_block * 2),
     child: Align(
       alignment: Alignment.centerLeft,
       child: Text(
         text,
-        style: const TextStyle(
-          fontFamily: 'Montserrat',
-          fontSize: 20,
-          fontWeight: FontWeight.w500,
-        ),
+        style: TextStyle(
+            color: logo_brown_color,
+            fontFamily: 'Montserrat',
+            fontSize: 3 * height_block,
+            fontVariations: <FontVariation>[FontVariation('wght', 500)]),
       ),
     ),
   );
@@ -104,12 +120,14 @@ Widget form_text(String text) {
 Widget form_field(BuildContext context, String text,
     {bool password = false, icon, bool isEmail = false, controller, function}) {
   final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
   return Padding(
-    padding: const EdgeInsets.only(left: 10.0),
+    padding: EdgeInsets.only(left: 2 * width_block),
     child: Align(
       alignment: Alignment.centerLeft,
       child: SizedBox(
-        width: size.width * 0.9,
+        width: 90 * width_block,
         child: TextFormField(
           scrollPadding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -121,9 +139,9 @@ Widget form_field(BuildContext context, String text,
           keyboardType:
               isEmail ? TextInputType.emailAddress : TextInputType.text,
           autocorrect: !password,
-          style: const TextStyle(
-            fontSize: 16,
-          ),
+          style: TextStyle(
+              fontSize: 2 * height_block,
+              fontVariations: <FontVariation>[FontVariation('wght', 500)]),
           decoration: InputDecoration(
             enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.black),
@@ -144,6 +162,9 @@ Widget form_field(BuildContext context, String text,
 }
 
 Widget forgot_password_button(BuildContext context) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
   return TextButton(
     onPressed: () {
       Navigator.pushNamed(context, app_routes.forgot_password_screen);
@@ -151,10 +172,10 @@ Widget forgot_password_button(BuildContext context) {
     child: Text(
       "Forgot Password",
       style: TextStyle(
-          fontSize: 24,
+          fontSize: 4 * height_block,
           color: font_red_color,
           fontFamily: 'Montserrat',
-          fontWeight: FontWeight.w700),
+          fontVariations: <FontVariation>[FontVariation('wght', 500)]),
     ),
   );
 }
@@ -166,7 +187,7 @@ Widget screen_heading(String text) {
         fontSize: 24,
         fontFamily: 'Montserrat',
         color: font_red_color,
-        fontWeight: FontWeight.w700),
+        fontVariations: <FontVariation>[FontVariation('wght', 700)]),
   );
 }
 
@@ -177,21 +198,24 @@ Widget screen_center_text(String text) {
         fontSize: 18,
         fontFamily: 'Montserrat',
         color: font_red_color,
-        fontWeight: FontWeight.w500),
+        fontVariations: <FontVariation>[FontVariation('wght', 700)]),
   );
 }
 
 Widget new_user_button(BuildContext context) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      const Text(
+      Text(
         "New to Foodora??",
         style: TextStyle(
             color: Colors.black,
             fontFamily: 'Montserrat',
-            fontWeight: FontWeight.w500,
-            fontSize: 24),
+            fontVariations: <FontVariation>[FontVariation('wght', 500)],
+            fontSize: 3 * height_block),
       ),
       TextButton(
         onPressed: () {
@@ -200,10 +224,10 @@ Widget new_user_button(BuildContext context) {
         child: Text(
           "SIGN UP",
           style: TextStyle(
-              fontSize: 24,
+              fontSize: 3 * height_block,
               color: font_red_color,
               fontFamily: 'Montserrat',
-              fontWeight: FontWeight.w700),
+              fontVariations: <FontVariation>[FontVariation('wght', 700)]),
         ),
       )
     ],
@@ -219,7 +243,7 @@ Widget existing_user_button(BuildContext context) {
         style: TextStyle(
             color: Colors.black,
             fontFamily: 'Montserrat',
-            fontWeight: FontWeight.w500,
+            fontVariations: <FontVariation>[FontVariation('wght', 500)],
             fontSize: 24),
       ),
       TextButton(
@@ -232,7 +256,7 @@ Widget existing_user_button(BuildContext context) {
               fontSize: 24,
               color: font_red_color,
               fontFamily: 'Montserrat',
-              fontWeight: FontWeight.w700),
+              fontVariations: <FontVariation>[FontVariation('wght', 700)]),
         ),
       )
     ],
@@ -329,29 +353,38 @@ Widget resend({function}) {
     child: const Text(
       "Resend",
       style: TextStyle(
-          fontSize: 15, fontWeight: FontWeight.w400, color: logo_brown_color),
+          fontSize: 15,
+          fontVariations: <FontVariation>[FontVariation('wght', 400)],
+          color: logo_brown_color),
     ),
   );
 }
 
-Widget error_line(String text) {
-  if (true) {
-    return Align(
-      alignment: Alignment.centerLeft,
+Widget error_line(BuildContext context, String text) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+
+  return SizedBox(
+    height: 3 * height_block,
+    child: Align(
+      alignment: Alignment.topLeft,
       child: Padding(
-        padding: EdgeInsets.only(left: 10.0),
+        padding: EdgeInsets.only(left: 2 * width_block),
         child: Text(
           text,
-          style: TextStyle(fontSize: 16, color: font_red_color),
+          style: TextStyle(fontSize: 2 * height_block, color: font_red_color),
         ),
       ),
-    );
-  } else
-    return SizedBox(height: 22);
+    ),
+  );
 }
 
 Column send_otp(BuildContext context,
     {function, phone_number_controller_function}) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
   return Column(children: [
     SizedBox(height: 30),
     phone_number_field(context, function: phone_number_controller_function),
@@ -364,6 +397,8 @@ Column send_otp(BuildContext context,
 Column otp_input(BuildContext context, bool? full_otp,
     {otp_controller_function, submit_button_function}) {
   final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
   return Column(
     children: [
       SizedBox(
@@ -376,6 +411,7 @@ Column otp_input(BuildContext context, bool? full_otp,
               fontSize: 17,
               fontFamily: 'Montserrat',
               color: logo_brown_color,
+              fontVariations: <FontVariation>[FontVariation('wght', 500)],
             ),
           ),
         ),

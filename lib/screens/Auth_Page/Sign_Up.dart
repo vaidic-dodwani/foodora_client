@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:foodora/config/api_integration.dart';
 import 'package:foodora/designing.dart';
@@ -30,7 +28,8 @@ class _signup_screenState extends State<signup_screen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
+    final width_block = size.width / 100;
+    final height_block = size.height / 100;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -46,7 +45,7 @@ class _signup_screenState extends State<signup_screen> {
               SizedBox(
                 height: size.height * 0.1,
               ),
-              form_text('FULL NAME'),
+              form_text(context, 'FULL NAME'),
               form_field(
                 context,
                 'Your Name',
@@ -56,10 +55,10 @@ class _signup_screenState extends State<signup_screen> {
                   setState(() {});
                 },
               ),
-              (_emptyName == null || _emptyName == true)
-                  ? error_line("Enter Name")
-                  : SizedBox(width: 22),
-              form_text('Email Address'),
+              (_emptyName != null || _emptyName == true)
+                  ? error_line(context, "Enter Name")
+                  : SizedBox(height: 3 * height_block),
+              form_text(context, 'Email Address'),
               form_field(context, 'example@email.com',
                   isEmail: true,
                   controller: emailController, function: (input_text) {
@@ -71,9 +70,9 @@ class _signup_screenState extends State<signup_screen> {
                 setState(() {});
               }),
               (_isEmail == null || _isEmail == true)
-                  ? SizedBox(height: 22)
-                  : error_line("Enter Valid Email"),
-              form_text('Password'),
+                  ? SizedBox(height: 3 * height_block)
+                  : error_line(context, "Enter Valid Email"),
+              form_text(context, 'Password'),
               form_field(context, 'Password',
                   password: !_show_password,
                   controller: passwordController,
@@ -92,8 +91,8 @@ class _signup_screenState extends State<signup_screen> {
                 _checker = false;
                 setState(() {});
               }),
-              SizedBox(height: 22),
-              form_text('Retype Password'),
+              SizedBox(height: 3 * height_block),
+              form_text(context, 'Retype Password'),
               form_field(context, 'Please retype the same password',
                   password: !_show_retype_password,
                   icon: IconButton(
@@ -114,18 +113,18 @@ class _signup_screenState extends State<signup_screen> {
               SizedBox(height: 10),
               (_isLoading == null || _isLoading == false)
                   ? SizedBox(
-                      height: 22,
+                      height: 3 * height_block,
                       child: (_password == _re_password && !_checker)
                           ? Text(" ")
-                          : error_line(_error_line),
+                          : error_line(context, _error_line),
                     )
-                  : const SizedBox(
-                      height: 22,
-                      width: 22,
+                  : SizedBox(
+                      height: 3 * height_block,
+                      width: 3 * height_block,
                       child: CircularProgressIndicator(color: logo_brown_color),
                     ),
               SizedBox(height: 10),
-              button_style('Sign Up', context, function: () async {
+              button_style('SIGN UP', context, function: () async {
                 if ((_emptyName != null || _emptyName == false) &&
                     (_isEmail != null && _isEmail == true) &&
                     _password == _re_password) {
