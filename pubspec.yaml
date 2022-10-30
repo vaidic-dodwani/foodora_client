@@ -77,23 +77,18 @@ flutter:
   fonts:
     - family: Inter
       fonts:
-        - asset: lib/fonts/Inter_Regular.ttf
-        - asset: lib/fonts/Inter_Bold.ttf
-          weight: 700
-        - asset: lib/fonts/Inter_SemiBold.ttf
-          weight: 600
+        - asset: assets/fonts/Inter.ttf
     - family: Montserrat
       fonts:
-        - asset: lib/fonts/Montserrat_Regular.ttf
-        - asset: lib/fonts/Montserrat_Bold.ttf
-          weight: 700
-        - asset: lib/fonts/Montserrat_Medium.ttf
-          weight: 400
+        - asset: assets/fonts/Montserrat.ttf
+    - family: Fasthand
+      fonts:
+        - asset: assets/fonts/Fasthand.ttf
+
   # example:
   # fonts:
   #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  #     c
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

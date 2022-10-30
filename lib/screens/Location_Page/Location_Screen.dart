@@ -25,6 +25,8 @@ class _location_screenState extends State<location_screen> {
     final location = location_package.Location();
 
     final size = MediaQuery.of(context).size;
+    final width_block = size.width / 100;
+    final height_block = size.height / 100;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(

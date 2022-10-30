@@ -23,6 +23,8 @@ class _forget_pass_verify_screenState extends State<forget_pass_verify_screen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final width_block = size.width / 100;
+    final height_block = size.height / 100;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -32,7 +34,9 @@ class _forget_pass_verify_screenState extends State<forget_pass_verify_screen> {
           child: Column(
             children: [
               SizedBox(height: 15),
-              skip_button(context),
+              skip_button(
+                context,
+              ),
               SizedBox(height: 10),
               SvgPicture.asset("assets/images/mail_vector.svg"),
               SizedBox(height: 15),
@@ -49,7 +53,7 @@ class _forget_pass_verify_screenState extends State<forget_pass_verify_screen> {
                   _otp_verified
                       ? Column(
                           children: [
-                            form_text('Password'),
+                            form_text(context, 'Password'),
                             form_field(context, 'Password',
                                 password: !_show_password,
                                 controller: passwordController,
@@ -69,7 +73,7 @@ class _forget_pass_verify_screenState extends State<forget_pass_verify_screen> {
                               setState(() {});
                             }),
                             SizedBox(height: 22),
-                            form_text('Retype Password'),
+                            form_text(context, 'Retype Password'),
                             form_field(
                                 context, 'Please retype the same password',
                                 password: !_show_retype_password,
@@ -91,7 +95,7 @@ class _forget_pass_verify_screenState extends State<forget_pass_verify_screen> {
                             }),
                             (_password == _re_password && !_checker)
                                 ? Text(" ")
-                                : error_line(_error_line),
+                                : error_line(context, _error_line),
                           ],
                         )
                       : email_otp_verify(
