@@ -35,7 +35,7 @@ class _email_verification_screenState extends State<email_verification_screen> {
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: const EdgeInsets.only(left: 10),
-                child: top_welcome_text("CONTACT DETAIL"),
+                child: top_welcome_text(context, "CONTACT DETAIL"),
               ),
             ),
             SizedBox(height: 10),

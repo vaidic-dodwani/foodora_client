@@ -28,15 +28,18 @@ class _forgot_password_screenState extends State<forgot_password_screen> {
           decoration: background_design(),
           width: size.width,
           child: Column(children: [
-            SizedBox(height: 30),
+            SizedBox(height: 2 * height_block),
             skip_button(context),
-            SizedBox(height: 10),
-            SvgPicture.asset("assets/images/forget_password_vector.svg"),
-            SizedBox(height: 10),
+            SizedBox(height: 2 * height_block),
+            SvgPicture.asset(
+              "assets/images/forget_password_vector.svg",
+              height: 40 * height_block,
+            ),
+            SizedBox(height: 2 * height_block),
             screen_heading("Forgot Password"),
-            SizedBox(height: 10),
+            SizedBox(height: 2 * height_block),
             screen_center_text("Please enter your Email to verify"),
-            SizedBox(height: 50),
+            SizedBox(height: 4 * height_block),
             phone_number_field(context, controller: emailController,
                 function: (input_text) {
               if (input_text.toString().length == 0) {
@@ -52,23 +55,23 @@ class _forgot_password_screenState extends State<forgot_password_screen> {
               }
               setState(() {});
             }),
-            SizedBox(height: 11),
+            SizedBox(height: height_block),
             (_isloading == null || _isloading == false)
                 ? (_error_text == null)
-                    ? SizedBox(height: 33)
+                    ? SizedBox(height: 3 * height_block)
                     : Padding(
                         padding: const EdgeInsets.only(left: 24.0),
                         child: Column(
                           children: [
                             error_line(context, _error_text!),
-                            SizedBox(height: 11)
+                            SizedBox(height: height_block)
                           ],
                         ),
                       )
-                : const SizedBox(
+                : SizedBox(
                     child: CircularProgressIndicator(color: logo_brown_color),
-                    height: 33,
-                    width: 33,
+                    height: 3 * height_block,
+                    width: 3 * height_block,
                   ),
             SizedBox(height: 11),
             button_style("SEND OTP", context, function: () async {
@@ -76,13 +79,16 @@ class _forgot_password_screenState extends State<forgot_password_screen> {
                 setState(() {
                   _isloading = true;
                 });
-                final response = await send_api_otp(emailController.text);
+                final response = await forget_otp_send(emailController.text);
+
                 setState(() {
                   _isloading = false;
                 });
+
                 if (response['success']) {
                   Navigator.pushReplacementNamed(
-                      context, app_routes.forget_pass_verify_screen);
+                      context, app_routes.forget_pass_verify_screen,
+                      arguments: emailController.text);
                 } else {
                   setState(() {
                     _error_text = response['msg'];

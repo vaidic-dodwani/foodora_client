@@ -38,12 +38,12 @@ class _signup_screenState extends State<signup_screen> {
           decoration: background_design(),
           child: Column(
             children: [
-              SizedBox(height: 10),
+              SizedBox(height: 2 * height_block),
               skip_button(context),
-              SizedBox(height: 10),
-              top_welcome_text("Welcome to FOODORA"),
+              SizedBox(height: height_block),
+              top_welcome_text(context, "Welcome to FOODORA"),
               SizedBox(
-                height: size.height * 0.1,
+                height: 7.5 * height_block,
               ),
               form_text(context, 'FULL NAME'),
               form_field(
@@ -112,7 +112,7 @@ class _signup_screenState extends State<signup_screen> {
                 _checker = false;
                 setState(() {});
               }),
-              SizedBox(height: 10),
+              SizedBox(height: 3 * height_block),
               (_isLoading == null || _isLoading == false)
                   ? SizedBox(
                       height: 3 * height_block,
@@ -125,7 +125,6 @@ class _signup_screenState extends State<signup_screen> {
                       width: 3 * height_block,
                       child: CircularProgressIndicator(color: logo_brown_color),
                     ),
-              SizedBox(height: 10),
               button_style('SIGN UP', context, function: () async {
                 if (_emptyName == null) {
                   setState(() {
@@ -156,45 +155,12 @@ class _signup_screenState extends State<signup_screen> {
                 }
                 setState(() {});
               }),
-              SizedBox(height: 10),
-              existing_user_button(context)
+              SizedBox(height: 3 * height_block),
+              existing_user_button(context),
             ],
           ),
         ),
       ),
     );
-  }
-}
-
-class PasswordChecker {
-  late String? Password;
-  late String? Re_Password;
-  String error_line = " ";
-  bool valid = true;
-
-  PasswordChecker(String? Password, String? Re_Password) {
-    this.Password = Password;
-    this.Re_Password = Re_Password;
-
-    if (Password == null) {
-      error_line = " ";
-      valid = false;
-    } else if (!isStrong(Password)) {
-      error_line = "Weak Password";
-      valid = false;
-    } else if (Password != Re_Password) {
-      error_line = "Password Do No Match";
-      valid = false;
-    } else {
-      error_line = " ";
-      valid = true;
-    }
-  }
-  String get error {
-    return error_line;
-  }
-
-  bool get ifError {
-    return valid;
   }
 }

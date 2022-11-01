@@ -41,9 +41,9 @@ class _signin_screenState extends State<signin_screen> {
               //
               SvgPicture.asset(
                 "assets/images/sign_in_vector.svg",
-                height: height_block * 40,
+                height: height_block * 37,
               ),
-
+              SizedBox(height: 2 * height_block),
               form_text(context, 'Email'),
               //
               form_field(
@@ -81,18 +81,19 @@ class _signin_screenState extends State<signin_screen> {
                       : Icon(Icons.visibility),
                 ),
               ),
+              SizedBox(height: 1 * height_block),
 
               (_isloading == null || _isloading == false)
                   ? SizedBox(
-                      height: 21,
+                      height: 3 * height_block,
                       child: _error_reason != null
                           ? error_line(context, _error_reason!)
                           : Text(" "),
                     )
-                  : const SizedBox(
+                  : SizedBox(
                       child: CircularProgressIndicator(color: logo_brown_color),
-                      height: 21,
-                      width: 21,
+                      height: 3 * height_block,
+                      width: 3 * height_block,
                     ),
 
               SizedBox(height: 2 * height_block),
@@ -125,10 +126,9 @@ class _signin_screenState extends State<signin_screen> {
                   setState(() {});
                 },
               ),
-              SizedBox(height: 20),
-              SizedBox(height: 10),
+              SizedBox(height: 2 * height_block),
               forgot_password_button(context),
-              SizedBox(height: 10),
+              SizedBox(height: 2 * height_block),
               new_user_button(context),
             ],
           ),

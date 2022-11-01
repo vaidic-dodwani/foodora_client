@@ -37,13 +37,13 @@ class _location_screenState extends State<location_screen> {
               //
               Align(
                   alignment: Alignment.centerLeft,
-                  child: top_welcome_text('Hello USER!!')),
+                  child: top_welcome_text(context, 'Hello USER!!')),
               //
               SizedBox(height: 8),
               //
               Align(
                   alignment: Alignment.centerLeft,
-                  child: top_welcome_text('What\'s your location?')),
+                  child: top_welcome_text(context, 'What\'s your location?')),
               //
               SizedBox(height: 5),
               //

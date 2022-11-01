@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:foodora/app_routes.dart';
+import 'package:http/http.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 
@@ -29,7 +30,7 @@ Widget skip_button(BuildContext context) {
         "SKIP",
         style: TextStyle(
             fontFamily: 'Inner',
-            fontSize: 2.5 * height_block,
+            fontSize: 4 * width_block,
             color: font_red_color,
             fontVariations: <FontVariation>[FontVariation('wght', 700)]),
       ),
@@ -60,9 +61,9 @@ SizedBox button_style(
   final size = MediaQuery.of(context).size;
   final width_block = size.width / 100;
   final height_block = size.height / 100;
-  fontsize = 3 * height_block;
+  fontsize = 7 * width_block;
   return SizedBox(
-    height: 6 * height_block,
+    height: 13 * width_block,
     width: size.width > size.height ? height_block * 60 : width_block * 80,
     child: TextButton(
       onPressed: function,
@@ -80,9 +81,12 @@ SizedBox button_style(
   );
 }
 
-Widget top_welcome_text(String text) {
+Widget top_welcome_text(BuildContext context, String text) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
   return Padding(
-    padding: const EdgeInsets.only(left: 10.0),
+    padding: EdgeInsets.only(left: width_block * 2),
     child: Text(
       text,
       style: const TextStyle(
@@ -107,7 +111,7 @@ Widget form_text(BuildContext context, String text) {
         style: TextStyle(
             color: logo_brown_color,
             fontFamily: 'Montserrat',
-            fontSize: 3 * height_block,
+            fontSize: 7 * width_block,
             fontVariations: <FontVariation>[FontVariation('wght', 500)]),
       ),
     ),
@@ -137,7 +141,7 @@ Widget form_field(BuildContext context, String text,
               isEmail ? TextInputType.emailAddress : TextInputType.text,
           autocorrect: !password,
           style: TextStyle(
-              fontSize: 2 * height_block,
+              fontSize: 5 * width_block,
               fontVariations: <FontVariation>[FontVariation('wght', 500)]),
           decoration: InputDecoration(
             enabledBorder: const UnderlineInputBorder(
@@ -169,7 +173,7 @@ Widget forgot_password_button(BuildContext context) {
     child: Text(
       "Forgot Password",
       style: TextStyle(
-          fontSize: 4 * height_block,
+          fontSize: 7 * width_block,
           color: font_red_color,
           fontFamily: 'Montserrat',
           fontVariations: <FontVariation>[FontVariation('wght', 500)]),
@@ -212,7 +216,7 @@ Widget new_user_button(BuildContext context) {
             color: Colors.black,
             fontFamily: 'Montserrat',
             fontVariations: <FontVariation>[FontVariation('wght', 500)],
-            fontSize: 3 * height_block),
+            fontSize: 6 * width_block),
       ),
       TextButton(
         onPressed: () {
@@ -221,7 +225,7 @@ Widget new_user_button(BuildContext context) {
         child: Text(
           "SIGN UP",
           style: TextStyle(
-              fontSize: 3 * height_block,
+              fontSize: 7 * width_block,
               color: font_red_color,
               fontFamily: 'Montserrat',
               fontVariations: <FontVariation>[FontVariation('wght', 700)]),
@@ -297,7 +301,7 @@ Widget phone_number_field(BuildContext context, {function, controller}) {
 Widget otp_field(BuildContext context, {function}) {
   final size = MediaQuery.of(context).size;
   return OTPTextField(
-    keyboardType: TextInputType.text,
+    keyboardType: TextInputType.number,
     length: 6,
     width: size.width > 330 ? 330 : size.width - 10,
     fieldWidth: size.width > 330 ? 330 / 7 : (size.width - 10) / 7,
@@ -316,6 +320,8 @@ Widget email_otp_verify(BuildContext context, bool? full_otp,
     int sent = 0,
     resend_function}) {
   final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
   return Column(
     children: [
       otp_field(context, function: otp_controller_function),
@@ -328,18 +334,21 @@ Widget email_otp_verify(BuildContext context, bool? full_otp,
                 ? TextButton(
                     onPressed: resend_function,
                     child: resend(function: resend_function))
-                : const Text(
-                    "Resent the OTP",
-                    style: TextStyle(color: logo_brown_color),
+                : TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      "Resent the OTP",
+                      style: TextStyle(color: logo_brown_color),
+                    ),
                   ),
             Text(
               error_line,
-              style: TextStyle(fontSize: 16, color: Colors.red),
+              style: TextStyle(fontSize: 4 * width_block, color: Colors.red),
             )
           ],
         ),
       ),
-      SizedBox(height: 10),
+      SizedBox(height: height_block),
     ],
   );
 }
@@ -363,14 +372,14 @@ Widget error_line(BuildContext context, String text) {
   final height_block = size.height / 100;
 
   return SizedBox(
-    height: 3 * height_block,
+    height: 6 * width_block,
     child: Align(
       alignment: Alignment.topLeft,
       child: Padding(
         padding: EdgeInsets.only(left: 2 * width_block),
         child: Text(
           text,
-          style: TextStyle(fontSize: 2 * height_block, color: font_red_color),
+          style: TextStyle(fontSize: 4 * width_block, color: font_red_color),
         ),
       ),
     ),
@@ -422,9 +431,9 @@ Column otp_input(BuildContext context, bool? full_otp,
           children: [
             TextButton(
               onPressed: () {},
-              child: const Text(
+              child: Text(
                 "Resend",
-                style: TextStyle(fontSize: 15),
+                style: TextStyle(fontSize: 3 * width_block),
               ),
             ),
             (full_otp == null || full_otp)
@@ -460,5 +469,38 @@ bool isStrong(String? password) {
     return true;
   } else {
     return false;
+  }
+}
+
+class PasswordChecker {
+  late String? Password;
+  late String? Re_Password;
+  String error_line = " ";
+  bool valid = true;
+
+  PasswordChecker(String? Password, String? Re_Password) {
+    this.Password = Password;
+    this.Re_Password = Re_Password;
+
+    if (Password == null) {
+      error_line = " ";
+      valid = false;
+    } else if (!isStrong(Password)) {
+      error_line = "Weak Password";
+      valid = false;
+    } else if (Password != Re_Password) {
+      error_line = "Password Do No Match";
+      valid = false;
+    } else {
+      error_line = " ";
+      valid = true;
+    }
+  }
+  String get error {
+    return error_line;
+  }
+
+  bool get ifError {
+    return valid;
   }
 }

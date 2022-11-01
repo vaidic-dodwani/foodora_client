@@ -64,9 +64,12 @@ Route getRoute(RouteSettings settings) {
         builder: (context) => const forgot_password_screen(),
       );
     case app_routes.forget_pass_verify_screen:
+      final args = settings.arguments as String;
       return MaterialPageRoute(
         settings: settings,
-        builder: (context) => const forget_pass_verify_screen(),
+        builder: (context) => forget_pass_verify_screen(
+          email: args,
+        ),
       );
     case app_routes.email_verification_screen:
       return MaterialPageRoute(

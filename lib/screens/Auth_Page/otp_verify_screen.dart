@@ -60,7 +60,7 @@ class _otp_verify_screenState extends State<otp_verify_screen> {
                 sent: _sent,
                 error_line: _error_line,
                 otp_controller_function: (pin) {
-                  _pin = pin.toString();
+                  _pin = pin;
                   if (pin.toString().isEmpty) {
                     _full_Otp = null;
                   } else {
