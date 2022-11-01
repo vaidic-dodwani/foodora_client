@@ -1,5 +1,6 @@
 // ignore_for_file: unused_import, camel_case_types, non_constant_identifier_names, prefer_is_empty, sort_child_properties_last, use_build_context_synchronously
 
+
 import 'package:foodora/app_routes.dart';
 import 'package:foodora/config/api_integration.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,8 @@ class _email_verification_screenState extends State<email_verification_screen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final width_block = size.width / 100;
+    final height_block = size.height / 100;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -64,8 +67,8 @@ class _email_verification_screenState extends State<email_verification_screen> {
                         padding: const EdgeInsets.only(left: 24.0),
                         child: Column(
                           children: [
-                            error_line(_error_text!),
-                            const SizedBox(height: 11)
+                            error_line(context, _error_text!),
+                            SizedBox(height: 11)
                           ],
                         ),
                       )

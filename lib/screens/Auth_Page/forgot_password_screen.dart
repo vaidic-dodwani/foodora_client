@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/app_routes.dart';
 import 'package:foodora/designing.dart';
-
 import '../../config/api_integration.dart';
 
 class forgot_password_screen extends StatefulWidget {
@@ -23,6 +22,8 @@ class _forgot_password_screenState extends State<forgot_password_screen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final width_block = size.width / 100;
+    final height_block = size.height / 100;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -62,8 +63,8 @@ class _forgot_password_screenState extends State<forgot_password_screen> {
                         padding: const EdgeInsets.only(left: 24.0),
                         child: Column(
                           children: [
-                            error_line(_error_text!),
-                            const SizedBox(height: 11)
+                            error_line(context, _error_text!),
+                            SizedBox(height: 11)
                           ],
                         ),
                       )

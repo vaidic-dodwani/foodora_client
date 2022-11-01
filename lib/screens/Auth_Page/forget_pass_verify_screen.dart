@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/designing.dart';
-import 'package:foodora/error.dart';
 
 class forget_pass_verify_screen extends StatefulWidget {
   const forget_pass_verify_screen({super.key});
@@ -25,6 +24,8 @@ class _forget_pass_verify_screenState extends State<forget_pass_verify_screen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final width_block = size.width / 100;
+    final height_block = size.height / 100;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -33,9 +34,11 @@ class _forget_pass_verify_screenState extends State<forget_pass_verify_screen> {
           decoration: background_design(),
           child: Column(
             children: [
-              const SizedBox(height: 15),
-              skip_button(context),
-              const SizedBox(height: 10),
+              SizedBox(height: 15),
+              skip_button(
+                context,
+              ),
+              SizedBox(height: 10),
               SvgPicture.asset("assets/images/mail_vector.svg"),
               const SizedBox(height: 15),
               SizedBox(
@@ -51,7 +54,7 @@ class _forget_pass_verify_screenState extends State<forget_pass_verify_screen> {
                   _otp_verified
                       ? Column(
                           children: [
-                            form_text('Password'),
+                            form_text(context, 'Password'),
                             form_field(context, 'Password',
                                 password: !_show_password,
                                 controller: passwordController,
@@ -70,8 +73,8 @@ class _forget_pass_verify_screenState extends State<forget_pass_verify_screen> {
                               _checker = false;
                               setState(() {});
                             }),
-                            const SizedBox(height: 22),
-                            form_text('Retype Password'),
+                            SizedBox(height: 22),
+                            form_text(context, 'Retype Password'),
                             form_field(
                                 context, 'Please retype the same password',
                                 password: !_show_retype_password,
@@ -92,8 +95,8 @@ class _forget_pass_verify_screenState extends State<forget_pass_verify_screen> {
                               setState(() {});
                             }),
                             (_password == _re_password && !_checker)
-                                ? const Text(" ")
-                                : error_line(_error_line),
+                                ? Text(" ")
+                                : error_line(context, _error_line),
                           ],
                         )
                       : email_otp_verify(
