@@ -72,8 +72,8 @@ class _forget_pass_verify_screenState extends State<forget_pass_verify_screen> {
                                     setState(() {});
                                   },
                                   icon: _show_password
-                                      ? Icon(Icons.visibility_off)
-                                      : Icon(Icons.visibility),
+                                      ? const Icon(Icons.visibility_off)
+                                      : const Icon(Icons.visibility),
                                 ), function: (input_password) {
                               _password = input_password;
                               pass =
@@ -95,8 +95,8 @@ class _forget_pass_verify_screenState extends State<forget_pass_verify_screen> {
                                     setState(() {});
                                   },
                                   icon: _show_retype_password
-                                      ? Icon(Icons.visibility_off)
-                                      : Icon(Icons.visibility),
+                                      ? const Icon(Icons.visibility_off)
+                                      : const Icon(Icons.visibility),
                                 ), function: (input_password) {
                               _re_password = input_password;
                               _checker = false;

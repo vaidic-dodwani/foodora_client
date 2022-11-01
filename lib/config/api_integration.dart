@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, prefer_interpolation_to_compose_strings
+
 import 'dart:convert';
 import 'dart:developer';
 import 'package:foodora/config/api_links.dart';
@@ -16,8 +18,9 @@ dynamic sign_in(String email, String password) async {
         }));
 
     final output = jsonDecode(response.body);
-    if (response != null)
+    if (response != null) {
       log("Response Recieved as " + output['success'].toString());
+    }
     return output;
   } catch (er) {
     log("error caught: " + er.toString());
