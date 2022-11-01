@@ -1,3 +1,6 @@
+// ignore_for_file: camel_case_types, non_constant_identifier_names, unused_field, prefer_final_fields, prefer_is_empty
+
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:foodora/config/api_integration.dart';
 import 'package:foodora/designing.dart';
@@ -38,9 +41,9 @@ class _signup_screenState extends State<signup_screen> {
           decoration: background_design(),
           child: Column(
             children: [
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               skip_button(context),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               top_welcome_text("Welcome to FOODORA"),
               SizedBox(
                 height: size.height * 0.1,
@@ -83,8 +86,8 @@ class _signup_screenState extends State<signup_screen> {
                       setState(() {});
                     },
                     icon: _show_password
-                        ? Icon(Icons.visibility_off)
-                        : Icon(Icons.visibility),
+                        ? const Icon(Icons.visibility_off)
+                        : const Icon(Icons.visibility),
                   ), function: (input_password) {
                 _password = input_password;
                 pass = new PasswordChecker(_password, _re_password);
@@ -103,8 +106,8 @@ class _signup_screenState extends State<signup_screen> {
                       setState(() {});
                     },
                     icon: _show_retype_password
-                        ? Icon(Icons.visibility_off)
-                        : Icon(Icons.visibility),
+                        ? const Icon(Icons.visibility_off)
+                        : const Icon(Icons.visibility),
                   ), function: (input_password) {
                 _re_password = input_password;
                 pass = new PasswordChecker(_password, _re_password);
@@ -112,7 +115,7 @@ class _signup_screenState extends State<signup_screen> {
                 _checker = false;
                 setState(() {});
               }),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               (_isLoading == null || _isLoading == false)
                   ? SizedBox(
                       height: 3 * height_block,
@@ -147,6 +150,7 @@ class _signup_screenState extends State<signup_screen> {
                   });
 
                   if (response['success']) {
+                    // ignore: use_build_context_synchronously
                     Navigator.pushReplacementNamed(
                         context, app_routes.otp_verify_screen,
                         arguments: emailController.text);
@@ -156,7 +160,7 @@ class _signup_screenState extends State<signup_screen> {
                 }
                 setState(() {});
               }),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               existing_user_button(context)
             ],
           ),

@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types, non_constant_identifier_names, unused_field, sort_child_properties_last, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/config/api_integration.dart';
@@ -77,11 +79,10 @@ class _signin_screenState extends State<signin_screen> {
                     setState(() {});
                   },
                   icon: _show_password
-                      ? Icon(Icons.visibility_off)
-                      : Icon(Icons.visibility),
+                      ? const Icon(Icons.visibility_off)
+                      : const Icon(Icons.visibility),
                 ),
               ),
-
               (_isloading == null || _isloading == false)
                   ? SizedBox(
                       height: 21,
@@ -125,10 +126,10 @@ class _signin_screenState extends State<signin_screen> {
                   setState(() {});
                 },
               ),
-              SizedBox(height: 20),
-              SizedBox(height: 10),
+              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               forgot_password_button(context),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               new_user_button(context),
             ],
           ),

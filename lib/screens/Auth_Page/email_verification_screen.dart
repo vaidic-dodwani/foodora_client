@@ -1,3 +1,6 @@
+// ignore_for_file: unused_import, camel_case_types, non_constant_identifier_names, prefer_is_empty, sort_child_properties_last, use_build_context_synchronously
+
+
 import 'package:foodora/app_routes.dart';
 import 'package:foodora/config/api_integration.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +33,7 @@ class _email_verification_screenState extends State<email_verification_screen> {
           decoration: background_design(),
           width: size.width,
           child: Column(children: [
-            SizedBox(height: 100),
+            const SizedBox(height: 100),
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
@@ -38,9 +41,9 @@ class _email_verification_screenState extends State<email_verification_screen> {
                 child: top_welcome_text("CONTACT DETAIL"),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             SvgPicture.asset("assets/images/email_verification.svg"),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             phone_number_field(context, controller: emailController,
                 function: (input_text) {
               if (input_text.toString().length == 0) {
@@ -56,10 +59,10 @@ class _email_verification_screenState extends State<email_verification_screen> {
               }
               setState(() {});
             }),
-            SizedBox(height: 11),
+            const SizedBox(height: 11),
             (_isloading == null || _isloading == false)
                 ? (_error_text == null)
-                    ? SizedBox(height: 33)
+                    ? const SizedBox(height: 33)
                     : Padding(
                         padding: const EdgeInsets.only(left: 24.0),
                         child: Column(
@@ -74,7 +77,7 @@ class _email_verification_screenState extends State<email_verification_screen> {
                     height: 33,
                     width: 33,
                   ),
-            SizedBox(height: 11),
+            const SizedBox(height: 11),
             button_style("SEND OTP", context, function: () async {
               if (_isEmail == true) {
                 setState(() {
@@ -95,7 +98,7 @@ class _email_verification_screenState extends State<email_verification_screen> {
                 }
               }
             }),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             existing_user_button(context),
           ]),
         ),

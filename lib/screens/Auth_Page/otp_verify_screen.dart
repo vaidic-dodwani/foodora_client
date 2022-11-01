@@ -1,3 +1,7 @@
+
+// ignore_for_file: camel_case_types, unused_field, prefer_final_fields, non_constant_identifier_names, prefer_interpolation_to_compose_strings, use_build_context_synchronously
+
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/app_routes.dart';
@@ -34,17 +38,17 @@ class _otp_verify_screenState extends State<otp_verify_screen> {
           decoration: background_design(),
           child: Column(
             children: [
-              SizedBox(height: 100),
+              const SizedBox(height: 100),
               screen_heading("Verify your Email"),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               SvgPicture.asset("assets/images/email_verify_vector.svg"),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: screen_center_text(
                     "Please Enter OTP Sent At " + widget.email),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               email_otp_verify(
                 context,
                 _full_Otp,
@@ -81,15 +85,15 @@ class _otp_verify_screenState extends State<otp_verify_screen> {
                 },
               ),
               _isloading
-                  ? SizedBox(
+                  ? const SizedBox(
                       height: 20,
                       width: 20,
                       child: CircularProgressIndicator(
                         color: font_red_color,
                       ),
                     )
-                  : SizedBox(height: 20),
-              SizedBox(height: 20),
+                  : const SizedBox(height: 20),
+              const SizedBox(height: 20),
               button_style("Sign UP", context, function: () async {
                 if (_full_Otp != null && _full_Otp == true) {
                   setState(() {
@@ -111,7 +115,7 @@ class _otp_verify_screenState extends State<otp_verify_screen> {
                 }
                 ;
               }),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               new_user_button(context)
             ],
           ),

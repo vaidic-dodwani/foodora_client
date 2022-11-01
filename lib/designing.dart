@@ -1,4 +1,8 @@
+
 import 'dart:ui';
+
+// ignore: duplicate_ignore
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names, unused_element, duplicate_ignore
 import 'package:flutter/material.dart';
 import 'package:foodora/app_routes.dart';
 import 'package:otp_text_field/otp_text_field.dart';
@@ -14,6 +18,7 @@ BoxDecoration background_design() {
   );
 }
 
+// ignore: non_constant_identifier_names
 Widget skip_button(BuildContext context) {
   final size = MediaQuery.of(context).size;
   final width_block = size.width / 100;
@@ -166,7 +171,7 @@ Widget forgot_password_button(BuildContext context) {
     onPressed: () {
       Navigator.pushNamed(context, app_routes.forgot_password_screen);
     },
-    child: Text(
+    child: const Text(
       "Forgot Password",
       style: TextStyle(
           fontSize: 4 * height_block,
@@ -180,7 +185,7 @@ Widget forgot_password_button(BuildContext context) {
 Widget screen_heading(String text) {
   return Text(
     text,
-    style: TextStyle(
+    style: const TextStyle(
         fontSize: 24,
         fontFamily: 'Montserrat',
         color: font_red_color,
@@ -191,7 +196,7 @@ Widget screen_heading(String text) {
 Widget screen_center_text(String text) {
   return Text(
     text,
-    style: TextStyle(
+    style: const TextStyle(
         fontSize: 18,
         fontFamily: 'Montserrat',
         color: font_red_color,
@@ -218,7 +223,7 @@ Widget new_user_button(BuildContext context) {
         onPressed: () {
           Navigator.pushReplacementNamed(context, app_routes.signup_screen);
         },
-        child: Text(
+        child: const Text(
           "SIGN UP",
           style: TextStyle(
               fontSize: 3 * height_block,
@@ -247,7 +252,7 @@ Widget existing_user_button(BuildContext context) {
         onPressed: () {
           Navigator.pushReplacementNamed(context, app_routes.signin_screen);
         },
-        child: Text(
+        child: const Text(
           "SIGN IN",
           style: TextStyle(
               fontSize: 24,
@@ -272,10 +277,11 @@ Widget phone_number_field(BuildContext context, {function, controller}) {
       textAlign: TextAlign.center,
       keyboardType: TextInputType.emailAddress,
       onChanged: (String input_number) {
-        if (function == null)
+        if (function == null) {
           function() {}
-        else
+        } else {
           function(input_number);
+        }
       },
       decoration: InputDecoration(
         counterText: "",
@@ -301,7 +307,7 @@ Widget otp_field(BuildContext context, {function}) {
     length: 6,
     width: size.width > 330 ? 330 : size.width - 10,
     fieldWidth: size.width > 330 ? 330 / 7 : (size.width - 10) / 7,
-    style: TextStyle(fontSize: 20),
+    style: const TextStyle(fontSize: 20),
     textFieldAlignment: MainAxisAlignment.spaceAround,
     fieldStyle: FieldStyle.box,
     onChanged: (pin) {
@@ -334,12 +340,12 @@ Widget email_otp_verify(BuildContext context, bool? full_otp,
                   ),
             Text(
               error_line,
-              style: TextStyle(fontSize: 16, color: Colors.red),
+              style: const TextStyle(fontSize: 16, color: Colors.red),
             )
           ],
         ),
       ),
-      SizedBox(height: 10),
+      const SizedBox(height: 10),
     ],
   );
 }
@@ -367,6 +373,7 @@ Widget error_line(BuildContext context, String text) {
     child: Align(
       alignment: Alignment.topLeft,
       child: Padding(
+
         padding: EdgeInsets.only(left: 2 * width_block),
         child: Text(
           text,
@@ -383,9 +390,9 @@ Column send_otp(BuildContext context,
   final width_block = size.width / 100;
   final height_block = size.height / 100;
   return Column(children: [
-    SizedBox(height: 30),
+    const SizedBox(height: 30),
     phone_number_field(context, function: phone_number_controller_function),
-    SizedBox(height: 10),
+    const SizedBox(height: 10),
     button_style('SEND OTP', context, function: function),
     const SizedBox(height: 10),
   ]);
@@ -413,7 +420,7 @@ Column otp_input(BuildContext context, bool? full_otp,
           ),
         ),
       ),
-      SizedBox(height: 10),
+      const SizedBox(height: 10),
       otp_field(context, function: otp_controller_function),
       SizedBox(
         width: size.width > 330 ? 330 : size.width - 10,
@@ -428,7 +435,7 @@ Column otp_input(BuildContext context, bool? full_otp,
               ),
             ),
             (full_otp == null || full_otp)
-                ? SizedBox(width: 50)
+                ? const SizedBox(width: 50)
                 : const Text(
                     "Enter The Entire OTP",
                     style: TextStyle(fontSize: 16, color: Colors.red),
@@ -437,7 +444,7 @@ Column otp_input(BuildContext context, bool? full_otp,
         ),
       ),
       button_style("Submit", context, function: submit_button_function),
-      SizedBox(height: 10),
+      const SizedBox(height: 10),
     ],
   );
 }
@@ -445,10 +452,11 @@ Column otp_input(BuildContext context, bool? full_otp,
 bool isEmail(String email) {
   if (RegExp(
           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-      .hasMatch(email))
+      .hasMatch(email)) {
     return true;
-  else
+  } else {
     return false;
+  }
 }
 
 bool isStrong(String? password) {

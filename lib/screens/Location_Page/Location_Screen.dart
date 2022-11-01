@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types, non_constant_identifier_names, prefer_interpolation_to_compose_strings
+
 import 'package:geocoding/geocoding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -33,19 +35,19 @@ class _location_screenState extends State<location_screen> {
           decoration: background_design(),
           child: Column(
             children: [
-              SizedBox(height: 62),
+              const SizedBox(height: 62),
               //
               Align(
                   alignment: Alignment.centerLeft,
                   child: top_welcome_text('Hello USER!!')),
               //
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               //
               Align(
                   alignment: Alignment.centerLeft,
                   child: top_welcome_text('What\'s your location?')),
               //
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               //
               const Align(
                 alignment: Alignment.centerLeft,
@@ -73,7 +75,7 @@ class _location_screenState extends State<location_screen> {
               button_style(
                 'ENTER MANUALLY',
                 context,
-                color: Color(0x00000000),
+                color: const Color(0x00000000),
               ),
               SizedBox(
                 height: size.height * 0.025,
@@ -124,3 +126,4 @@ Widget lat_long_display(Placemark placemark) {
         fontSize: 16, fontFamily: 'Montserrat', fontWeight: FontWeight.w700),
   );
 }
+
