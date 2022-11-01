@@ -1,7 +1,7 @@
+
 // ignore_for_file: camel_case_types, unused_field, prefer_final_fields, non_constant_identifier_names, prefer_interpolation_to_compose_strings, use_build_context_synchronously
 
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/app_routes.dart';
@@ -28,6 +28,8 @@ class _otp_verify_screenState extends State<otp_verify_screen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final width_block = size.width / 100;
+    final height_block = size.height / 100;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -51,7 +53,7 @@ class _otp_verify_screenState extends State<otp_verify_screen> {
                 context,
                 _full_Otp,
                 resend_function: () {
-                  if (_sent == 0) {
+                  if (_sent < 1) {
                     send_api_otp(widget.email);
                   }
 
@@ -93,7 +95,6 @@ class _otp_verify_screenState extends State<otp_verify_screen> {
                   : const SizedBox(height: 20),
               const SizedBox(height: 20),
               button_style("Sign UP", context, function: () async {
-                log(_sent.toString());
                 if (_full_Otp != null && _full_Otp == true) {
                   setState(() {
                     _isloading = true;

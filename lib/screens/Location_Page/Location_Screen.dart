@@ -25,11 +25,13 @@ class _location_screenState extends State<location_screen> {
     final location = location_package.Location();
 
     final size = MediaQuery.of(context).size;
+    final width_block = size.width / 100;
+    final height_block = size.height / 100;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
           width: size.width,
-          height: size.height,
           decoration: background_design(),
           child: Column(
             children: [
@@ -91,9 +93,11 @@ class _location_screenState extends State<location_screen> {
                                 IsLoading = true;
                               });
                               _current_location = await location.getLocation();
-                              _placemarks = await placemarkFromCoordinates(
-                                  _current_location.latitude!,
-                                  _current_location.longitude!);
+                              try {
+                                _placemarks = await placemarkFromCoordinates(
+                                    _current_location.latitude!,
+                                    _current_location.longitude!);
+                              } catch (er) {}
                               IsLoading = false;
                               _location_recieved = true;
                               _placemark = _placemarks[1];
@@ -117,12 +121,8 @@ class _location_screenState extends State<location_screen> {
 
 Widget lat_long_display(Placemark placemark) {
   return Text(
-    "You Are At:  " +
-        placemark.subLocality.toString() +
-        " , " +
-        placemark.locality.toString(),
-    // ignore: prefer_const_constructors
-    style: TextStyle(
+    "You Are At:  ${placemark.subLocality} , ${placemark.locality}",
+    style: const TextStyle(
         fontSize: 16, fontFamily: 'Montserrat', fontWeight: FontWeight.w700),
   );
 }

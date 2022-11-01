@@ -38,7 +38,6 @@ dynamic sign_up(String name, String email, String password) async {
           "username": name,
           "email": email,
           "password": password,
-          "cpassword": password
         }));
     final output = jsonDecode(response.body);
     return output;

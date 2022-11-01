@@ -32,6 +32,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+
   flutter_svg: ^1.1.5
   geocoding: ^2.0.5
   http: ^0.13.5
@@ -42,8 +43,14 @@ dependencies:
 
 dev_dependencies:
   flutter_lints: ^2.0.0
+  flutter_native_splash: ^2.2.12
   flutter_test:
     sdk: flutter
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: "assets/images/splash_logo.png"
+  android_gravity: center
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -66,26 +73,19 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+
   fonts:
     - family: Inter
       fonts:
-        - asset: lib/fonts/Inter_Regular.ttf
-        - asset: lib/fonts/Inter_Bold.ttf
-          weight: 700
-        - asset: lib/fonts/Inter_SemiBold.ttf
-          weight: 600
+        - asset: lib/fonts/Inter.ttf
     - family: Montserrat
       fonts:
-        - asset: lib/fonts/Montserrat_Regular.ttf
-        - asset: lib/fonts/Montserrat_Bold.ttf
-          weight: 700
-        - asset: lib/fonts/Montserrat_Medium.ttf
-          weight: 400
+        - asset: lib/fonts/Montserrat.ttf
+
   # example:
   # fonts:
   #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  #     c
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
