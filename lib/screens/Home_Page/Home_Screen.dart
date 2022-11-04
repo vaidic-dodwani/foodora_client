@@ -1,20 +1,43 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class home_screen extends StatefulWidget {
-  const home_screen({super.key});
+class homepage_screen extends StatefulWidget {
+  const homepage_screen({super.key});
 
   @override
-  State<home_screen> createState() => _home_screenState();
+  State<homepage_screen> createState() => _homepage_screenState();
 }
 
-class _home_screenState extends State<home_screen> {
+class _homepage_screenState extends State<homepage_screen> {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        "Home_Screen",
+    final size = MediaQuery.of(context).size;
+    final width_block = size.width / 100;
+    final height_block = size.height / 100;
+    return Scaffold(
+      body: Stack(
+        children: [
+          SvgPicture.asset(
+            'assets/images/background.svg',
+            alignment: Alignment.center,
+            height: size.height,
+            width: size.width,
+          ),
+          SingleChildScrollView(
+            child: Container(
+              width: 100 * width_block,
+              height: 100 * height_block,
+              child: Center(
+                child: Text(
+                  "HomePage",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

@@ -1,11 +1,11 @@
-
+import 'dart:developer';
 import 'dart:ui';
 
 // ignore: duplicate_ignore
 // ignore_for_file: constant_identifier_names, non_constant_identifier_names, unused_element, duplicate_ignore
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:foodora/app_routes.dart';
-import 'package:http/http.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 
@@ -24,17 +24,19 @@ Widget skip_button(BuildContext context) {
   final size = MediaQuery.of(context).size;
   final width_block = size.width / 100;
   final height_block = size.height / 100;
+  final storage = new FlutterSecureStorage();
 
   return Align(
     alignment: Alignment.centerRight,
     child: TextButton(
-      onPressed: () {
+      onPressed: () async {
+        await storage.write(key: 'token', value: 'GUEST USER');
         Navigator.pushNamed(context, app_routes.location_screen);
       },
       child: Text(
         "SKIP",
         style: TextStyle(
-            fontFamily: 'Inner',
+            fontFamily: 'Inter',
             fontSize: 4 * width_block,
             color: font_red_color,
             fontVariations: <FontVariation>[FontVariation('wght', 700)]),
@@ -510,5 +512,16 @@ class PasswordChecker {
 
   bool get ifError {
     return valid;
+  }
+}
+
+Future<String?> idgrabber() async {
+  try {
+    final storage = new FlutterSecureStorage();
+    final token = await storage.read(key: 'token');
+
+    return token;
+  } catch (er) {
+    log(er.toString());
   }
 }
