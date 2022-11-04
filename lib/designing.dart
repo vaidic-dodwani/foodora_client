@@ -177,7 +177,7 @@ Widget forgot_password_button(BuildContext context) {
     onPressed: () {
       Navigator.pushNamed(context, app_routes.forgot_password_screen);
     },
-    child: const Text(
+    child: Text(
       "Forgot Password",
       style: TextStyle(
           fontSize: 7 * width_block,
@@ -229,7 +229,7 @@ Widget new_user_button(BuildContext context) {
         onPressed: () {
           Navigator.pushReplacementNamed(context, app_routes.signup_screen);
         },
-        child: const Text(
+        child: Text(
           "SIGN UP",
           style: TextStyle(
               fontSize: 7 * width_block,
@@ -384,7 +384,6 @@ Widget error_line(BuildContext context, String text) {
     child: Align(
       alignment: Alignment.topLeft,
       child: Padding(
-
         padding: EdgeInsets.only(left: 2 * width_block),
         child: Text(
           text,
