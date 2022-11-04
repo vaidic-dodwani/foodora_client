@@ -112,7 +112,7 @@ class _signup_screenState extends State<signup_screen> {
                 _checker = false;
                 setState(() {});
               }),
-              SizedBox(height: 3 * height_block),
+              SizedBox(height: height_block),
               (_isLoading == null || _isLoading == false)
                   ? SizedBox(
                       height: 3 * height_block,
@@ -125,6 +125,7 @@ class _signup_screenState extends State<signup_screen> {
                       width: 3 * height_block,
                       child: CircularProgressIndicator(color: logo_brown_color),
                     ),
+              SizedBox(height: height_block),
               button_style('SIGN UP', context, function: () async {
                 if (_emptyName == null) {
                   setState(() {

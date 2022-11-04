@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/config/api_integration.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import '../../designing.dart';
 import 'package:foodora/app_routes.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class signin_screen extends StatefulWidget {
   const signin_screen({super.key});
@@ -19,6 +21,7 @@ class _signin_screenState extends State<signin_screen> {
   bool _checker = false;
   bool? _isloading;
   bool? _isEmail;
+  final storage = new FlutterSecureStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +99,7 @@ class _signin_screenState extends State<signin_screen> {
                       width: 3 * height_block,
                     ),
 
-              SizedBox(height: 2 * height_block),
+              SizedBox(height: height_block),
               button_style(
                 "Sign In",
                 context,
@@ -109,17 +112,24 @@ class _signin_screenState extends State<signin_screen> {
                         emailController.text, passwordController.text);
                     setState(() {
                       _isloading = false;
+                      _error_reason = response['msg'];
+                      _checker = true;
                     });
-                    _error_reason = response['msg'];
-                    _checker = true;
+
                     if (response['success']) {
-                      Navigator.pushNamed(context, app_routes.location_screen);
-                    }
-                    if (response['msg'] == "User Not Verified") {
-                      send_api_otp(emailController.text);
-                      Navigator.pushReplacementNamed(
-                          context, app_routes.otp_verify_screen,
-                          arguments: emailController.text);
+                      await storage.write(
+                          key: "token",
+                          value:
+                              JwtDecoder.decode(response['accesstoken'])['id']
+                                  .toString());
+                      if (response['msg'] == "User Not Verified") {
+                        send_api_otp(emailController.text);
+                        Navigator.pushReplacementNamed(
+                            context, app_routes.otp_verify_screen,
+                            arguments: emailController.text);
+                      } else
+                        Navigator.pushNamed(
+                            context, app_routes.location_screen);
                     }
                   }
 

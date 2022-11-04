@@ -9,6 +9,7 @@ import 'package:foodora/screens/Auth_Page/otp_verify_screen.dart';
 import 'package:foodora/screens/Home_Page/Home_Screen.dart';
 import 'package:foodora/screens/Location_Page/location_screen.dart';
 import 'package:foodora/screens/Splash_Screen/splash_screen.dart';
+import 'package:foodora/screens/redirector.dart';
 import 'error.dart';
 
 class app_routes {
@@ -16,15 +17,16 @@ class app_routes {
   static const auth_choice = '/auth_choice';
   static const signin_screen = '/signin_screen';
   static const signup_screen = '/signup_screen';
-  static const home_screen = '/home_screen';
+  static const homepage_screen = '/homepage_screen';
   static const location_screen = '/location_screen';
   static const forgot_password_screen = '/forgot_password_screen';
   static const forget_pass_verify_screen = '/forget_pass_verify_screen';
   static const email_verification_screen = '/email_verification_screen';
   static const otp_verify_screen = '/otp_verify_screen';
+  static const redirector = '/redirector';
 }
 
-Route getRoute(RouteSettings settings) {
+Route? getRoute(RouteSettings settings) {
   switch (settings.name) {
     case app_routes.splash_screen:
       return MaterialPageRoute(
@@ -48,15 +50,20 @@ Route getRoute(RouteSettings settings) {
         builder: (context) => const signup_screen(),
       );
 
-    case app_routes.home_screen:
+    case app_routes.homepage_screen:
       return MaterialPageRoute(
         settings: settings,
-        builder: (context) => const home_screen(),
+        builder: (context) => const homepage_screen(),
       );
     case app_routes.location_screen:
       return MaterialPageRoute(
         settings: settings,
         builder: (context) => const location_screen(),
+      );
+    case app_routes.redirector:
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (context) => const redirector(),
       );
     case app_routes.forgot_password_screen:
       return MaterialPageRoute(
@@ -85,9 +92,6 @@ Route getRoute(RouteSettings settings) {
         ),
       );
     default:
-      return MaterialPageRoute(
-        settings: settings,
-        builder: (context) => const error(),
-      );
+      return null;
   }
 }
