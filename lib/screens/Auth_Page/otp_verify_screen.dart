@@ -1,7 +1,3 @@
-
-// ignore_for_file: camel_case_types, unused_field, prefer_final_fields, non_constant_identifier_names, prefer_interpolation_to_compose_strings, use_build_context_synchronously
-
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/app_routes.dart';

@@ -1,8 +1,5 @@
-import 'dart:developer';
 import 'dart:ui';
 
-// ignore: duplicate_ignore
-// ignore_for_file: constant_identifier_names, non_constant_identifier_names, unused_element, duplicate_ignore
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:foodora/app_routes.dart';
@@ -520,7 +517,5 @@ Future<String?> idgrabber() async {
     final token = await storage.read(key: 'token');
 
     return token;
-  } catch (er) {
-    log(er.toString());
-  }
+  } catch (er) {}
 }

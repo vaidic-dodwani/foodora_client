@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/app_routes.dart';
@@ -192,7 +190,6 @@ class _forget_pass_verify_screenState extends State<forget_pass_verify_screen> {
                         setState(() {
                           _error_line = response['msg'];
                           reset_error = true;
-                          log(_error_line);
                         });
                       }
                     }

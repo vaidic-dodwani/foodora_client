@@ -1,6 +1,3 @@
-// ignore_for_file: camel_case_types, non_constant_identifier_names, unused_field, prefer_final_fields, prefer_is_empty
-
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:foodora/config/api_integration.dart';
 import 'package:foodora/designing.dart';
