@@ -1,15 +1,19 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:foodora/app_routes.dart';
+import 'package:marquee_vertical/marquee_vertical.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 
 const background_color = Colors.white;
 const logo_brown_color = Color(0xFF61481C);
 const font_red_color = Color(0xFFDB0007);
+const font_yellow_color = Color(0xFFFFBC0D);
 const button_background = Color(0xFFF7BCBD);
+const home_background_color = Color(0xFF2B1E29);
 BoxDecoration background_design() {
   return const BoxDecoration(
     color: background_color,
@@ -518,4 +522,187 @@ Future<String?> idgrabber() async {
 
     return token;
   } catch (er) {}
+}
+
+Widget AutoScroll(BuildContext context) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+  var texts = [
+    "HUNGRY??",
+    "COOKING GONE WRONG??",
+    "UNEXPECTED GUESTS?",
+    "LATE NIGHTS AT OFFICE?",
+    "MOVIE MARATHON??",
+    "GAME NIGHT??",
+    "GATHERING AT HOME??",
+    "FEELING LAZY?"
+  ];
+  return SizedBox(
+    height: 6 * width_block,
+    child: MarqueeVertical(
+      itemCount: 8,
+      itemBuilder: (index) {
+        return Text(
+          texts[index],
+          textAlign: TextAlign.left,
+          style: TextStyle(
+              color: font_yellow_color,
+              fontFamily: "Montserrat",
+              fontSize: 6 * width_block,
+              fontVariations: <FontVariation>[FontVariation('wght', 700)]),
+        );
+      },
+      lineHeight: 8 * width_block,
+      stopDuration: Duration(seconds: 5),
+    ),
+  );
+}
+
+Widget home_heading(BuildContext context, String text) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+  return Align(
+    alignment: Alignment.centerLeft,
+    child: Text(
+      text,
+      style: TextStyle(
+        fontSize: 4.5 * width_block,
+        fontFamily: 'Montserrat',
+        color: Colors.white,
+        fontVariations: <FontVariation>[FontVariation('wght', 500)],
+      ),
+      maxLines: 1,
+    ),
+  );
+}
+
+Widget home_search_bar(BuildContext context) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+
+  return Align(
+    alignment: Alignment.centerLeft,
+    child: SizedBox(
+      width: 90 * width_block,
+      child: TextField(
+        style: TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          suffixIcon: const Icon(
+            Icons.search_rounded,
+            color: Colors.grey,
+          ),
+          hintText: "Search",
+          hintStyle: TextStyle(color: Colors.grey),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25),
+            borderSide: BorderSide(color: Colors.white, width: 2),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25),
+            borderSide: BorderSide(color: Colors.white, width: 2),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25),
+            borderSide: BorderSide(color: Colors.white, width: 2),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget home_section_heading(BuildContext context, String text) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+  return Align(
+    alignment: Alignment.centerLeft,
+    child: Text(
+      text,
+      style: TextStyle(
+        fontSize: 5 * width_block,
+        fontFamily: 'Montserrat',
+        color: Colors.white,
+        fontVariations: <FontVariation>[FontVariation('wght', 700)],
+      ),
+      maxLines: 1,
+    ),
+  );
+}
+
+Widget category_list(context, category_tap_function(int index),
+    {int active_category = 0}) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+
+  var icons = [
+    Icons.restaurant_menu_sharp,
+    Icons.fastfood_sharp,
+    Icons.cake_sharp,
+    Icons.local_pizza_sharp,
+    Icons.lunch_dining_sharp,
+    Icons.ramen_dining_sharp,
+    Icons.set_meal_sharp,
+    Icons.soup_kitchen_sharp
+  ];
+  var description = [
+    "All",
+    "FastFood",
+    "Cake",
+    "Pizza",
+    "Burger",
+    "Noodles",
+    "Fish",
+    "Soup"
+  ];
+  return SizedBox(
+    height: 12 * height_block,
+    child: ListView.builder(
+      itemCount: 8,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (BuildContext context, int index) {
+        return Padding(
+          padding: const EdgeInsets.all(5),
+          child: GestureDetector(
+            onTap: () {
+              category_tap_function(index);
+            },
+            child: Container(
+              decoration: index == active_category
+                  ? BoxDecoration(
+                      border:
+                          Border.all(width: 1, color: home_background_color),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color(0x55FFFFFF),
+                          blurRadius: 5.0,
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(10))
+                  : BoxDecoration(),
+              width: 20 * width_block,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Icon(
+                    icons[index],
+                    color: Colors.white,
+                  ),
+                  Text(
+                    description[index],
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    ),
+  );
 }
