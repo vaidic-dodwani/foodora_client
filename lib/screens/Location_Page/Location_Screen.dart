@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:foodora/app_routes.dart';
 import 'package:foodora/designing.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:location/location.dart' as location_package;
@@ -32,7 +33,7 @@ class _location_screenState extends State<location_screen> {
         if (snapshot.hasData) {
           _userid = snapshot.data;
           return Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: background_color,
             body: SingleChildScrollView(
               child: Container(
                 width: size.width,
@@ -64,7 +65,7 @@ class _location_screenState extends State<location_screen> {
                           style: TextStyle(
                               fontSize: 15,
                               fontFamily: 'Montserrat',
-                              color: logo_brown_color,
+                              color: Colors.white70,
                               fontVariations: <FontVariation>[
                                 FontVariation("wght", 400)
                               ]),
@@ -79,8 +80,10 @@ class _location_screenState extends State<location_screen> {
                     SizedBox(height: size.height * 0.05),
                     //
 
-                    button_style('ENTER MANUALLY', context,
-                        color: Color(0x00000000), function: () {}),
+                    button_style('Go To Homescreen', context, function: () {
+                      Navigator.pushReplacementNamed(
+                          context, app_routes.homepage_redirector);
+                    }),
                     SizedBox(
                       height: size.height * 0.025,
                     ),
@@ -133,7 +136,9 @@ Widget lat_long_display(location_package.LocationData current_location) {
   return Text(
     "You Are At:  ${current_location.latitude} ${current_location.longitude}",
     style: const TextStyle(
-        fontSize: 16, fontFamily: 'Montserrat', fontWeight: FontWeight.w700),
+        fontSize: 16,
+        fontFamily: 'Montserrat',
+        fontWeight: FontWeight.w700,
+        color: Colors.white70),
   );
 }
-

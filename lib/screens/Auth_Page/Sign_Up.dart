@@ -31,7 +31,7 @@ class _signup_screenState extends State<signup_screen> {
     final width_block = size.width / 100;
     final height_block = size.height / 100;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: background_color,
       body: SingleChildScrollView(
         child: Container(
           width: size.width,
@@ -123,7 +123,7 @@ class _signup_screenState extends State<signup_screen> {
                   : SizedBox(
                       height: 3 * height_block,
                       width: 3 * height_block,
-                      child: CircularProgressIndicator(color: logo_brown_color),
+                      child: CircularProgressIndicator(color: Colors.white),
                     ),
               SizedBox(height: height_block),
               button_style('SIGN UP', context, function: () async {
@@ -157,7 +157,6 @@ class _signup_screenState extends State<signup_screen> {
                 }
                 setState(() {});
               }),
-              SizedBox(height: 3 * height_block),
               existing_user_button(context),
             ],
           ),

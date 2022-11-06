@@ -6,7 +6,7 @@ import 'package:foodora/screens/Auth_Page/email_verification_screen.dart';
 import 'package:foodora/screens/Auth_Page/forgot_password_screen.dart';
 import 'package:foodora/screens/Auth_Page/forget_pass_verify_screen.dart';
 import 'package:foodora/screens/Auth_Page/otp_verify_screen.dart';
-import 'package:foodora/screens/Home_Page/Home_Screen.dart';
+import 'package:foodora/screens/Home_Page/Home_Redirector.dart';
 import 'package:foodora/screens/Location_Page/location_screen.dart';
 import 'package:foodora/screens/redirector.dart';
 
@@ -14,7 +14,7 @@ class app_routes {
   static const auth_choice = '/auth_choice';
   static const signin_screen = '/signin_screen';
   static const signup_screen = '/signup_screen';
-  static const homepage_screen = '/homepage_screen';
+  static const homepage_redirector = '/homepage_redirector';
   static const location_screen = '/location_screen';
   static const forgot_password_screen = '/forgot_password_screen';
   static const forget_pass_verify_screen = '/forget_pass_verify_screen';
@@ -41,10 +41,10 @@ Route? getRoute(RouteSettings settings) {
         builder: (context) => const signup_screen(),
       );
 
-    case app_routes.homepage_screen:
+    case app_routes.homepage_redirector:
       return MaterialPageRoute(
         settings: settings,
-        builder: (context) => const homepage_screen(),
+        builder: (context) => const homepage_redirector(),
       );
     case app_routes.location_screen:
       return MaterialPageRoute(

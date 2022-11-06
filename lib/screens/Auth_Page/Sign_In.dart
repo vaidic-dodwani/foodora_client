@@ -29,7 +29,7 @@ class _signin_screenState extends State<signin_screen> {
     final width_block = size.width / 100;
     final height_block = size.height / 100;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: background_color,
       body: SingleChildScrollView(
         child: Container(
           width: size.width,
@@ -43,7 +43,7 @@ class _signin_screenState extends State<signin_screen> {
 
               //
               SvgPicture.asset(
-                "assets/images/sign_in_vector.svg",
+                "assets/images/logo.svg",
                 height: height_block * 37,
               ),
               SizedBox(height: 2 * height_block),
@@ -80,11 +80,18 @@ class _signin_screenState extends State<signin_screen> {
                     setState(() {});
                   },
                   icon: _show_password
-                      ? const Icon(Icons.visibility_off)
-                      : const Icon(Icons.visibility),
+                      ? const Icon(
+                          Icons.visibility_off,
+                          color: Colors.white54,
+                        )
+                      : const Icon(
+                          Icons.visibility,
+                          color: Colors.white54,
+                        ),
                 ),
               ),
               SizedBox(height: 1 * height_block),
+              forgot_password_button(context),
 
               (_isloading == null || _isloading == false)
                   ? SizedBox(
@@ -100,9 +107,11 @@ class _signin_screenState extends State<signin_screen> {
                     ),
 
               SizedBox(height: height_block),
+
               button_style(
-                "Sign In",
+                "Log In",
                 context,
+                fontcolor: font_red_color,
                 function: () async {
                   if (_isEmail == true) {
                     setState(() {
@@ -136,10 +145,9 @@ class _signin_screenState extends State<signin_screen> {
                   setState(() {});
                 },
               ),
-              SizedBox(height: 2 * height_block),
-              forgot_password_button(context),
-              SizedBox(height: 2 * height_block),
+
               new_user_button(context),
+              SizedBox(height: 2 * height_block),
             ],
           ),
         ),
