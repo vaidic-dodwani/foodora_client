@@ -147,7 +147,6 @@ class _signup_screenState extends State<signup_screen> {
                   });
 
                   if (response['success']) {
-                    // ignore: use_build_context_synchronously
                     Navigator.pushReplacementNamed(
                         context, app_routes.otp_verify_screen,
                         arguments: emailController.text);
