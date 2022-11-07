@@ -16,7 +16,7 @@ const button_background = Color(0xFFFDF401);
 const home_background_color = Color(0xFF2B1E29);
 const card_background_color = Color(0xFFE4EFCD);
 const rating_background_color = Color(0xFF378F00);
-const nav_bar_color = Color(0xFF32C3B);
+const nav_bar_color = Color(0xFF3E2C3B);
 BoxDecoration background_design() {
   return const BoxDecoration(
     color: background_color,
