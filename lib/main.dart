@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Foodora',
-      initialRoute: app_routes.homepage_redirector,
+      initialRoute: app_routes.redirector,
       onGenerateRoute: getRoute,
     );
   }

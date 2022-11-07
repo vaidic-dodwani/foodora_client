@@ -973,3 +973,30 @@ Widget restraunt_suggested_list(context) {
     ),
   );
 }
+
+Widget Navbar_Item(
+    BuildContext context, IconData icon, String text, on_click()) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+  return TextButton(
+    onPressed: on_click,
+    child: Row(
+      children: [
+        Icon(
+          icon,
+          color: Colors.white,
+        ),
+        Text(
+          text,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 5 * width_block,
+            fontFamily: "Montserrat",
+            fontVariations: <FontVariation>[FontVariation('wght', 500)],
+          ),
+        )
+      ],
+    ),
+  );
+}

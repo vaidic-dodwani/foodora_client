@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:developer';
 import 'package:foodora/config/api_links.dart';
@@ -126,3 +125,19 @@ dynamic forget_new_password(String email, String password) async {
     log("error caught: " + er.toString());
   }
 }
+
+// dynamic user_profile(String id) async {
+//   try {
+//     log("Initialised Profile data fetch for: " + id);
+//     final response = await get(Uri.parse(user_profile_link),
+//         headers: <String, String>{
+//           'Content-Type': 'application/json; charset=UTF-8',
+//         },
+//         body: jsonEncode(<String, String>{"_id": id}));
+//     final output = jsonDecode(response.body);
+//     log("profile results: : " + output.toString());
+//     return output;
+//   } catch (er) {
+//     log("error caught: " + er.toString());
+//   }
+// }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/config/api_integration.dart';
@@ -131,13 +133,14 @@ class _signin_screenState extends State<signin_screen> {
                           value:
                               JwtDecoder.decode(response['accesstoken'])['id']
                                   .toString());
+
                       if (response['msg'] == "User Not Verified") {
                         send_api_otp(emailController.text);
                         Navigator.pushReplacementNamed(
                             context, app_routes.otp_verify_screen,
                             arguments: emailController.text);
                       } else
-                        Navigator.pushNamed(
+                        Navigator.pushReplacementNamed(
                             context, app_routes.location_screen);
                     }
                   }
