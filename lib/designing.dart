@@ -142,7 +142,12 @@ Widget form_text(BuildContext context, String text) {
 }
 
 Widget form_field(BuildContext context, String text,
-    {bool password = false, icon, bool isEmail = false, controller, function}) {
+    {bool password = false,
+    icon,
+    bool isEmail = false,
+    controller,
+    function,
+    maxlen}) {
   final size = MediaQuery.of(context).size;
   final width_block = size.width / 100;
   final height_block = size.height / 100;
@@ -153,6 +158,7 @@ Widget form_field(BuildContext context, String text,
       child: SizedBox(
         width: 90 * width_block,
         child: TextFormField(
+          maxLength: maxlen,
           scrollPadding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           controller: controller,
@@ -178,6 +184,54 @@ Widget form_field(BuildContext context, String text,
                 borderSide: BorderSide(color: Colors.white54),
               ),
               suffixIcon: icon,
+              hintText: text,
+              hintStyle: const TextStyle(
+                color: Colors.white70,
+              )),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget phone_form_field(BuildContext context, String text,
+    {controller, function, maxlen}) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+  return Padding(
+    padding: EdgeInsets.only(left: 2 * width_block),
+    child: Align(
+      alignment: Alignment.centerLeft,
+      child: SizedBox(
+        width: 90 * width_block,
+        child: TextFormField(
+          maxLength: maxlen,
+          scrollPadding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          controller: controller,
+          onChanged: (String input_value) {
+            if (function != null) function(input_value);
+          },
+          keyboardType: TextInputType.number,
+          style: TextStyle(
+              fontSize: 5 * width_block,
+              color: Colors.white,
+              fontVariations: <FontVariation>[FontVariation('wght', 500)]),
+          decoration: InputDecoration(
+              enabledBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white54),
+              ),
+              focusedBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white54),
+              ),
+              border: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white54),
+              ),
+              suffixIcon: Icon(
+                Icons.edit_sharp,
+                color: Colors.white,
+              ),
               hintText: text,
               hintStyle: const TextStyle(
                 color: Colors.white70,
@@ -554,6 +608,14 @@ Future<String?> idgrabber() async {
   } catch (er) {}
 }
 
+Future<String?> tokengrabber() async {
+  try {
+    final storage = new FlutterSecureStorage();
+    final atoken = await storage.read(key: 'access_token');
+    return atoken;
+  } catch (er) {}
+}
+
 Future<dynamic?> userinfograbber() async {
   try {
     final user_info_storage = await SharedPreferences.getInstance();
@@ -789,86 +851,92 @@ Widget food_suggested_list(context) {
     4,
     6,
   ];
-  return SizedBox(
-    height: size.height > 510 ? 30 * height_block : 510 * 0.3,
-    child: ListView.builder(
-      itemCount: 9,
-      scrollDirection: Axis.horizontal,
-      itemBuilder: (BuildContext context, int index) {
-        return Container(
-          margin: EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: card_background_color,
-          ),
-          width: 40 * width_block,
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(
-                    images_path[index],
-                    height: size.height > 500 ? 15 * height_block : 500 * 0.15,
-                    fit: BoxFit.fill,
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    description[index],
-                    style: const TextStyle(
-                      fontFamily: "Montserrat",
-                      fontVariations: <FontVariation>[
-                        FontVariation('wght', 500)
-                      ],
-                    ),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 1.5, horizontal: 5),
-                      decoration: BoxDecoration(
-                          color: rating_background_color,
-                          border: Border.all(color: Colors.green),
-                          borderRadius: BorderRadius.circular(50)),
-                      child: Row(children: [
-                        Text(
-                          ratings[index].toString(),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontFamily: "Montserrat",
-                            fontVariations: <FontVariation>[
-                              FontVariation('wght', 500)
-                            ],
-                          ),
-                        ),
-                        const Icon(
-                          Icons.star_border_sharp,
-                          color: Colors.white,
-                        )
-                      ]),
-                    ),
-                    IconButton(
-                        padding: EdgeInsets.all(2),
-                        constraints: BoxConstraints(),
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.add_circle_outline_sharp,
-                          color: rating_background_color,
-                        ))
-                  ],
-                )
-              ],
+  return GestureDetector(
+    onTap: () {
+      Navigator.pushNamed(context, app_routes.food_description);
+    },
+    child: SizedBox(
+      height: size.height > 510 ? 30 * height_block : 510 * 0.3,
+      child: ListView.builder(
+        itemCount: 9,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            margin: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: card_background_color,
             ),
-          ),
-        );
-      },
+            width: 40 * width_block,
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                      images_path[index],
+                      height:
+                          size.height > 500 ? 15 * height_block : 500 * 0.15,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      description[index],
+                      style: const TextStyle(
+                        fontFamily: "Montserrat",
+                        fontVariations: <FontVariation>[
+                          FontVariation('wght', 500)
+                        ],
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 1.5, horizontal: 5),
+                        decoration: BoxDecoration(
+                            color: rating_background_color,
+                            border: Border.all(color: Colors.green),
+                            borderRadius: BorderRadius.circular(50)),
+                        child: Row(children: [
+                          Text(
+                            ratings[index].toString(),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontFamily: "Montserrat",
+                              fontVariations: <FontVariation>[
+                                FontVariation('wght', 500)
+                              ],
+                            ),
+                          ),
+                          const Icon(
+                            Icons.star_border_sharp,
+                            color: Colors.white,
+                          )
+                        ]),
+                      ),
+                      IconButton(
+                          padding: EdgeInsets.all(2),
+                          constraints: BoxConstraints(),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.add_circle_outline_sharp,
+                            color: rating_background_color,
+                          ))
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     ),
   );
 }

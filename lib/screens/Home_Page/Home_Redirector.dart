@@ -132,8 +132,13 @@ class _homepage_redirectorState extends State<homepage_redirector> {
                                   Navbar_Item(
                                       context,
                                       Icons.person_outline_sharp,
-                                      "Edit Profile", () {
+                                      "Edit Profile", () async {
                                     log("Profileeee");
+                                    if (user_info['username'] == "Guest User") {
+                                    } else {
+                                      Navigator.pushReplacementNamed(
+                                          context, app_routes.profile_page);
+                                    }
                                   }),
                                   const Divider(
                                     thickness: 0.5,
@@ -151,27 +156,9 @@ class _homepage_redirectorState extends State<homepage_redirector> {
                                   ),
                                   Navbar_Item(
                                       context,
-                                      Icons.local_offer_outlined,
-                                      "Discount And Promo", () {
-                                    log("PROMOOOOO");
-                                  }),
-                                  const Divider(
-                                    thickness: 0.5,
-                                    color: Colors.white,
-                                  ),
-                                  Navbar_Item(
-                                      context,
                                       Icons.privacy_tip_outlined,
                                       "Privacy Policy", () {
                                     log("Privacy Policy");
-                                  }),
-                                  const Divider(
-                                    thickness: 0.5,
-                                    color: Colors.white,
-                                  ),
-                                  Navbar_Item(context, Icons.settings_outlined,
-                                      "Settings", () {
-                                    log("Settings");
                                   }),
                                   const Divider(
                                     thickness: 0.5,

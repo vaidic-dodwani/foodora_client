@@ -134,6 +134,8 @@ class _signin_screenState extends State<signin_screen> {
                         _isloading = true;
                       });
                       await storage.write(
+                          key: "access_token", value: response['accesstoken']);
+                      await storage.write(
                           key: "token",
                           value:
                               JwtDecoder.decode(response['accesstoken'])['id']
@@ -155,9 +157,12 @@ class _signin_screenState extends State<signin_screen> {
                         Navigator.pushReplacementNamed(
                             context, app_routes.otp_verify_screen,
                             arguments: emailController.text);
-                      } else
-                        Navigator.pushReplacementNamed(
-                            context, app_routes.location_screen);
+                      } else {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            app_routes.location_screen,
+                            (Route<dynamic> route) => false);
+                      }
                     }
                   }
 
