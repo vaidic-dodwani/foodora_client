@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/config/api_integration.dart';
@@ -141,6 +142,7 @@ class _signin_screenState extends State<signin_screen> {
 
                       final get_profile_response =
                           await get_user_info(await storage.read(key: 'token'));
+                      log(get_profile_response.toString());
 
                       user_info.setString(
                           'user_info', jsonEncode(get_profile_response));

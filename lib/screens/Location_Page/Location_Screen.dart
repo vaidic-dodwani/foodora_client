@@ -123,9 +123,7 @@ class _location_screenState extends State<location_screen> {
             ),
           );
         } else {
-          return Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
+          return loading_screen(context);
         }
       },
     );

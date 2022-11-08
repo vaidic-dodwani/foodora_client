@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -32,12 +31,22 @@ Widget skip_button(BuildContext context) {
   final width_block = size.width / 100;
   final height_block = size.height / 100;
   final storage = new FlutterSecureStorage();
+  final guest_user_info = {
+    "success": true,
+    "msg": "Guess User",
+    "username": "Guest User",
+    "emailid": "Guest User"
+  };
 
   return Align(
     alignment: Alignment.centerRight,
     child: TextButton(
       onPressed: () async {
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        preferences.setString('user_info', jsonEncode(guest_user_info));
+
         await storage.write(key: 'token', value: 'GUEST USER');
+
         Navigator.pushNamed(context, app_routes.location_screen);
       },
       child: Text(
@@ -1014,5 +1023,47 @@ Widget Navbar_Item(
         )
       ],
     ),
+  );
+}
+
+Widget loading_screen(BuildContext context) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+  return Container(
+    height: size.height,
+    child: CircularProgressIndicator(color: font_yellow_color),
+  );
+}
+
+Widget price_display(BuildContext context, int price) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+  return Align(
+    alignment: Alignment.centerLeft,
+    child: Text(
+      "RS. " + price.toString(),
+      style: TextStyle(
+          color: font_green_color,
+          fontSize: 4 * width_block,
+          fontFamily: "Montserrat",
+          fontVariations: <FontVariation>[FontVariation('wght', 700)]),
+    ),
+  );
+}
+
+Widget food_description_display(BuildContext context, String text) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+  return Text(
+    text,
+    textAlign: TextAlign.justify,
+    style: TextStyle(
+        color: Colors.white,
+        fontSize: 4 * width_block,
+        fontFamily: "Montserrat",
+        fontVariations: <FontVariation>[FontVariation('wght', 400)]),
   );
 }
