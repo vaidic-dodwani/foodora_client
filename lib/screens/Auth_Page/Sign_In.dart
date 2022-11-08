@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/config/api_integration.dart';
@@ -7,6 +6,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import '../../designing.dart';
 import 'package:foodora/app_routes.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class signin_screen extends StatefulWidget {
   const signin_screen({super.key});
@@ -24,6 +24,7 @@ class _signin_screenState extends State<signin_screen> {
   bool? _isloading;
   bool? _isEmail;
   final storage = new FlutterSecureStorage();
+  late SharedPreferences user_info;
 
   @override
   Widget build(BuildContext context) {
@@ -128,11 +129,24 @@ class _signin_screenState extends State<signin_screen> {
                     });
 
                     if (response['success']) {
+                      setState(() {
+                        _isloading = true;
+                      });
                       await storage.write(
                           key: "token",
                           value:
                               JwtDecoder.decode(response['accesstoken'])['id']
                                   .toString());
+                      user_info = await SharedPreferences.getInstance();
+
+                      final get_profile_response =
+                          await get_user_info(await storage.read(key: 'token'));
+
+                      user_info.setString(
+                          'user_info', jsonEncode(get_profile_response));
+                      setState(() {
+                        _isloading = false;
+                      });
 
                       if (response['msg'] == "User Not Verified") {
                         send_api_otp(emailController.text);

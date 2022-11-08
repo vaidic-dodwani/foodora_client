@@ -19,7 +19,7 @@ class _location_screenState extends State<location_screen> {
   bool? IsLoading;
   late location_package.LocationData _current_location;
   final storage = new FlutterSecureStorage();
-  late String _userid;
+  late dynamic user_info;
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +28,10 @@ class _location_screenState extends State<location_screen> {
     final width_block = size.width / 100;
     final height_block = size.height / 100;
     return FutureBuilder(
-      future: idgrabber(),
+      future: userinfograbber(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
-          _userid = snapshot.data;
+          user_info = snapshot.data;
           return Scaffold(
             backgroundColor: background_color,
             body: SingleChildScrollView(
@@ -44,8 +44,8 @@ class _location_screenState extends State<location_screen> {
                     //
                     Align(
                         alignment: Alignment.centerLeft,
-                        child:
-                            top_welcome_text(context, 'Hello ${_userid} !!')),
+                        child: top_welcome_text(
+                            context, 'Hello ${user_info['username']} !!')),
                     //
                     SizedBox(height: 1 * height_block),
                     //

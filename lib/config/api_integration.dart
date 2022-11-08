@@ -125,3 +125,22 @@ dynamic forget_new_password(String email, String password) async {
     log("error caught: " + er.toString());
   }
 }
+
+dynamic get_user_info(String? id) async {
+  if (id == null) {
+    return "ID IS NULL BROO";
+  }
+  try {
+    log("Initialised PProfile get for: " + id);
+    final response = await post(Uri.parse(user_profile_link),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{"_id": id}));
+    final output = jsonDecode(response.body);
+    log("response of the profile : " + output.toString());
+    return output;
+  } catch (er) {
+    log("error caught: " + er.toString());
+  }
+}

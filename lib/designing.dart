@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -5,6 +7,7 @@ import 'package:foodora/app_routes.dart';
 import 'package:marquee_vertical/marquee_vertical.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const background_color = Color(0xFF2B1E29);
 const font_color = Color(0xFF2B1E29);
@@ -539,6 +542,19 @@ Future<String?> idgrabber() async {
     final token = await storage.read(key: 'token');
 
     return token;
+  } catch (er) {}
+}
+
+Future<dynamic?> userinfograbber() async {
+  try {
+    final user_info_storage = await SharedPreferences.getInstance();
+    if (user_info_storage.getString("user_info") == null) {
+      return "User Info Doesnt Exist";
+    } else {
+      final user_info = jsonDecode(user_info_storage.getString("user_info")!);
+
+      return user_info;
+    }
   } catch (er) {}
 }
 
