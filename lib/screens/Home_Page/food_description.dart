@@ -2,10 +2,12 @@ import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:foodora/config/api_links.dart';
 import 'package:foodora/designing.dart';
 
 class food_description extends StatefulWidget {
-  const food_description({super.key});
+  final dynamic food_info;
+  const food_description({super.key, required this.food_info});
 
   @override
   State<food_description> createState() => _food_descriptionState();
@@ -21,8 +23,8 @@ class _food_descriptionState extends State<food_description> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          Image.asset(
-            "assets/images/food_items/item1.png",
+          Image.network(
+            backend_link + widget.food_info['imgpath'],
             width: 100 * width_block,
             height: 60 * height_block,
             fit: BoxFit.fill,
@@ -52,7 +54,7 @@ class _food_descriptionState extends State<food_description> {
                             child: Padding(
                               padding: EdgeInsets.only(top: 5 * width_block),
                               child: Text(
-                                "AFGHANI SPAGHETTI",
+                                widget.food_info['foodname'],
                                 style: TextStyle(
                                     fontFamily: "Montserrat",
                                     fontVariations: const <FontVariation>[
@@ -77,8 +79,8 @@ class _food_descriptionState extends State<food_description> {
                     Container(
                       height: 28 * height_block,
                       child: SingleChildScrollView(
-                          child: food_description_display(context,
-                              "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.")),
+                          child: food_description_display(
+                              context, widget.food_info['food_desc'])),
                     ),
                     Expanded(
                       child: Padding(

@@ -1,12 +1,16 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:foodora/app_routes.dart';
+import 'package:foodora/config/api_links.dart';
 import 'package:marquee_vertical/marquee_vertical.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'config/api_integration.dart';
 
 const background_color = Color(0xFF2B1E29);
 const font_color = Color(0xFF2B1E29);
@@ -35,7 +39,8 @@ Widget skip_button(BuildContext context) {
     "success": true,
     "msg": "Guess User",
     "username": "Guest User",
-    "emailid": "Guest User"
+    "emailid": "Guest User",
+    "address": "SI LAB"
   };
 
   return Align(
@@ -616,6 +621,18 @@ Future<String?> tokengrabber() async {
   } catch (er) {}
 }
 
+void put_user_info() async {
+  try {
+    final storage = new FlutterSecureStorage();
+    SharedPreferences user_info = await SharedPreferences.getInstance();
+    Map? get_profile_response =
+        await get_user_info(await storage.read(key: 'token'));
+    user_info.setString('user_info', jsonEncode(get_profile_response));
+  } catch (er) {
+    log(er.toString());
+  }
+}
+
 Future<dynamic?> userinfograbber() async {
   try {
     final user_info_storage = await SharedPreferences.getInstance();
@@ -946,124 +963,71 @@ Widget restraunt_suggested_list(context) {
   final width_block = size.width / 100;
   final height_block = size.height / 100;
 
-  var images_path = [
-    "assets/images/food_items/item1.png",
-    "assets/images/food_items/item2.png",
-    "assets/images/food_items/item3.png",
-    "assets/images/food_items/item4.png",
-    "assets/images/food_items/item5.png",
-    "assets/images/food_items/item6.png",
-    "assets/images/food_items/item7.png",
-    "assets/images/food_items/item8.png",
-    "assets/images/food_items/item9.png",
-  ];
-
-  var description = [
-    "Cafe A",
-    "Cafe B",
-    "Cafe C",
-    "CAfe D",
-    "Cafe E",
-    "Cafe F",
-    "Cafe G",
-    "Cafe H",
-    "Cafe I"
-  ];
-  var ratings = [
-    3.0,
-    4.2,
-    5,
-    1,
-    4,
-    1.1,
-    2.2,
-    4.5,
-    2.9,
-  ];
-  return SizedBox(
-    height: size.height > 510 ? 24 * height_block : 510 * 0.24,
-    child: ListView.builder(
-      itemCount: 9,
-      scrollDirection: Axis.horizontal,
-      itemBuilder: (BuildContext context, int index) {
-        return SizedBox(
-          width: 50 * width_block,
-          child: Card(
-            color: card_background_color,
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      images_path[index],
-                      width: 45 * height_block,
-                      height: 10 * height_block,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      description[index],
-                      style: const TextStyle(
-                        fontFamily: "Montserrat",
-                        fontVariations: <FontVariation>[
-                          FontVariation('wght', 500)
-                        ],
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: 12 * width_block,
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Icon(
-                                Icons.stars_sharp,
-                                color: font_green_color,
-                              ),
-                              Text(
-                                ratings[index].toString(),
+  return FutureBuilder(
+    future: get_restaurant_feed(),
+    builder: (BuildContext context, AsyncSnapshot snapshot) {
+      if (snapshot.connectionState == ConnectionState.done) {
+        final feed = snapshot.data;
+        final near = feed['near'];
+        return Wrap(
+          children: List.generate(
+            feed['near'].length,
+            (index) {
+              return SizedBox(
+                width: 45 * width_block,
+                height: 20 * height_block,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, app_routes.restraunt_page,
+                        arguments: near[index]);
+                  },
+                  child: Card(
+                    color: card_background_color,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(
+                              backend_link + near[index]['imgpath'][0],
+                              width: 45 * height_block,
+                              height: 10 * height_block,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Center(
+                              child: Text(
+                                near[index]['restaurantname'],
                                 style: const TextStyle(
-                                  color: Colors.black,
                                   fontFamily: "Montserrat",
                                   fontVariations: <FontVariation>[
                                     FontVariation('wght', 500)
                                   ],
                                 ),
-                              )
-                            ]),
-                      ),
-                      Container(
-                        child: Row(
-                          children: [
-                            IconButton(
-                              padding: EdgeInsets.all(2),
-                              constraints: BoxConstraints(),
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.add_circle_outline_sharp,
-                                color: rating_background_color,
                               ),
                             ),
-                          ],
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
         );
-      },
-    ),
+      } else {
+        return Container(
+            height: size.height > 510 ? 24 * height_block : 510 * 0.24,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ));
+      }
+    },
   );
 }
 

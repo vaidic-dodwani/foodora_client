@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/app_routes.dart';
 import 'package:foodora/config/api_integration.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../../designing.dart';
 
@@ -16,6 +18,7 @@ class otp_verify_screen extends StatefulWidget {
 class _otp_verify_screenState extends State<otp_verify_screen> {
   int _sent = 0;
   bool _isloading = false;
+  final storage = new FlutterSecureStorage();
   late String _pin;
   bool _checker = false;
   bool? _full_Otp;
@@ -101,8 +104,18 @@ class _otp_verify_screenState extends State<otp_verify_screen> {
                     _otp_verified = true;
                   });
                   if (response['success']) {
+                    await storage.write(
+                        key: 'access_token', value: response['accesstoken']);
+
+                    await storage.write(
+                        key: "token",
+                        value: JwtDecoder.decode(response['accesstoken'])['id']
+                            .toString());
+
+                    put_user_info();
+
                     Navigator.pushReplacementNamed(
-                        context, app_routes.location_screen);
+                        context, app_routes.redirector);
                   } else {
                     setState(() {
                       _error_line = response['msg'];

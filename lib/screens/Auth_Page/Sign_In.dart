@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/config/api_integration.dart';
@@ -133,6 +132,7 @@ class _signin_screenState extends State<signin_screen> {
                       setState(() {
                         _isloading = true;
                       });
+
                       await storage.write(
                           key: "access_token", value: response['accesstoken']);
                       await storage.write(
@@ -142,12 +142,7 @@ class _signin_screenState extends State<signin_screen> {
                                   .toString());
                       user_info = await SharedPreferences.getInstance();
 
-                      final get_profile_response =
-                          await get_user_info(await storage.read(key: 'token'));
-                      log(get_profile_response.toString());
-
-                      user_info.setString(
-                          'user_info', jsonEncode(get_profile_response));
+                      put_user_info();
                       setState(() {
                         _isloading = false;
                       });

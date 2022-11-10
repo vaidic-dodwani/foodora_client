@@ -1,5 +1,4 @@
-
-
+final backend_link = "https://foodorabackend-production.up.railway.app/";
 final sign_in_link =
     "https://foodorabackend-production.up.railway.app/user/signin";
 final sign_up_link =
@@ -22,3 +21,8 @@ final forget_new_password_link =
 
 final user_profile_link =
     "https://foodorabackend-production.up.railway.app/user/userprofile";
+
+final location_link =
+    "https://foodorabackend-production.up.railway.app/user/location";
+
+final feed_link = "https://foodorabackend-production.up.railway.app/user/feed";

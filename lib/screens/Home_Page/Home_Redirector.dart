@@ -27,12 +27,11 @@ final storage = new FlutterSecureStorage();
 
 class _homepage_redirectorState extends State<homepage_redirector> {
   @override
-  late dynamic user_info;
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: userinfograbber(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        user_info = snapshot.data;
+        final user_info = snapshot.data;
         final size = MediaQuery.of(context).size;
         final width_block = size.width / 100;
         final height_block = size.height / 100;
@@ -50,9 +49,19 @@ class _homepage_redirectorState extends State<homepage_redirector> {
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text("INDRAPURAM"),
-                      Text("ABC STREET"),
+                    children: [
+                      Container(
+                        width: 40 * width_block,
+                        child: Text(
+                          user_info['address'].toString(),
+                          style: TextStyle(
+                              fontFamily: "Montserrat",
+                              fontSize: 3 * width_block,
+                              fontVariations: <FontVariation>[
+                                FontVariation('wght', 700)
+                              ]),
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -175,7 +184,7 @@ class _homepage_redirectorState extends State<homepage_redirector> {
                                   ),
                                   Navbar_Item(context, Icons.arrow_back_sharp,
                                       "Signout", () async {
-                                    await storage.delete(key: 'token');
+                                    await storage.deleteAll();
                                     SharedPreferences preferences =
                                         await SharedPreferences.getInstance();
                                     await preferences.clear();

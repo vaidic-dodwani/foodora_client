@@ -9,6 +9,7 @@ import 'package:foodora/screens/Auth_Page/otp_verify_screen.dart';
 import 'package:foodora/screens/Home_Page/Home_Redirector.dart';
 import 'package:foodora/screens/Home_Page/food_description.dart';
 import 'package:foodora/screens/Home_Page/profile.dart';
+import 'package:foodora/screens/Home_Page/restrauntpage.dart';
 
 import 'package:foodora/screens/Location_Page/location_screen.dart';
 import 'package:foodora/screens/redirector.dart';
@@ -26,6 +27,7 @@ class app_routes {
   static const redirector = '/redirector';
   static const food_description = '/food_description';
   static const profile_page = '/profile_page';
+  static const restraunt_page = '/restraunt_page';
 }
 
 Route? getRoute(RouteSettings settings) {
@@ -85,9 +87,20 @@ Route? getRoute(RouteSettings settings) {
         builder: (context) => const email_verification_screen(),
       );
     case app_routes.food_description:
+      final args = settings.arguments;
       return MaterialPageRoute(
         settings: settings,
-        builder: (context) => const food_description(),
+        builder: (context) => food_description(
+          food_info: args,
+        ),
+      );
+    case app_routes.restraunt_page:
+      final args = settings.arguments;
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (context) => restraunt_page(
+          restraunt_detail: args,
+        ),
       );
     case app_routes.otp_verify_screen:
       final args = settings.arguments as String;
