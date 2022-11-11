@@ -142,7 +142,7 @@ class _signin_screenState extends State<signin_screen> {
                                   .toString());
                       user_info = await SharedPreferences.getInstance();
 
-                      put_user_info();
+                      await put_user_info();
                       setState(() {
                         _isloading = false;
                       });

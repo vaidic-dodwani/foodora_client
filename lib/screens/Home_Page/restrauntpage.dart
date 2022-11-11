@@ -41,6 +41,7 @@ class _restraunt_pageState extends State<restraunt_page> {
                         child: Image.network(
                           backend_link +
                               widget.restraunt_detail['imgpath'][index],
+                          fit: BoxFit.fill,
                           height: 35 * height_block,
                         ),
                       ),

@@ -621,7 +621,7 @@ Future<String?> tokengrabber() async {
   } catch (er) {}
 }
 
-void put_user_info() async {
+Future<void> put_user_info() async {
   try {
     final storage = new FlutterSecureStorage();
     SharedPreferences user_info = await SharedPreferences.getInstance();
