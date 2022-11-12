@@ -1,10 +1,16 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:foodora/app_routes.dart';
+import 'package:foodora/config/api_links.dart';
 import 'package:marquee_vertical/marquee_vertical.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'config/api_integration.dart';
 
 const background_color = Color(0xFF2B1E29);
 const font_color = Color(0xFF2B1E29);
@@ -29,12 +35,23 @@ Widget skip_button(BuildContext context) {
   final width_block = size.width / 100;
   final height_block = size.height / 100;
   final storage = new FlutterSecureStorage();
+  final guest_user_info = {
+    "success": true,
+    "msg": "Guess User",
+    "username": "Guest User",
+    "emailid": "Guest User",
+    "address": "SI LAB"
+  };
 
   return Align(
     alignment: Alignment.centerRight,
     child: TextButton(
       onPressed: () async {
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        preferences.setString('user_info', jsonEncode(guest_user_info));
+
         await storage.write(key: 'token', value: 'GUEST USER');
+
         Navigator.pushNamed(context, app_routes.location_screen);
       },
       child: Text(
@@ -130,7 +147,12 @@ Widget form_text(BuildContext context, String text) {
 }
 
 Widget form_field(BuildContext context, String text,
-    {bool password = false, icon, bool isEmail = false, controller, function}) {
+    {bool password = false,
+    icon,
+    bool isEmail = false,
+    controller,
+    function,
+    maxlen}) {
   final size = MediaQuery.of(context).size;
   final width_block = size.width / 100;
   final height_block = size.height / 100;
@@ -141,6 +163,7 @@ Widget form_field(BuildContext context, String text,
       child: SizedBox(
         width: 90 * width_block,
         child: TextFormField(
+          maxLength: maxlen,
           scrollPadding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           controller: controller,
@@ -166,6 +189,54 @@ Widget form_field(BuildContext context, String text,
                 borderSide: BorderSide(color: Colors.white54),
               ),
               suffixIcon: icon,
+              hintText: text,
+              hintStyle: const TextStyle(
+                color: Colors.white70,
+              )),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget phone_form_field(BuildContext context, String text,
+    {controller, function, maxlen}) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+  return Padding(
+    padding: EdgeInsets.only(left: 2 * width_block),
+    child: Align(
+      alignment: Alignment.centerLeft,
+      child: SizedBox(
+        width: 90 * width_block,
+        child: TextFormField(
+          maxLength: maxlen,
+          scrollPadding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          controller: controller,
+          onChanged: (String input_value) {
+            if (function != null) function(input_value);
+          },
+          keyboardType: TextInputType.number,
+          style: TextStyle(
+              fontSize: 5 * width_block,
+              color: Colors.white,
+              fontVariations: <FontVariation>[FontVariation('wght', 500)]),
+          decoration: InputDecoration(
+              enabledBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white54),
+              ),
+              focusedBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white54),
+              ),
+              border: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white54),
+              ),
+              suffixIcon: Icon(
+                Icons.edit_sharp,
+                color: Colors.white,
+              ),
               hintText: text,
               hintStyle: const TextStyle(
                 color: Colors.white70,
@@ -542,6 +613,39 @@ Future<String?> idgrabber() async {
   } catch (er) {}
 }
 
+Future<String?> tokengrabber() async {
+  try {
+    final storage = new FlutterSecureStorage();
+    final atoken = await storage.read(key: 'access_token');
+    return atoken;
+  } catch (er) {}
+}
+
+Future<void> put_user_info() async {
+  try {
+    final storage = new FlutterSecureStorage();
+    SharedPreferences user_info = await SharedPreferences.getInstance();
+    Map? get_profile_response =
+        await get_user_info(await storage.read(key: 'token'));
+    user_info.setString('user_info', jsonEncode(get_profile_response));
+  } catch (er) {
+    log(er.toString());
+  }
+}
+
+Future<dynamic> userinfograbber() async {
+  try {
+    final user_info_storage = await SharedPreferences.getInstance();
+    if (user_info_storage.getString("user_info") == null) {
+      return "User Info Doesnt Exist";
+    } else {
+      final user_info = jsonDecode(user_info_storage.getString("user_info")!);
+
+      return user_info;
+    }
+  } catch (er) {}
+}
+
 Widget AutoScroll(BuildContext context) {
   final size = MediaQuery.of(context).size;
   final width_block = size.width / 100;
@@ -596,16 +700,19 @@ Widget home_heading(BuildContext context, String text) {
   );
 }
 
-Widget home_search_bar(BuildContext context) {
+Widget home_search_bar(BuildContext context,
+    TextEditingController search_controller, function(String text)) {
   final size = MediaQuery.of(context).size;
   final width_block = size.width / 100;
   final height_block = size.height / 100;
 
   return Align(
-    alignment: Alignment.centerLeft,
+    alignment: Alignment.topCenter,
     child: SizedBox(
       width: 90 * width_block,
-      child: TextField(
+      child: TextFormField(
+        controller: search_controller,
+        onChanged: function,
         style: TextStyle(color: Colors.white),
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -764,139 +871,23 @@ Widget food_suggested_list(context) {
     4,
     6,
   ];
-  return SizedBox(
-    height: size.height > 510 ? 30 * height_block : 510 * 0.3,
-    child: ListView.builder(
-      itemCount: 9,
-      scrollDirection: Axis.horizontal,
-      itemBuilder: (BuildContext context, int index) {
-        return Container(
-          margin: EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: card_background_color,
-          ),
-          width: 40 * width_block,
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(
-                    images_path[index],
-                    height: size.height > 500 ? 15 * height_block : 500 * 0.15,
-                    fit: BoxFit.fill,
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    description[index],
-                    style: const TextStyle(
-                      fontFamily: "Montserrat",
-                      fontVariations: <FontVariation>[
-                        FontVariation('wght', 500)
-                      ],
-                    ),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 1.5, horizontal: 5),
-                      decoration: BoxDecoration(
-                          color: rating_background_color,
-                          border: Border.all(color: Colors.green),
-                          borderRadius: BorderRadius.circular(50)),
-                      child: Row(children: [
-                        Text(
-                          ratings[index].toString(),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontFamily: "Montserrat",
-                            fontVariations: <FontVariation>[
-                              FontVariation('wght', 500)
-                            ],
-                          ),
-                        ),
-                        const Icon(
-                          Icons.star_border_sharp,
-                          color: Colors.white,
-                        )
-                      ]),
-                    ),
-                    IconButton(
-                        padding: EdgeInsets.all(2),
-                        constraints: BoxConstraints(),
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.add_circle_outline_sharp,
-                          color: rating_background_color,
-                        ))
-                  ],
-                )
-              ],
+  return GestureDetector(
+    onTap: () {
+      Navigator.pushNamed(context, app_routes.food_description);
+    },
+    child: SizedBox(
+      height: size.height > 510 ? 30 * height_block : 510 * 0.3,
+      child: ListView.builder(
+        itemCount: 9,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            margin: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: card_background_color,
             ),
-          ),
-        );
-      },
-    ),
-  );
-}
-
-Widget restraunt_suggested_list(context) {
-  final size = MediaQuery.of(context).size;
-  final width_block = size.width / 100;
-  final height_block = size.height / 100;
-
-  var images_path = [
-    "assets/images/food_items/item1.png",
-    "assets/images/food_items/item2.png",
-    "assets/images/food_items/item3.png",
-    "assets/images/food_items/item4.png",
-    "assets/images/food_items/item5.png",
-    "assets/images/food_items/item6.png",
-    "assets/images/food_items/item7.png",
-    "assets/images/food_items/item8.png",
-    "assets/images/food_items/item9.png",
-  ];
-
-  var description = [
-    "Cafe A",
-    "Cafe B",
-    "Cafe C",
-    "CAfe D",
-    "Cafe E",
-    "Cafe F",
-    "Cafe G",
-    "Cafe H",
-    "Cafe I"
-  ];
-  var ratings = [
-    3.0,
-    4.2,
-    5,
-    1,
-    4,
-    1.1,
-    2.2,
-    4.5,
-    2.9,
-  ];
-  return SizedBox(
-    height: size.height > 510 ? 24 * height_block : 510 * 0.24,
-    child: ListView.builder(
-      itemCount: 9,
-      scrollDirection: Axis.horizontal,
-      itemBuilder: (BuildContext context, int index) {
-        return SizedBox(
-          width: 50 * width_block,
-          child: Card(
-            color: card_background_color,
+            width: 40 * width_block,
             child: Padding(
               padding: const EdgeInsets.all(10),
               child: Column(
@@ -906,8 +897,8 @@ Widget restraunt_suggested_list(context) {
                     borderRadius: BorderRadius.circular(10),
                     child: Image.asset(
                       images_path[index],
-                      width: 45 * height_block,
-                      height: 10 * height_block,
+                      height:
+                          size.height > 500 ? 15 * height_block : 500 * 0.15,
                       fit: BoxFit.fill,
                     ),
                   ),
@@ -927,50 +918,133 @@ Widget restraunt_suggested_list(context) {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        width: 12 * width_block,
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Icon(
-                                Icons.stars_sharp,
-                                color: font_green_color,
-                              ),
-                              Text(
-                                ratings[index].toString(),
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: "Montserrat",
-                                  fontVariations: <FontVariation>[
-                                    FontVariation('wght', 500)
-                                  ],
-                                ),
-                              )
-                            ]),
-                      ),
-                      Container(
-                        child: Row(
-                          children: [
-                            IconButton(
-                              padding: EdgeInsets.all(2),
-                              constraints: BoxConstraints(),
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.add_circle_outline_sharp,
-                                color: rating_background_color,
-                              ),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 1.5, horizontal: 5),
+                        decoration: BoxDecoration(
+                            color: rating_background_color,
+                            border: Border.all(color: Colors.green),
+                            borderRadius: BorderRadius.circular(50)),
+                        child: Row(children: [
+                          Text(
+                            ratings[index].toString(),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontFamily: "Montserrat",
+                              fontVariations: <FontVariation>[
+                                FontVariation('wght', 500)
+                              ],
                             ),
-                          ],
-                        ),
-                      )
+                          ),
+                          const Icon(
+                            Icons.star_border_sharp,
+                            color: Colors.white,
+                          )
+                        ]),
+                      ),
+                      IconButton(
+                          padding: EdgeInsets.all(2),
+                          constraints: BoxConstraints(),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.add_circle_outline_sharp,
+                            color: rating_background_color,
+                          ))
                     ],
                   )
                 ],
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     ),
+  );
+}
+
+Widget restraunt_suggested_list(context) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+
+  return FutureBuilder(
+    future: get_restaurant_feed(),
+    builder: (BuildContext context, AsyncSnapshot snapshot) {
+      if (snapshot.connectionState == ConnectionState.done) {
+        final feed = snapshot.data;
+        final near = feed['near'];
+        if (feed['near'].length == 0) {
+          return Wrap(
+            children: List.generate(
+              feed['near'].length,
+              (index) {
+                return SizedBox(
+                  width: 45 * width_block,
+                  height: 20 * height_block,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, app_routes.restraunt_page,
+                          arguments: near[index]);
+                    },
+                    child: Card(
+                      color: card_background_color,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.network(
+                                backend_link + near[index]['imgpath'][0],
+                                width: 45 * height_block,
+                                height: 10 * height_block,
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Center(
+                                child: Text(
+                                  near[index]['restaurantname'],
+                                  style: const TextStyle(
+                                    fontFamily: "Montserrat",
+                                    fontVariations: <FontVariation>[
+                                      FontVariation('wght', 500)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        } else {
+          return Container(
+            child: Center(
+                child: Text(
+              "Foodora Isnt In Your City Yet Sadly",
+              style: TextStyle(
+                  color: font_yellow_color,
+                  fontFamily: 'Montserrat',
+                  fontVariations: <FontVariation>[FontVariation('wght', 500)],
+                  fontSize: 8 * width_block),
+            )),
+          );
+        }
+      } else {
+        return Container(
+            height: size.height > 510 ? 24 * height_block : 510 * 0.24,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ));
+      }
+    },
   );
 }
 
@@ -999,4 +1073,59 @@ Widget Navbar_Item(
       ],
     ),
   );
+}
+
+Widget loading_screen(BuildContext context) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+  return Container(
+    height: size.height,
+    child: CircularProgressIndicator(color: font_yellow_color),
+  );
+}
+
+Widget price_display(BuildContext context, int price) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+  return Align(
+    alignment: Alignment.centerLeft,
+    child: Text(
+      "RS. " + price.toString(),
+      style: TextStyle(
+          color: font_green_color,
+          fontSize: 4 * width_block,
+          fontFamily: "Montserrat",
+          fontVariations: <FontVariation>[FontVariation('wght', 700)]),
+    ),
+  );
+}
+
+Widget food_description_display(BuildContext context, String text) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+  return Text(
+    text,
+    textAlign: TextAlign.justify,
+    style: TextStyle(
+        color: Colors.white,
+        fontSize: 4 * width_block,
+        fontFamily: "Montserrat",
+        fontVariations: <FontVariation>[FontVariation('wght', 400)]),
+  );
+}
+
+TextStyle bill_item_design(
+  context,
+) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+  return TextStyle(
+      fontFamily: "Montserrat",
+      fontSize: 6 * width_block,
+      color: background_color,
+      fontVariations: <FontVariation>[FontVariation('wght', 400)]);
 }

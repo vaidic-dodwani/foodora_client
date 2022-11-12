@@ -1,11 +1,15 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:ui';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/app_routes.dart';
+import 'package:foodora/config/api_integration.dart';
 import 'package:foodora/designing.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:location/location.dart' as location_package;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class location_screen extends StatefulWidget {
   const location_screen({super.key});
@@ -19,7 +23,8 @@ class _location_screenState extends State<location_screen> {
   bool? IsLoading;
   late location_package.LocationData _current_location;
   final storage = new FlutterSecureStorage();
-  late String _userid;
+  late Map user_info;
+  late SharedPreferences user_info_shared;
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +33,10 @@ class _location_screenState extends State<location_screen> {
     final width_block = size.width / 100;
     final height_block = size.height / 100;
     return FutureBuilder(
-      future: idgrabber(),
+      future: userinfograbber(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
-          _userid = snapshot.data;
+          user_info = snapshot.data;
           return Scaffold(
             backgroundColor: background_color,
             body: SingleChildScrollView(
@@ -44,8 +49,8 @@ class _location_screenState extends State<location_screen> {
                     //
                     Align(
                         alignment: Alignment.centerLeft,
-                        child:
-                            top_welcome_text(context, 'Hello ${_userid} !!')),
+                        child: top_welcome_text(
+                            context, 'Hello ${user_info['username']} !!')),
                     //
                     SizedBox(height: 1 * height_block),
                     //
@@ -80,65 +85,65 @@ class _location_screenState extends State<location_screen> {
                     SizedBox(height: size.height * 0.05),
                     //
 
-                    button_style('Go To Homescreen', context, function: () {
-                      Navigator.pushReplacementNamed(
-                          context, app_routes.homepage_redirector);
-                    }),
                     SizedBox(
                       height: size.height * 0.025,
                     ),
 
-                    _location_recieved
-                        ? lat_long_display(_current_location)
-                        : (IsLoading == null || IsLoading == false)
-                            ? button_style(
-                                'CURRENT LOCATION',
-                                context,
-                                function: () async {
-                                  if (await Permission.location
-                                      .request()
-                                      .isGranted) {
-                                    setState(() {
-                                      IsLoading = true;
-                                    });
-                                    _current_location =
-                                        await location.getLocation();
+                    (IsLoading == null || IsLoading == false)
+                        ? button_style(
+                            'CURRENT LOCATION',
+                            context,
+                            function: () async {
+                              if (await Permission.location
+                                  .request()
+                                  .isGranted) {
+                                setState(() {
+                                  IsLoading = true;
+                                });
+                                _current_location =
+                                    await location.getLocation();
 
-                                    IsLoading = false;
-                                    _location_recieved = true;
+                                user_info_shared =
+                                    await SharedPreferences.getInstance();
 
-                                    setState(() {});
-                                  }
-                                },
-                              )
-                            : SizedBox(
-                                width: 3 * height_block,
-                                height: 3 * height_block,
-                                child: const CircularProgressIndicator(
-                                  color: font_red_color,
-                                ))
+                                user_info = await jsonDecode(
+                                    user_info_shared.getString('user_info')!);
+                                final id_temp =
+                                    await storage.read(key: 'token');
+                                log(id_temp.toString());
+
+                                final address = await location_info(
+                                    _current_location.latitude,
+                                    _current_location.longitude);
+
+                                user_info['address'] = address['address'];
+
+                                user_info_shared.setString(
+                                    'user_info', jsonEncode(user_info));
+                                Navigator.pushReplacementNamed(
+                                    context, app_routes.homepage_redirector);
+
+                                setState(() {
+                                  _location_recieved = true;
+                                });
+                              }
+                            },
+                          )
+                        : SizedBox(
+                            width: 3 * height_block,
+                            height: 3 * height_block,
+                            child: const CircularProgressIndicator(
+                              color: font_red_color,
+                            ))
                   ],
                 ),
               ),
             ),
           );
         } else {
-          return Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
+          return loading_screen(context);
         }
       },
     );
   }
-}
-
-Widget lat_long_display(location_package.LocationData current_location) {
-  return Text(
-    "You Are At:  ${current_location.latitude} ${current_location.longitude}",
-    style: const TextStyle(
-        fontSize: 16,
-        fontFamily: 'Montserrat',
-        fontWeight: FontWeight.w700,
-        color: Colors.white70),
-  );
 }
