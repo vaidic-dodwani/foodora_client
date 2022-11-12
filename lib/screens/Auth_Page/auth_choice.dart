@@ -1,5 +1,3 @@
-// ignore_for_file: camel_case_types
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:foodora/designing.dart';
@@ -15,7 +13,7 @@ class auth_choice extends StatelessWidget {
     final height_block = size.height / 100;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: background_color,
       body: SingleChildScrollView(
         child: Container(
           decoration: background_design(),
@@ -25,11 +23,12 @@ class auth_choice extends StatelessWidget {
               skip_button(context),
               SizedBox(height: 5 * height_block),
               SvgPicture.asset('assets/images/logo.svg',
-                  color: Colors.black, height: height_block * 60),
+                  color: Colors.white, height: height_block * 60),
               SizedBox(height: height_block * 5),
               button_style(
                 "Sign In",
                 context,
+                fontcolor: font_color,
                 function: () {
                   Navigator.pushNamed(context, app_routes.signin_screen);
                 },
@@ -38,6 +37,7 @@ class auth_choice extends StatelessWidget {
               button_style(
                 "Sign Up",
                 context,
+                fontcolor: font_color,
                 function: () {
                   Navigator.pushNamed(
                     context,

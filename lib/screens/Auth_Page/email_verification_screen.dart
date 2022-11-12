@@ -1,5 +1,3 @@
-// ignore_for_file: unused_import, camel_case_types, non_constant_identifier_names, prefer_is_empty, sort_child_properties_last, use_build_context_synchronously
-
 
 import 'package:foodora/app_routes.dart';
 import 'package:foodora/config/api_integration.dart';
@@ -38,7 +36,7 @@ class _email_verification_screenState extends State<email_verification_screen> {
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: const EdgeInsets.only(left: 10),
-                child: top_welcome_text("CONTACT DETAIL"),
+                child: top_welcome_text(context, "CONTACT DETAIL"),
               ),
             ),
             const SizedBox(height: 10),

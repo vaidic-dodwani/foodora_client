@@ -1,10 +1,12 @@
-// ignore_for_file: camel_case_types, non_constant_identifier_names, unused_field, sort_child_properties_last, use_build_context_synchronously
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/config/api_integration.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import '../../designing.dart';
 import 'package:foodora/app_routes.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class signin_screen extends StatefulWidget {
   const signin_screen({super.key});
@@ -21,6 +23,7 @@ class _signin_screenState extends State<signin_screen> {
   bool _checker = false;
   bool? _isloading;
   bool? _isEmail;
+  final storage = new FlutterSecureStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,7 @@ class _signin_screenState extends State<signin_screen> {
     final width_block = size.width / 100;
     final height_block = size.height / 100;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: background_color,
       body: SingleChildScrollView(
         child: Container(
           width: size.width,
@@ -42,10 +45,10 @@ class _signin_screenState extends State<signin_screen> {
 
               //
               SvgPicture.asset(
-                "assets/images/sign_in_vector.svg",
-                height: height_block * 40,
+                "assets/images/logo.svg",
+                height: height_block * 37,
               ),
-
+              SizedBox(height: 2 * height_block),
               form_text(context, 'Email'),
               //
               form_field(
@@ -79,27 +82,38 @@ class _signin_screenState extends State<signin_screen> {
                     setState(() {});
                   },
                   icon: _show_password
-                      ? const Icon(Icons.visibility_off)
-                      : const Icon(Icons.visibility),
+                      ? const Icon(
+                          Icons.visibility_off,
+                          color: Colors.white54,
+                        )
+                      : const Icon(
+                          Icons.visibility,
+                          color: Colors.white54,
+                        ),
                 ),
               ),
+              SizedBox(height: 1 * height_block),
+              forgot_password_button(context),
+
               (_isloading == null || _isloading == false)
                   ? SizedBox(
-                      height: 21,
+                      height: 3 * height_block,
                       child: _error_reason != null
                           ? error_line(context, _error_reason!)
                           : Text(" "),
                     )
-                  : const SizedBox(
+                  : SizedBox(
                       child: CircularProgressIndicator(color: logo_brown_color),
-                      height: 21,
-                      width: 21,
+                      height: 3 * height_block,
+                      width: 3 * height_block,
                     ),
 
-              SizedBox(height: 2 * height_block),
+              SizedBox(height: height_block),
+
               button_style(
-                "Sign In",
+                "Log In",
                 context,
+                fontcolor: font_red_color,
                 function: () async {
                   if (_isEmail == true) {
                     setState(() {
@@ -109,28 +123,34 @@ class _signin_screenState extends State<signin_screen> {
                         emailController.text, passwordController.text);
                     setState(() {
                       _isloading = false;
+                      _error_reason = response['msg'];
+                      _checker = true;
                     });
-                    _error_reason = response['msg'];
-                    _checker = true;
+
                     if (response['success']) {
-                      Navigator.pushNamed(context, app_routes.location_screen);
-                    }
-                    if (response['msg'] == "User Not Verified") {
-                      send_api_otp(emailController.text);
-                      Navigator.pushReplacementNamed(
-                          context, app_routes.otp_verify_screen,
-                          arguments: emailController.text);
+                      await storage.write(
+                          key: "token",
+                          value:
+                              JwtDecoder.decode(response['accesstoken'])['id']
+                                  .toString());
+
+                      if (response['msg'] == "User Not Verified") {
+                        send_api_otp(emailController.text);
+                        Navigator.pushReplacementNamed(
+                            context, app_routes.otp_verify_screen,
+                            arguments: emailController.text);
+                      } else
+                        Navigator.pushReplacementNamed(
+                            context, app_routes.location_screen);
                     }
                   }
 
                   setState(() {});
                 },
               ),
-              const SizedBox(height: 20),
-              const SizedBox(height: 10),
-              forgot_password_button(context),
-              const SizedBox(height: 10),
+
               new_user_button(context),
+              SizedBox(height: 2 * height_block),
             ],
           ),
         ),

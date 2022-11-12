@@ -1,5 +1,3 @@
-// ignore_for_file: non_constant_identifier_names, prefer_interpolation_to_compose_strings
-
 import 'dart:convert';
 import 'dart:developer';
 import 'package:foodora/config/api_links.dart';
@@ -73,6 +71,55 @@ dynamic otp_correct(String email, String OTP) async {
         body: jsonEncode(<String, String>{"email": email, "otp": OTP}));
     final output = jsonDecode(response.body);
     log("otp check results: " + output.toString());
+    return output;
+  } catch (er) {
+    log("error caught: " + er.toString());
+  }
+}
+
+dynamic forget_otp_send(String email) async {
+  try {
+    log("Initialised Forget OTP sent for: " + email);
+    final response = await post(Uri.parse(forget_otp_send_link),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{"email": email}));
+    final output = jsonDecode(response.body);
+    log("otp send results: " + output.toString());
+    return output;
+  } catch (er) {
+    log("error caught: " + er.toString());
+  }
+}
+
+dynamic forget_otp_verify(String email, String OTP) async {
+  try {
+    log("Initialised forget OTP verification begun for: " + email);
+    final response = await post(Uri.parse(forget_otp_verify_link),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{"email": email, "otp": OTP}));
+    final output = jsonDecode(response.body);
+    log("otp check results: " + output.toString());
+    return output;
+  } catch (er) {
+    log("error caught: " + er.toString());
+  }
+}
+
+dynamic forget_new_password(String email, String password) async {
+  try {
+    log("Initialised Password Change Begun For: " + email);
+    final response = await post(Uri.parse(forget_new_password_link),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body:
+            jsonEncode(<String, String>{"email": email, "password": password}));
+    final output = jsonDecode(response.body);
+    log("set new password results: : " + output.toString());
     return output;
   } catch (er) {
     log("error caught: " + er.toString());

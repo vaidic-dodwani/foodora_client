@@ -1,8 +1,8 @@
-// ignore_for_file: camel_case_types, non_constant_identifier_names, prefer_interpolation_to_compose_strings
-
-import 'package:geocoding/geocoding.dart';
+import 'dart:ui';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:foodora/app_routes.dart';
 import 'package:foodora/designing.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:location/location.dart' as location_package;
@@ -18,112 +18,127 @@ class _location_screenState extends State<location_screen> {
   bool _location_recieved = false;
   bool? IsLoading;
   late location_package.LocationData _current_location;
-  late List<Placemark> _placemarks;
-  late Placemark _placemark;
+  final storage = new FlutterSecureStorage();
+  late String _userid;
+
   @override
   Widget build(BuildContext context) {
     final location = location_package.Location();
-
     final size = MediaQuery.of(context).size;
     final width_block = size.width / 100;
     final height_block = size.height / 100;
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Container(
-          width: size.width,
-          decoration: background_design(),
-          child: Column(
-            children: [
-              const SizedBox(height: 62),
-              //
-              Align(
-                  alignment: Alignment.centerLeft,
-                  child: top_welcome_text('Hello USER!!')),
-              //
-              const SizedBox(height: 8),
-              //
-              Align(
-                  alignment: Alignment.centerLeft,
-                  child: top_welcome_text('What\'s your location?')),
-              //
-              const SizedBox(height: 5),
-              //
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Text(
-                    'To suggest better results, we need your location.....',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w400,
-                      color: logo_brown_color,
+    return FutureBuilder(
+      future: idgrabber(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          _userid = snapshot.data;
+          return Scaffold(
+            backgroundColor: background_color,
+            body: SingleChildScrollView(
+              child: Container(
+                width: size.width,
+                decoration: background_design(),
+                child: Column(
+                  children: [
+                    SizedBox(height: 8 * height_block),
+                    //
+                    Align(
+                        alignment: Alignment.centerLeft,
+                        child:
+                            top_welcome_text(context, 'Hello ${_userid} !!')),
+                    //
+                    SizedBox(height: 1 * height_block),
+                    //
+                    Align(
+                        alignment: Alignment.centerLeft,
+                        child: top_welcome_text(
+                            context, 'What\'s your location?')),
+                    //
+                    SizedBox(height: 1 * height_block),
+                    //
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Text(
+                          'To suggest better results, we need your location.....',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontFamily: 'Montserrat',
+                              color: Colors.white70,
+                              fontVariations: <FontVariation>[
+                                FontVariation("wght", 400)
+                              ]),
+                        ),
+                      ),
                     ),
-                  ),
+                    //
+                    SizedBox(height: height_block * 5),
+                    //
+                    SvgPicture.asset('assets/images/map.svg'),
+                    //
+                    SizedBox(height: size.height * 0.05),
+                    //
+
+                    button_style('Go To Homescreen', context, function: () {
+                      Navigator.pushReplacementNamed(
+                          context, app_routes.homepage_redirector);
+                    }),
+                    SizedBox(
+                      height: size.height * 0.025,
+                    ),
+
+                    _location_recieved
+                        ? lat_long_display(_current_location)
+                        : (IsLoading == null || IsLoading == false)
+                            ? button_style(
+                                'CURRENT LOCATION',
+                                context,
+                                function: () async {
+                                  if (await Permission.location
+                                      .request()
+                                      .isGranted) {
+                                    setState(() {
+                                      IsLoading = true;
+                                    });
+                                    _current_location =
+                                        await location.getLocation();
+
+                                    IsLoading = false;
+                                    _location_recieved = true;
+
+                                    setState(() {});
+                                  }
+                                },
+                              )
+                            : SizedBox(
+                                width: 3 * height_block,
+                                height: 3 * height_block,
+                                child: const CircularProgressIndicator(
+                                  color: font_red_color,
+                                ))
+                  ],
                 ),
               ),
-              //
-              SizedBox(height: size.height * 0.1),
-              //
-              SvgPicture.asset('assets/images/map.svg'),
-              //
-              SizedBox(height: size.height * 0.05),
-              //
-
-              button_style(
-                'ENTER MANUALLY',
-                context,
-                color: const Color(0x00000000),
-              ),
-              SizedBox(
-                height: size.height * 0.025,
-              ),
-
-              _location_recieved
-                  ? lat_long_display(_placemark)
-                  : (IsLoading == null || IsLoading == false)
-                      ? button_style(
-                          'CURRENT LOCATION',
-                          context,
-                          function: () async {
-                            if (await Permission.location.request().isGranted) {
-                              setState(() {
-                                IsLoading = true;
-                              });
-                              _current_location = await location.getLocation();
-                              try {
-                                _placemarks = await placemarkFromCoordinates(
-                                    _current_location.latitude!,
-                                    _current_location.longitude!);
-                              } catch (er) {}
-                              IsLoading = false;
-                              _location_recieved = true;
-                              _placemark = _placemarks[1];
-                              setState(() {});
-                            }
-                          },
-                        )
-                      : const SizedBox(
-                          width: 21,
-                          height: 21,
-                          child: CircularProgressIndicator(
-                            color: font_red_color,
-                          ))
-            ],
-          ),
-        ),
-      ),
+            ),
+          );
+        } else {
+          return Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+      },
     );
   }
 }
 
-Widget lat_long_display(Placemark placemark) {
+Widget lat_long_display(location_package.LocationData current_location) {
   return Text(
-    "You Are At:  ${placemark.subLocality} , ${placemark.locality}",
+    "You Are At:  ${current_location.latitude} ${current_location.longitude}",
     style: const TextStyle(
-        fontSize: 16, fontFamily: 'Montserrat', fontWeight: FontWeight.w700),
+        fontSize: 16,
+        fontFamily: 'Montserrat',
+        fontWeight: FontWeight.w700,
+        color: Colors.white70),
   );
 }
-
