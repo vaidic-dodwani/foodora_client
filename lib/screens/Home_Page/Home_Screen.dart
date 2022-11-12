@@ -30,19 +30,18 @@ class _homepage_screenState extends State<homepage_screen> {
               SizedBox(height: 2 * height_block),
               home_heading(context, "Order From Your Favourite Restaurant"),
               SizedBox(height: height_block),
-              home_search_bar(context),
-              SizedBox(height: height_block),
-              category_list(context, (int index) {
-                setState(
-                  () {
-                    _active_category = index;
-                  },
-                );
-              }, active_category: _active_category),
-              home_section_heading(context, "Our Top Picks"),
-              food_suggested_list(context),
-              SizedBox(height: height_block),
-              home_section_heading(context, "Our Popular Restraunts"),
+
+              // category_list(context, (int index) {
+              //   setState(
+              //     () {
+              //       _active_category = index;
+              //     },
+              //   );
+              // }, active_category: _active_category),
+              // home_section_heading(context, "Our Top Picks"),
+              // food_suggested_list(context),
+
+              SizedBox(height: 3 * height_block),
               restraunt_suggested_list(context)
             ],
           ),
