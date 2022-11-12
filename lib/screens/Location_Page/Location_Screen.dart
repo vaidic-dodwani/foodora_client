@@ -113,7 +113,6 @@ class _location_screenState extends State<location_screen> {
                                 log(id_temp.toString());
 
                                 final address = await location_info(
-                                    id_temp.toString(),
                                     _current_location.latitude,
                                     _current_location.longitude);
 

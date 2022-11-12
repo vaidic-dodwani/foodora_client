@@ -7,6 +7,7 @@ import 'package:foodora/screens/Auth_Page/forgot_password_screen.dart';
 import 'package:foodora/screens/Auth_Page/forget_pass_verify_screen.dart';
 import 'package:foodora/screens/Auth_Page/otp_verify_screen.dart';
 import 'package:foodora/screens/Home_Page/Home_Redirector.dart';
+import 'package:foodora/screens/Home_Page/Search_Screen.dart';
 import 'package:foodora/screens/Home_Page/food_description.dart';
 import 'package:foodora/screens/Home_Page/profile.dart';
 import 'package:foodora/screens/Home_Page/restrauntpage.dart';
@@ -28,6 +29,7 @@ class app_routes {
   static const food_description = '/food_description';
   static const profile_page = '/profile_page';
   static const restraunt_page = '/restraunt_page';
+  static const search_screen = '/search_screen';
 }
 
 Route? getRoute(RouteSettings settings) {
@@ -91,7 +93,7 @@ Route? getRoute(RouteSettings settings) {
       return MaterialPageRoute(
         settings: settings,
         builder: (context) => food_description(
-          food_info: args,
+          args: args,
         ),
       );
     case app_routes.restraunt_page:
@@ -109,6 +111,11 @@ Route? getRoute(RouteSettings settings) {
         builder: (context) => otp_verify_screen(
           email: args,
         ),
+      );
+    case app_routes.search_screen:
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (context) => const search_screen(),
       );
     default:
       return null;

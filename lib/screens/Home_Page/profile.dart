@@ -1,8 +1,11 @@
 import 'dart:developer';
+import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/config/api_integration.dart';
 import 'package:foodora/designing.dart';
+import 'package:image_picker/image_picker.dart';
 
 class profile_page extends StatefulWidget {
   const profile_page({super.key});
@@ -20,6 +23,8 @@ class _profile_pageState extends State<profile_page> {
   String _button_msg = "Submit";
   bool _isloading = false;
   dynamic _user_info;
+  final ImagePicker _picker = ImagePicker();
+  XFile? _profile_image;
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -54,16 +59,21 @@ class _profile_pageState extends State<profile_page> {
                   children: [
                     Column(
                       children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: width_block * 20,
-                          backgroundImage: const AssetImage(
-                            "assets/images/photo.jpeg",
-                          ),
-                        ),
+                        _profile_image != null
+                            ? CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: width_block * 20,
+                                backgroundImage:
+                                    FileImage(File(_profile_image!.path)))
+                            : SvgPicture.asset(
+                                'assets/images/abstract-user-flat-1.svg',
+                                width: 40 * width_block,
+                              ),
                         TextButton(
-                          onPressed: () {
-                            log("change image");
+                          onPressed: () async {
+                            _profile_image = await _picker.pickImage(
+                                source: ImageSource.gallery);
+                            setState(() {});
                           },
                           child: Text(
                             "Change Image",
@@ -159,7 +169,7 @@ class _profile_pageState extends State<profile_page> {
                       final response = await forget_new_password(
                           _user_info['emailid'], _passcontroller.text);
                       if (response['success']) {
-                        Navigator.pop;
+                        Navigator.pop(context);
                       } else {
                         setState(() {
                           _password_error_line = response['msg'];

@@ -43,6 +43,7 @@ class _restraunt_pageState extends State<restraunt_page> {
                               widget.restraunt_detail['imgpath'][index],
                           fit: BoxFit.fill,
                           height: 35 * height_block,
+                          width: 95 * width_block,
                         ),
                       ),
                     ),
@@ -54,66 +55,85 @@ class _restraunt_pageState extends State<restraunt_page> {
               height: 1 * height_block,
               color: Colors.white,
             ),
-            Text("MENU",
-                style: TextStyle(
-                    fontSize: 10 * width_block,
-                    color: font_red_color,
-                    fontFamily: "Montserrat",
-                    fontVariations: <FontVariation>[
-                      FontVariation('wght', 700)
-                    ])),
-            Container(
-              height: 60 * height_block,
-              child: ListView.builder(
-                itemCount: widget.restraunt_detail['food_list'].length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    height: 5 * height_block,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                            context, app_routes.food_description,
-                            arguments: widget.restraunt_detail['food_list']
-                                [index]);
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 2 * width_block),
-                            child: Text(
-                              widget.restraunt_detail["food_list"][index]
-                                  ['foodname'],
-                              style: TextStyle(
-                                  fontSize: 5 * width_block,
-                                  color: font_yellow_color,
-                                  fontFamily: "Montserrat",
-                                  fontVariations: <FontVariation>[
-                                    FontVariation('wght', 500)
-                                  ]),
+            Text(
+              "MENU",
+              style: TextStyle(
+                fontSize: 10 * width_block,
+                color: font_red_color,
+                fontFamily: "Montserrat",
+                fontVariations: <FontVariation>[FontVariation('wght', 700)],
+              ),
+            ),
+            widget.restraunt_detail['food_list'].length > 0
+                ? SingleChildScrollView(
+                    child: Container(
+                      height: 60 * height_block,
+                      child: ListView.builder(
+                        itemCount: widget.restraunt_detail['food_list'].length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            height: 5 * height_block,
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, app_routes.food_description,
+                                    arguments: [
+                                      widget.restraunt_detail['_id'],
+                                      widget.restraunt_detail['food_list']
+                                          [index]
+                                    ]);
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.only(left: 2 * width_block),
+                                    child: Text(
+                                      widget.restraunt_detail["food_list"]
+                                          [index]['foodname'],
+                                      style: TextStyle(
+                                          fontSize: 5 * width_block,
+                                          color: font_yellow_color,
+                                          fontFamily: "Montserrat",
+                                          fontVariations: <FontVariation>[
+                                            FontVariation('wght', 500)
+                                          ]),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 8.0),
+                                    child: Text(
+                                        widget.restraunt_detail["food_list"]
+                                                [index]['food_price']
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: 5 * width_block,
+                                            color: font_yellow_color,
+                                            fontFamily: "Montserrat",
+                                            fontVariations: <FontVariation>[
+                                              FontVariation('wght', 500)
+                                            ])),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(right: 8.0),
-                            child: Text(
-                                widget.restraunt_detail["food_list"][index]
-                                        ['food_price']
-                                    .toString(),
-                                style: TextStyle(
-                                    fontSize: 5 * width_block,
-                                    color: font_yellow_color,
-                                    fontFamily: "Montserrat",
-                                    fontVariations: <FontVariation>[
-                                      FontVariation('wght', 500)
-                                    ])),
-                          )
-                        ],
+                          );
+                        },
                       ),
                     ),
-                  );
-                },
-              ),
-            )
+                  )
+                : Text(
+                    "No Dishes Here SAD :(",
+                    style: TextStyle(
+                        fontSize: 6 * width_block,
+                        color: font_yellow_color,
+                        fontFamily: "Montserrat",
+                        fontVariations: <FontVariation>[
+                          FontVariation('wght', 500)
+                        ]),
+                  )
           ],
         ),
       ),

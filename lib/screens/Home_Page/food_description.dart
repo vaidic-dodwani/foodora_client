@@ -2,12 +2,13 @@ import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:foodora/config/api_integration.dart';
 import 'package:foodora/config/api_links.dart';
 import 'package:foodora/designing.dart';
 
 class food_description extends StatefulWidget {
-  final dynamic food_info;
-  const food_description({super.key, required this.food_info});
+  final dynamic args;
+  const food_description({super.key, required this.args});
 
   @override
   State<food_description> createState() => _food_descriptionState();
@@ -19,12 +20,14 @@ class _food_descriptionState extends State<food_description> {
     final size = MediaQuery.of(context).size;
     final width_block = size.width / 100;
     final height_block = size.height / 100;
+    final seller_id = widget.args[0];
+    final food_info = widget.args[1];
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
         children: [
           Image.network(
-            backend_link + widget.food_info['imgpath'],
+            backend_link + food_info['imgpath'],
             width: 100 * width_block,
             height: 60 * height_block,
             fit: BoxFit.fill,
@@ -54,7 +57,7 @@ class _food_descriptionState extends State<food_description> {
                             child: Padding(
                               padding: EdgeInsets.only(top: 5 * width_block),
                               child: Text(
-                                widget.food_info['foodname'],
+                                food_info['foodname'],
                                 style: TextStyle(
                                     fontFamily: "Montserrat",
                                     fontVariations: const <FontVariation>[
@@ -65,49 +68,36 @@ class _food_descriptionState extends State<food_description> {
                               ),
                             ),
                           ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.favorite_sharp,
-                              color: font_red_color,
-                            ),
-                          ),
                         ],
                       ),
                     ),
-                    price_display(context, 299),
+                    price_display(context, food_info['food_price']),
                     Container(
                       height: 28 * height_block,
                       child: SingleChildScrollView(
                           child: food_description_display(
-                              context, widget.food_info['food_desc'])),
+                              context, food_info['food_desc'])),
                     ),
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                        padding: const EdgeInsets.only(top: 30.0),
                         child: Container(
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(50)),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                primary: font_red_color),
-                            onPressed: () {
-                              log("Add To Cart");
+                          child: cart_button(
+                            context,
+                            food_info['foodname'],
+                            seller_id,
+                            food_info['_id'],
+                            () async {
+                              await add_to_cart(seller_id, food_info['_id']);
+                              setState(() {});
                             },
-                            child: Container(
-                              width: 100 * width_block,
-                              child: Text(
-                                "Add To Cart",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 6 * width_block,
-                                  fontVariations: <FontVariation>[
-                                    const FontVariation('wght', 400)
-                                  ],
-                                ),
-                              ),
-                            ),
+                            () async {
+                              await remove_from_cart(
+                                  seller_id, food_info['_id']);
+                              setState(() {});
+                            },
                           ),
                         ),
                       ),
@@ -121,4 +111,65 @@ class _food_descriptionState extends State<food_description> {
       ),
     );
   }
+}
+
+Widget cart_button(BuildContext context, String foodname, String seller_id,
+    String food_id, add_to_function, decrease_count_function) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+
+  return FutureBuilder(
+    future: view_count(foodname, seller_id),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.done) {
+        if (snapshot.data == 0) {
+          return ElevatedButton(
+            style: ElevatedButton.styleFrom(primary: font_red_color),
+            onPressed: add_to_function,
+            child: Container(
+              width: 100 * width_block,
+              child: Text(
+                "Add To Cart",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: "Montserrat",
+                  fontSize: 6 * width_block,
+                  fontVariations: <FontVariation>[
+                    const FontVariation('wght', 400)
+                  ],
+                ),
+              ),
+            ),
+          );
+        } else {
+          final count = snapshot.data;
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                  onPressed: decrease_count_function,
+                  icon: Icon(
+                    Icons.remove_circle_sharp,
+                    color: font_yellow_color,
+                  )),
+              Text(
+                snapshot.data.toString(),
+                style: TextStyle(
+                    color: font_yellow_color, fontSize: 4 * width_block),
+              ),
+              IconButton(
+                  onPressed: add_to_function,
+                  icon: Icon(
+                    Icons.add_circle_sharp,
+                    color: font_yellow_color,
+                  ))
+            ],
+          );
+        }
+      } else {
+        return Center(child: CircularProgressIndicator());
+      }
+    },
+  );
 }

@@ -69,19 +69,29 @@ class _homepage_redirectorState extends State<homepage_redirector> {
               actions: [
                 LayoutBuilder(builder:
                     (BuildContext context, BoxConstraints constraints) {
-                  return Padding(
-                    padding: EdgeInsets.only(right: 12.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        Scaffold.of(context).openDrawer();
-                      },
-                      child: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 24,
-                          backgroundImage: AssetImage(
-                            "assets/images/photo.jpeg",
-                          )),
-                    ),
+                  return Row(
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, app_routes.search_screen);
+                          },
+                          icon: Icon(Icons.search_sharp)),
+                      Padding(
+                        padding: EdgeInsets.only(right: 12.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                          child: const CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 24,
+                              backgroundImage: AssetImage(
+                                "assets/images/photo.jpeg",
+                              )),
+                        ),
+                      ),
+                    ],
                   );
                 })
               ],

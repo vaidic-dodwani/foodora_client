@@ -633,7 +633,7 @@ Future<void> put_user_info() async {
   }
 }
 
-Future<dynamic?> userinfograbber() async {
+Future<dynamic> userinfograbber() async {
   try {
     final user_info_storage = await SharedPreferences.getInstance();
     if (user_info_storage.getString("user_info") == null) {
@@ -700,16 +700,19 @@ Widget home_heading(BuildContext context, String text) {
   );
 }
 
-Widget home_search_bar(BuildContext context) {
+Widget home_search_bar(BuildContext context,
+    TextEditingController search_controller, function(String text)) {
   final size = MediaQuery.of(context).size;
   final width_block = size.width / 100;
   final height_block = size.height / 100;
 
   return Align(
-    alignment: Alignment.centerLeft,
+    alignment: Alignment.topCenter,
     child: SizedBox(
       width: 90 * width_block,
-      child: TextField(
+      child: TextFormField(
+        controller: search_controller,
+        onChanged: function,
         style: TextStyle(color: Colors.white),
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -1098,4 +1101,17 @@ Widget food_description_display(BuildContext context, String text) {
         fontFamily: "Montserrat",
         fontVariations: <FontVariation>[FontVariation('wght', 400)]),
   );
+}
+
+TextStyle bill_item_design(
+  context,
+) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+  return TextStyle(
+      fontFamily: "Montserrat",
+      fontSize: 6 * width_block,
+      color: background_color,
+      fontVariations: <FontVariation>[FontVariation('wght', 400)]);
 }

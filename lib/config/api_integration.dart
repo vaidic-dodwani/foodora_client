@@ -128,6 +128,7 @@ dynamic forget_new_password(String email, String password) async {
   }
 }
 
+//headd
 Future<Map?> get_user_info(String? idtest) async {
   if (idtest == null) {
     return {"error": "ID IS NULL BROO"};
@@ -150,12 +151,18 @@ Future<Map?> get_user_info(String? idtest) async {
   }
 }
 
-dynamic location_info(String id, double? lat, double? long) async {
+dynamic location_info(double? lat, double? long) async {
   try {
+    final storage = new FlutterSecureStorage();
+    final id = await storage.read(key: 'token');
+    if (id == null) {
+      return {"error": "ID IS NULL BROO"};
+    }
     log("Initialised Location get");
     final response = await post(Uri.parse(location_link),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          HttpHeaders.authorizationHeader: id,
         },
         body: jsonEncode(<String, dynamic>{
           "user_id": id,
@@ -185,7 +192,122 @@ Future<Map?> get_restaurant_feed() async {
     );
     final Map output = jsonDecode(response.body);
     log("response of the feed : " + output.toString());
+
     return output;
+  } catch (er) {
+    log("error caught: " + er.toString());
+  }
+}
+
+Future<Map?> view_cart() async {
+  final storage = new FlutterSecureStorage();
+  final id = await storage.read(key: 'token');
+  if (id == null) {
+    return {"error": "ID IS NULL BROO"};
+  }
+  try {
+    log("Initialised View Cart for: " + id);
+    final response = await post(
+      Uri.parse(view_cart_link),
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: id,
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{"user_id": id}),
+      // body: jsonEncode(<String, String>{"user_id": "636b70ef1b089df87dfd079"}),
+    );
+    final Map output = jsonDecode(response.body);
+    log("response of the cart : " + output.toString());
+    return output;
+  } catch (er) {
+    log("error caught: " + er.toString());
+  }
+}
+
+Future<List?>? search(String text) async {
+  try {
+    log("Initialised Search For: " + text);
+    final response = await post(Uri.parse(search_link),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{"text": text}));
+    final output = jsonDecode(response.body);
+    log("Search results: : " + output.toString());
+    return output;
+  } catch (er) {
+    log("error caught: " + er.toString());
+  }
+}
+
+dynamic view_count(String foodname, String seller_id) async {
+  try {
+    final storage = new FlutterSecureStorage();
+    final id = await storage.read(key: 'token');
+
+    log("sent count for: " + foodname);
+    final response = await post(Uri.parse(view_count_link),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          "foodname": foodname,
+          "seller_id": seller_id,
+          "user_id": id!
+        }));
+    final output = jsonDecode(response.body);
+    log("count output : " + output.toString());
+    return output['count'];
+  } catch (er) {
+    log("error caught: " + er.toString());
+  }
+}
+
+dynamic add_to_cart(String seller_id, String food_id) async {
+  try {
+    final storage = new FlutterSecureStorage();
+    final id = await storage.read(key: 'token');
+
+    log(seller_id);
+    log(food_id);
+    log(id!);
+    final response = await post(Uri.parse(add_to_cart_link),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          "seller_id": seller_id,
+          "food_id": food_id,
+          "user_id": id
+        }));
+    final output = jsonDecode(response.body);
+    log("add to cart : " + output.toString());
+    return output['count'];
+  } catch (er) {
+    log("error caught: " + er.toString());
+  }
+}
+
+dynamic remove_from_cart(String seller_id, String food_id) async {
+  try {
+    final storage = new FlutterSecureStorage();
+    final id = await storage.read(key: 'token');
+
+    log(seller_id);
+    log(food_id);
+    log(id!);
+    final response = await post(Uri.parse(remove_from_cart_link),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          "seller_id": seller_id,
+          "food_id": food_id,
+          "user_id": id
+        }));
+    final output = jsonDecode(response.body);
+    log("add to cart : " + output.toString());
+    return output['count'];
   } catch (er) {
     log("error caught: " + er.toString());
   }

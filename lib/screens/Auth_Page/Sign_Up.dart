@@ -113,49 +113,55 @@ class _signup_screenState extends State<signup_screen> {
                 setState(() {});
               }),
               SizedBox(height: height_block),
-              (_isLoading == null || _isLoading == false)
-                  ? SizedBox(
-                      height: 3 * height_block,
-                      child: (pass.ifError && !_checker)
-                          ? Text(" ")
-                          : error_line(context, _error_line),
-                    )
-                  : SizedBox(
-                      height: 3 * height_block,
-                      width: 3 * height_block,
-                      child: CircularProgressIndicator(color: Colors.white),
-                    ),
+              SizedBox(
+                height: 3 * height_block,
+                child: (pass.ifError && !_checker)
+                    ? Text(" ")
+                    : error_line(context, _error_line),
+              ),
               SizedBox(height: height_block),
-              button_style('SIGN UP', context, function: () async {
-                if (_emptyName == null) {
-                  setState(() {
-                    _emptyName = true;
-                  });
-                }
-                if ((_emptyName != true || _emptyName == false) &&
-                    (_isEmail != null && _isEmail == true) &&
-                    pass.ifError) {
-                  _checker = true;
-                  setState(() {
-                    _isLoading = true;
-                  });
+              (_isLoading == null || _isLoading == false)
+                  ? button_style('SIGN UP', context, function: () async {
+                      if (_emptyName == null) {
+                        setState(() {
+                          _emptyName = true;
+                        });
+                      }
+                      if ((_emptyName != true || _emptyName == false) &&
+                          (_isEmail != null && _isEmail == true) &&
+                          pass.ifError) {
+                        _checker = true;
+                        setState(() {
+                          _isLoading = true;
+                        });
 
-                  dynamic response = await sign_up(nameController.text,
-                      emailController.text, passwordController.text);
-                  setState(() {
-                    _isLoading = false;
-                  });
+                        dynamic response = await sign_up(nameController.text,
+                            emailController.text, passwordController.text);
+                        setState(() {
+                          _isLoading = false;
+                        });
 
-                  if (response['success']) {
-                    Navigator.pushReplacementNamed(
-                        context, app_routes.otp_verify_screen,
-                        arguments: emailController.text);
-                  } else {
-                    _error_line = response['msg'];
-                  }
-                }
-                setState(() {});
-              }),
+                        if (response['success']) {
+                          Navigator.pushReplacementNamed(
+                              context, app_routes.otp_verify_screen,
+                              arguments: emailController.text);
+                        } else {
+                          _error_line = response['msg'];
+                        }
+                      }
+                      setState(() {});
+                    })
+                  : SizedBox(
+                      height: 13 * width_block,
+                      child: Center(
+                        child: SizedBox(
+                          height: 3 * height_block,
+                          width: 3 * height_block,
+                          child: CircularProgressIndicator(
+                              color: font_yellow_color),
+                        ),
+                      ),
+                    ),
               existing_user_button(context),
             ],
           ),
