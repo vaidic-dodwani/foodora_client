@@ -1,6 +1,3 @@
-// ignore_for_file: camel_case_types, non_constant_identifier_names, unused_field, prefer_final_fields, prefer_is_empty
-
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:foodora/config/api_integration.dart';
 import 'package:foodora/designing.dart';
@@ -34,19 +31,19 @@ class _signup_screenState extends State<signup_screen> {
     final width_block = size.width / 100;
     final height_block = size.height / 100;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: background_color,
       body: SingleChildScrollView(
         child: Container(
           width: size.width,
           decoration: background_design(),
           child: Column(
             children: [
-              const SizedBox(height: 10),
+              SizedBox(height: 2 * height_block),
               skip_button(context),
-              const SizedBox(height: 10),
-              top_welcome_text("Welcome to FOODORA"),
+              SizedBox(height: height_block),
+              top_welcome_text(context, "Welcome to FOODORA"),
               SizedBox(
-                height: size.height * 0.1,
+                height: 7.5 * height_block,
               ),
               form_text(context, 'FULL NAME'),
               form_field(
@@ -115,90 +112,61 @@ class _signup_screenState extends State<signup_screen> {
                 _checker = false;
                 setState(() {});
               }),
-              const SizedBox(height: 10),
+              SizedBox(height: height_block),
+              SizedBox(
+                height: 3 * height_block,
+                child: (pass.ifError && !_checker)
+                    ? Text(" ")
+                    : error_line(context, _error_line),
+              ),
+              SizedBox(height: height_block),
               (_isLoading == null || _isLoading == false)
-                  ? SizedBox(
-                      height: 3 * height_block,
-                      child: (pass.ifError && !_checker)
-                          ? Text(" ")
-                          : error_line(context, _error_line),
-                    )
+                  ? button_style('SIGN UP', context, function: () async {
+                      if (_emptyName == null) {
+                        setState(() {
+                          _emptyName = true;
+                        });
+                      }
+                      if ((_emptyName != true || _emptyName == false) &&
+                          (_isEmail != null && _isEmail == true) &&
+                          pass.ifError) {
+                        _checker = true;
+                        setState(() {
+                          _isLoading = true;
+                        });
+
+                        dynamic response = await sign_up(nameController.text,
+                            emailController.text, passwordController.text);
+                        setState(() {
+                          _isLoading = false;
+                        });
+
+                        if (response['success']) {
+                          Navigator.pushReplacementNamed(
+                              context, app_routes.otp_verify_screen,
+                              arguments: emailController.text);
+                        } else {
+                          _error_line = response['msg'];
+                        }
+                      }
+                      setState(() {});
+                    })
                   : SizedBox(
-                      height: 3 * height_block,
-                      width: 3 * height_block,
-                      child: CircularProgressIndicator(color: logo_brown_color),
+                      height: 13 * width_block,
+                      child: Center(
+                        child: SizedBox(
+                          height: 3 * height_block,
+                          width: 3 * height_block,
+                          child: CircularProgressIndicator(
+                              color: font_yellow_color),
+                        ),
+                      ),
                     ),
-              SizedBox(height: 10),
-              button_style('SIGN UP', context, function: () async {
-                if (_emptyName == null) {
-                  setState(() {
-                    _emptyName = true;
-                  });
-                }
-                if ((_emptyName != true || _emptyName == false) &&
-                    (_isEmail != null && _isEmail == true) &&
-                    pass.ifError) {
-                  _checker = true;
-                  setState(() {
-                    _isLoading = true;
-                  });
-
-                  dynamic response = await sign_up(nameController.text,
-                      emailController.text, passwordController.text);
-                  setState(() {
-                    _isLoading = false;
-                  });
-
-                  if (response['success']) {
-                    // ignore: use_build_context_synchronously
-                    Navigator.pushReplacementNamed(
-                        context, app_routes.otp_verify_screen,
-                        arguments: emailController.text);
-                  } else {
-                    _error_line = response['msg'];
-                  }
-                }
-                setState(() {});
-              }),
-              const SizedBox(height: 10),
-              existing_user_button(context)
+              existing_user_button(context),
             ],
           ),
         ),
       ),
     );
-  }
-}
-
-class PasswordChecker {
-  late String? Password;
-  late String? Re_Password;
-  String error_line = " ";
-  bool valid = true;
-
-  PasswordChecker(String? Password, String? Re_Password) {
-    this.Password = Password;
-    this.Re_Password = Re_Password;
-
-    if (Password == null) {
-      error_line = " ";
-      valid = false;
-    } else if (!isStrong(Password)) {
-      error_line = "Weak Password";
-      valid = false;
-    } else if (Password != Re_Password) {
-      error_line = "Password Do No Match";
-      valid = false;
-    } else {
-      error_line = " ";
-      valid = true;
-    }
-  }
-  String get error {
-    return error_line;
-  }
-
-  bool get ifError {
-    return valid;
   }
 }
