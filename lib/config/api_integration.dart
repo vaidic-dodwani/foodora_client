@@ -312,3 +312,22 @@ dynamic remove_from_cart(String seller_id, String food_id) async {
     log("error caught: " + er.toString());
   }
 }
+
+dynamic checkout() async {
+  try {
+    final storage = new FlutterSecureStorage();
+    String? id = await storage.read(key: 'access_token');
+    log("Initialised Profile get for: " + id!);
+    final response = await post(Uri.parse(checkout_link),
+        headers: <String, String>{
+          HttpHeaders.authorizationHeader: id!,
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{"_id": id}));
+    final Map output = jsonDecode(response.body);
+    log("checkout : " + output.toString());
+    return output;
+  } catch (er) {
+    log("error caught: " + er.toString());
+  }
+}

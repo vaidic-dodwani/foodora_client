@@ -972,57 +972,71 @@ Widget restraunt_suggested_list(context) {
       if (snapshot.connectionState == ConnectionState.done) {
         final feed = snapshot.data;
         final near = feed['near'];
-        return Wrap(
-          children: List.generate(
-            feed['near'].length,
-            (index) {
-              return SizedBox(
-                width: 45 * width_block,
-                height: 20 * height_block,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, app_routes.restraunt_page,
-                        arguments: near[index]);
-                  },
-                  child: Card(
-                    color: card_background_color,
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.network(
-                              backend_link + near[index]['imgpath'][0],
-                              width: 45 * height_block,
-                              height: 10 * height_block,
-                              fit: BoxFit.fill,
+        if (feed['near'].length == 0) {
+          return Wrap(
+            children: List.generate(
+              feed['near'].length,
+              (index) {
+                return SizedBox(
+                  width: 45 * width_block,
+                  height: 20 * height_block,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, app_routes.restraunt_page,
+                          arguments: near[index]);
+                    },
+                    child: Card(
+                      color: card_background_color,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.network(
+                                backend_link + near[index]['imgpath'][0],
+                                width: 45 * height_block,
+                                height: 10 * height_block,
+                                fit: BoxFit.fill,
+                              ),
                             ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Center(
-                              child: Text(
-                                near[index]['restaurantname'],
-                                style: const TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontVariations: <FontVariation>[
-                                    FontVariation('wght', 500)
-                                  ],
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Center(
+                                child: Text(
+                                  near[index]['restaurantname'],
+                                  style: const TextStyle(
+                                    fontFamily: "Montserrat",
+                                    fontVariations: <FontVariation>[
+                                      FontVariation('wght', 500)
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              );
-            },
-          ),
-        );
+                );
+              },
+            ),
+          );
+        } else {
+          return Container(
+            child: Center(
+                child: Text(
+              "Foodora Isnt In Your City Yet Sadly",
+              style: TextStyle(
+                  color: font_yellow_color,
+                  fontFamily: 'Montserrat',
+                  fontVariations: <FontVariation>[FontVariation('wght', 500)],
+                  fontSize: 8 * width_block),
+            )),
+          );
+        }
       } else {
         return Container(
             height: size.height > 510 ? 24 * height_block : 510 * 0.24,

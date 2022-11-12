@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'dart:ui';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:foodora/config/api_integration.dart';
 import 'package:foodora/designing.dart';
@@ -197,8 +197,16 @@ class _cart_screenState extends State<cart_screen> {
                         child: Container(
                           height: 5 * height_block,
                           child: ElevatedButton(
-                              onPressed: () {
-                                log("ORDERRR");
+                              onPressed: () async {
+                                final response = await checkout();
+                                Fluttertoast.showToast(
+                                    msg: response['msg'],
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
                               },
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(
@@ -207,12 +215,13 @@ class _cart_screenState extends State<cart_screen> {
                                 child: Text(
                                   "Order Now",
                                   style: TextStyle(
-                                      fontFamily: "Montserrat",
-                                      fontSize: 6 * width_block,
-                                      color: background_color,
-                                      fontVariations: <FontVariation>[
-                                        FontVariation('wght', 700)
-                                      ],),
+                                    fontFamily: "Montserrat",
+                                    fontSize: 6 * width_block,
+                                    color: background_color,
+                                    fontVariations: <FontVariation>[
+                                      FontVariation('wght', 700)
+                                    ],
+                                  ),
                                 ),
                               )),
                         ),

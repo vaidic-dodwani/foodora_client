@@ -97,7 +97,7 @@ class _food_descriptionState extends State<food_description> {
                               await remove_from_cart(
                                   seller_id, food_info['_id']);
                               setState(() {});
-                            },
+                            },0,
                           ),
                         ),
                       ),
@@ -114,7 +114,7 @@ class _food_descriptionState extends State<food_description> {
 }
 
 Widget cart_button(BuildContext context, String foodname, String seller_id,
-    String food_id, add_to_function, decrease_count_function) {
+    String food_id, add_to_function, decrease_count_function,change) {
   final size = MediaQuery.of(context).size;
   final width_block = size.width / 100;
   final height_block = size.height / 100;
@@ -154,7 +154,7 @@ Widget cart_button(BuildContext context, String foodname, String seller_id,
                     color: font_yellow_color,
                   )),
               Text(
-                snapshot.data.toString(),
+                count.toString(),
                 style: TextStyle(
                     color: font_yellow_color, fontSize: 4 * width_block),
               ),

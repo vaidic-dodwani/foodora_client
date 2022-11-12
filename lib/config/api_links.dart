@@ -42,4 +42,7 @@ final add_to_cart_link =
     "https://foodorabackend-production.up.railway.app/user/addtocart";
 
 final remove_from_cart_link =
-    "https://foodorabackend-production.up.railway.app/user/removetocart";
+    "https://foodorabackend-production.up.railway.app/user/removefromcart";
+
+final checkout_link =
+    "https://foodorabackend-production.up.railway.app/user/checkout";
