@@ -251,6 +251,7 @@ Widget forgot_password_button(BuildContext context) {
   final size = MediaQuery.of(context).size;
   final width_block = size.width / 100;
   final height_block = size.height / 100;
+
   return Align(
     alignment: Alignment.centerRight,
     child: Padding(
