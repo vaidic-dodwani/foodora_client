@@ -1,6 +1,3 @@
-// ignore_for_file: unused_import, camel_case_types, non_constant_identifier_names, prefer_is_empty, sort_child_properties_last, use_build_context_synchronously
-
-
 import 'package:foodora/app_routes.dart';
 import 'package:foodora/config/api_integration.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +35,7 @@ class _email_verification_screenState extends State<email_verification_screen> {
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: const EdgeInsets.only(left: 10),
-                child: top_welcome_text("CONTACT DETAIL"),
+                child: top_welcome_text(context, "CONTACT DETAIL"),
               ),
             ),
             const SizedBox(height: 10),
@@ -60,44 +57,50 @@ class _email_verification_screenState extends State<email_verification_screen> {
               setState(() {});
             }),
             const SizedBox(height: 11),
-            (_isloading == null || _isloading == false)
-                ? (_error_text == null)
-                    ? const SizedBox(height: 33)
-                    : Padding(
-                        padding: const EdgeInsets.only(left: 24.0),
-                        child: Column(
-                          children: [
-                            error_line(context, _error_text!),
-                            SizedBox(height: 11)
-                          ],
-                        ),
-                      )
-                : const SizedBox(
-                    child: CircularProgressIndicator(color: logo_brown_color),
-                    height: 33,
-                    width: 33,
+            (_error_text == null)
+                ? const SizedBox(height: 33)
+                : Padding(
+                    padding: const EdgeInsets.only(left: 24.0),
+                    child: Column(
+                      children: [
+                        error_line(context, _error_text!),
+                        SizedBox(height: 11)
+                      ],
+                    ),
                   ),
             const SizedBox(height: 11),
-            button_style("SEND OTP", context, function: () async {
-              if (_isEmail == true) {
-                setState(() {
-                  _isloading = true;
-                });
-                final response = await send_api_otp(emailController.text);
-                setState(() {
-                  _isloading = false;
-                });
-                if (response['success']) {
-                  Navigator.pushReplacementNamed(
-                      context, app_routes.otp_verify_screen,
-                      arguments: emailController.text);
-                } else {
-                  setState(() {
-                    _error_text = response['msg'];
-                  });
-                }
-              }
-            }),
+            (_isloading == null || _isloading == false)
+                ? button_style("SEND OTP", context, function: () async {
+                    if (_isEmail == true) {
+                      setState(() {
+                        _isloading = true;
+                      });
+                      final response = await send_api_otp(emailController.text);
+                      setState(() {
+                        _isloading = false;
+                      });
+                      if (response['success']) {
+                        Navigator.pushReplacementNamed(
+                            context, app_routes.otp_verify_screen,
+                            arguments: emailController.text);
+                      } else {
+                        setState(() {
+                          _error_text = response['msg'];
+                        });
+                      }
+                    }
+                  })
+                : Container(
+                    height: 13 * width_block,
+                    child: Center(
+                      child: const SizedBox(
+                        child:
+                            CircularProgressIndicator(color: logo_brown_color),
+                        height: 33,
+                        width: 33,
+                      ),
+                    ),
+                  ),
             const SizedBox(height: 20),
             existing_user_button(context),
           ]),
