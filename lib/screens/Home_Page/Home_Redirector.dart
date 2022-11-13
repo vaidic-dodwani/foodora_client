@@ -178,6 +178,8 @@ class _homepage_redirectorState extends State<homepage_redirector> {
                                       Icons.privacy_tip_outlined,
                                       "Privacy Policy", () {
                                     log("Privacy Policy");
+                                    Navigator.pushNamed(
+                                          context, app_routes.privacy);
                                   }),
                                   const Divider(
                                     thickness: 0.5,
@@ -188,6 +190,8 @@ class _homepage_redirectorState extends State<homepage_redirector> {
                                       Icons.sticky_note_2_outlined,
                                       "About", () {
                                     log("About");
+                                    Navigator.pushNamed(
+                                          context, app_routes.about);
                                   }),
                                   SizedBox(
                                     height: 10 * height_block,
