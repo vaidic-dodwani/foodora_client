@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/config/api_integration.dart';
+import 'package:foodora/config/api_links.dart';
 import 'package:foodora/designing.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -15,10 +16,6 @@ class profile_page extends StatefulWidget {
 }
 
 class _profile_pageState extends State<profile_page> {
-  // TextEditingController _phonecontroller = new TextEditingController();
-  TextEditingController _passcontroller = new TextEditingController();
-  bool _showpass = false;
-  // String _phone_error_line = "";
   String _password_error_line = "";
   String _button_msg = "Submit";
   bool _isloading = false;
@@ -32,7 +29,7 @@ class _profile_pageState extends State<profile_page> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
           _user_info = snapshot.data;
-          return profile(context);
+          return profile(context, _user_info);
         } else {
           return loading_screen(context);
         }
@@ -40,7 +37,7 @@ class _profile_pageState extends State<profile_page> {
     );
   }
 
-  Widget profile(BuildContext context) {
+  Widget profile(BuildContext context, _user_info) {
     final size = MediaQuery.of(context).size;
     final width_block = size.width / 100;
     final height_block = size.height / 100;
@@ -55,7 +52,7 @@ class _profile_pageState extends State<profile_page> {
               Container(
                 height: 95 * height_block,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Column(
                       children: [
@@ -65,10 +62,16 @@ class _profile_pageState extends State<profile_page> {
                                 radius: width_block * 20,
                                 backgroundImage:
                                     FileImage(File(_profile_image!.path)))
-                            : SvgPicture.asset(
-                                'assets/images/abstract-user-flat-1.svg',
-                                width: 40 * width_block,
-                              ),
+                            : _user_info['imagepath'] == null
+                                ? SvgPicture.asset(
+                                    'assets/images/abstract-user-flat-1.svg',
+                                    color: Colors.white,
+                                    width: 40 * width_block,
+                                  )
+                                : Image.network(
+                                    backend_link + _user_info['imagepath'],
+                                    width: 40 * width_block,
+                                  ),
                         TextButton(
                           onPressed: () async {
                             _profile_image = await _picker.pickImage(
@@ -76,7 +79,7 @@ class _profile_pageState extends State<profile_page> {
                             setState(() {});
                           },
                           child: Text(
-                            "Change Image",
+                            "Upload Image",
                             style: TextStyle(
                               fontFamily: "Montserrat",
                               fontSize: 4 * width_block,
@@ -88,53 +91,6 @@ class _profile_pageState extends State<profile_page> {
                         )
                       ],
                     ),
-                    // Column(
-                    //   children: [
-                    //     form_text(
-                    //       context,
-                    //       "Update Phone Number",
-                    //     ),
-                    //     SizedBox(height: 2 * height_block),
-                    //     phone_form_field(
-                    //       context,
-                    //       "Enter New Phone Number",
-                    //       maxlen: 10,
-                    //       controller: _phonecontroller,
-                    //     ),
-                    //     SizedBox(height: 2 * height_block),
-                    //     error_line(context, _phone_error_line)
-                    //   ],
-                    // ),
-                    Column(
-                      children: [
-                        form_text(
-                          context,
-                          "Update Password",
-                        ),
-                        SizedBox(height: 2 * height_block),
-                        form_field(context, "Enter New Pasword",
-                            controller: _passcontroller,
-                            password: _showpass,
-                            icon: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  _showpass = !_showpass;
-                                });
-                              },
-                              icon: _showpass
-                                  ? const Icon(
-                                      Icons.visibility_off_sharp,
-                                      color: Colors.white,
-                                    )
-                                  : const Icon(
-                                      Icons.visibility_sharp,
-                                      color: Colors.white,
-                                    ),
-                            )),
-                        SizedBox(height: 2 * height_block),
-                        error_line(context, _password_error_line)
-                      ],
-                    ),
                     SizedBox(
                       height: 5 * height_block,
                       child: _isloading
@@ -142,7 +98,7 @@ class _profile_pageState extends State<profile_page> {
                               child: SizedBox(
                                   height: 4 * height_block,
                                   width: 4 * height_block,
-                                  child: CircularProgressIndicator(
+                                  child: const CircularProgressIndicator(
                                     color: font_yellow_color,
                                   )))
                           : SizedBox(
@@ -157,25 +113,12 @@ class _profile_pageState extends State<profile_page> {
                 height: 5 * height_block,
                 child: ElevatedButton(
                   onPressed: () async {
-                    // if (_phonecontroller.text.toString().length < 10) {
-                    //   _phone_error_line = "Enter Entire Phone Number";
-                    // } else
-                    if (!isStrong(_passcontroller.text)) {
-                      // _phone_error_line = "";
-                      _password_error_line = "WEAK PASS";
-                    } else {
-                      // _phone_error_line = "";
+                    if (_profile_image != null) {
+                      File profile_file = File(_profile_image!.path);
+                      final response = await profile_photo_update(profile_file);
 
-                      final response = await forget_new_password(
-                          _user_info['emailid'], _passcontroller.text);
-                      if (response['success']) {
-                        Navigator.pop(context);
-                      } else {
-                        setState(() {
-                          _password_error_line = response['msg'];
-                        });
-                      }
-                      _password_error_line = "";
+                      await put_user_info();
+                      Navigator.pop(context);
                     }
                     setState(() {});
                   },

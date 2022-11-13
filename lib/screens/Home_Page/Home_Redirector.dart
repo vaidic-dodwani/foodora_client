@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:foodora/app_routes.dart';
+import 'package:foodora/config/api_links.dart';
 import 'package:foodora/designing.dart';
 import 'package:foodora/screens/Home_Page/Home_Screen.dart';
 import 'package:foodora/screens/Home_Page/cart_screen.dart';
@@ -28,6 +29,9 @@ final storage = new FlutterSecureStorage();
 class _homepage_redirectorState extends State<homepage_redirector> {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final width_block = size.width / 100;
+    final height_block = size.height / 100;
     return FutureBuilder(
       future: userinfograbber(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -83,11 +87,11 @@ class _homepage_redirectorState extends State<homepage_redirector> {
                           onTap: () {
                             Scaffold.of(context).openDrawer();
                           },
-                          child: const CircleAvatar(
+                          child: CircleAvatar(
                               backgroundColor: Colors.white,
                               radius: 24,
-                              backgroundImage: AssetImage(
-                                "assets/images/photo.jpeg",
+                              backgroundImage: NetworkImage(
+                                backend_link + user_info['imagepath'],
                               )),
                         ),
                       ),
@@ -128,12 +132,11 @@ class _homepage_redirectorState extends State<homepage_redirector> {
                                   color: Colors.white,
                                 )),
                             SizedBox(height: height_block),
-                            const CircleAvatar(
+                            CircleAvatar(
                                 backgroundColor: Colors.white,
                                 radius: 32,
-                                backgroundImage: AssetImage(
-                                  "assets/images/photo.jpeg",
-                                )),
+                                backgroundImage: NetworkImage(
+                                    backend_link + user_info['imagepath'])),
                             SizedBox(height: height_block),
                             Text(
                               user_info['username'],
@@ -151,23 +154,13 @@ class _homepage_redirectorState extends State<homepage_redirector> {
                                   Navbar_Item(
                                       context,
                                       Icons.person_outline_sharp,
-                                      "Edit Profile", () async {
+                                      "Upload Photo", () async {
                                     log("Profileeee");
                                     if (user_info['username'] == "Guest User") {
                                     } else {
-                                      Navigator.pushReplacementNamed(
+                                      Navigator.pushNamed(
                                           context, app_routes.profile_page);
                                     }
-                                  }),
-                                  const Divider(
-                                    thickness: 0.5,
-                                    color: Colors.white,
-                                  ),
-                                  Navbar_Item(
-                                      context,
-                                      Icons.shopping_cart_outlined,
-                                      "Order History", () {
-                                    log("Order");
                                   }),
                                   const Divider(
                                     thickness: 0.5,
@@ -229,8 +222,6 @@ class _homepage_redirectorState extends State<homepage_redirector> {
                   BottomNavigationBarItem(
                       icon: Icon(Icons.home_sharp), label: ""),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.favorite_sharp), label: ""),
-                  BottomNavigationBarItem(
                       icon: Icon(Icons.shopping_cart_sharp), label: ""),
                   BottomNavigationBarItem(
                       icon: Icon(Icons.notifications), label: ""),
@@ -251,8 +242,7 @@ class _homepage_redirectorState extends State<homepage_redirector> {
 
 Widget screen_returner(int screen) {
   if (screen == 0) return homepage_screen();
-  if (screen == 1) return favourite_screen();
-  if (screen == 2)
+  if (screen == 1)
     return cart_screen();
   else
     return notification_screen();

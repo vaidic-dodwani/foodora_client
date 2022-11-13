@@ -122,6 +122,7 @@ class _location_screenState extends State<location_screen> {
                                     'user_info', jsonEncode(user_info));
                                 Navigator.pushReplacementNamed(
                                     context, app_routes.homepage_redirector);
+                                await put_user_info();
 
                                 setState(() {
                                   _location_recieved = true;
