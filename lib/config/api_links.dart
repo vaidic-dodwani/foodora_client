@@ -46,3 +46,6 @@ final remove_from_cart_link =
 
 final checkout_link =
     "https://foodorabackend-production.up.railway.app/user/checkout";
+
+final profile_link =
+    "https://foodorabackend-production.up.railway.app/user/profileimage";

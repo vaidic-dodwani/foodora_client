@@ -401,7 +401,7 @@ Widget otp_field(BuildContext context, {function}) {
     length: 6,
     width: size.width > 330 ? 330 : size.width - 10,
     fieldWidth: size.width > 330 ? 330 / 7 : (size.width - 10) / 7,
-    style: const TextStyle(fontSize: 20),
+    style: const TextStyle(fontSize: 20, color: Colors.white),
     textFieldAlignment: MainAxisAlignment.spaceAround,
     otpFieldStyle: OtpFieldStyle(
         borderColor: Colors.white, enabledBorderColor: Colors.white),
@@ -625,8 +625,7 @@ Future<void> put_user_info() async {
   try {
     final storage = new FlutterSecureStorage();
     SharedPreferences user_info = await SharedPreferences.getInstance();
-    Map? get_profile_response =
-        await get_user_info(await storage.read(key: 'token'));
+    Map? get_profile_response = await get_user_info();
     user_info.setString('user_info', jsonEncode(get_profile_response));
   } catch (er) {
     log(er.toString());
@@ -640,7 +639,7 @@ Future<dynamic> userinfograbber() async {
       return "User Info Doesnt Exist";
     } else {
       final user_info = jsonDecode(user_info_storage.getString("user_info")!);
-
+      log("user info : " + user_info.toString());
       return user_info;
     }
   } catch (er) {}
@@ -972,7 +971,7 @@ Widget restraunt_suggested_list(context) {
       if (snapshot.connectionState == ConnectionState.done) {
         final feed = snapshot.data;
         final near = feed['near'];
-        if (feed['near'].length == 0) {
+        if (feed['near'].length != 0) {
           return Wrap(
             children: List.generate(
               feed['near'].length,
@@ -1128,4 +1127,17 @@ TextStyle bill_item_design(
       fontSize: 6 * width_block,
       color: background_color,
       fontVariations: <FontVariation>[FontVariation('wght', 400)]);
+}
+
+Widget textgenerator(
+    String tex, double fontSiz, String fontfamly, double weit, Color co) {
+  return Text(
+    tex,
+    style: TextStyle(
+      fontFamily: fontfamly,
+      fontSize: fontSiz,
+      color: co,
+      fontVariations: <FontVariation>[FontVariation('wght', weit)],
+    ),
+  );
 }
