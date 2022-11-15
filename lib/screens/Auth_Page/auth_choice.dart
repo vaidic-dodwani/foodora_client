@@ -20,7 +20,6 @@ class auth_choice extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: 2 * height_block),
-              skip_button(context),
               SizedBox(height: 5 * height_block),
               SvgPicture.asset('assets/images/logo.svg',
                   color: Colors.white, height: height_block * 60),

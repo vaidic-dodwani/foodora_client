@@ -199,6 +199,50 @@ Widget form_field(BuildContext context, String text,
   );
 }
 
+Widget pincode(
+  BuildContext context, {
+  controller,
+}) {
+  final size = MediaQuery.of(context).size;
+  final width_block = size.width / 100;
+  final height_block = size.height / 100;
+  return Padding(
+    padding: EdgeInsets.only(left: 2 * width_block),
+    child: Align(
+      alignment: Alignment.centerLeft,
+      child: SizedBox(
+        width: 90 * width_block,
+        child: TextFormField(
+          maxLength: 6,
+          scrollPadding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          controller: controller,
+          keyboardType: TextInputType.number,
+          style: TextStyle(
+              fontSize: 5 * width_block,
+              color: Colors.white,
+              fontVariations: <FontVariation>[FontVariation('wght', 500)]),
+          decoration: InputDecoration(
+              counterText: "",
+              enabledBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white54),
+              ),
+              focusedBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white54),
+              ),
+              border: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white54),
+              ),
+              hintText: "Pincode",
+              hintStyle: const TextStyle(
+                color: Colors.white70,
+              )),
+        ),
+      ),
+    ),
+  );
+}
+
 Widget phone_form_field(BuildContext context, String text,
     {controller, function, maxlen}) {
   final size = MediaQuery.of(context).size;
@@ -634,6 +678,7 @@ Future<void> put_user_info() async {
 
 Future<dynamic> userinfograbber() async {
   try {
+    log("Grabbing Info");
     final user_info_storage = await SharedPreferences.getInstance();
     if (user_info_storage.getString("user_info") == null) {
       return "User Info Doesnt Exist";
@@ -642,7 +687,9 @@ Future<dynamic> userinfograbber() async {
       log("user info : " + user_info.toString());
       return user_info;
     }
-  } catch (er) {}
+  } catch (er) {
+    log(er.toString());
+  }
 }
 
 Widget AutoScroll(BuildContext context) {
@@ -971,7 +1018,18 @@ Widget restraunt_suggested_list(context) {
       if (snapshot.connectionState == ConnectionState.done) {
         final feed = snapshot.data;
         final near = feed['near'];
-        if (feed['near'].length != 0) {
+        if (feed['near'] == null) {
+          return Center(
+            child: Text(
+              "No Restraunts Nearby SAD :(",
+              style: TextStyle(
+                  color: font_yellow_color,
+                  fontSize: 4 * width_block,
+                  fontFamily: "Montserrat",
+                  fontVariations: <FontVariation>[FontVariation('wght', 700)]),
+            ),
+          );
+        } else if (feed['near'].length != 0) {
           return Wrap(
             children: List.generate(
               feed['near'].length,
@@ -996,7 +1054,7 @@ Widget restraunt_suggested_list(context) {
                               child: Image.network(
                                 backend_link + near[index]['imgpath'][0],
                                 width: 45 * height_block,
-                                height: 10 * height_block,
+                                height: 13 * height_block,
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -1004,13 +1062,14 @@ Widget restraunt_suggested_list(context) {
                               alignment: Alignment.centerLeft,
                               child: Center(
                                 child: Text(
-                                  near[index]['restaurantname'],
-                                  style: const TextStyle(
-                                    fontFamily: "Montserrat",
-                                    fontVariations: <FontVariation>[
-                                      FontVariation('wght', 500)
-                                    ],
-                                  ),
+                                  near[index]['restaurantname'].toUpperCase(),
+                                  style: TextStyle(
+                                      color: background_color,
+                                      fontSize: 3 * width_block,
+                                      fontFamily: "Montserrat",
+                                      fontVariations: <FontVariation>[
+                                        FontVariation('wght', 500)
+                                      ]),
                                 ),
                               ),
                             ),

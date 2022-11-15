@@ -14,13 +14,14 @@ class search_screen extends StatefulWidget {
 }
 
 class _search_screenState extends State<search_screen> {
+  String search_text = "";
+  TextEditingController search_controller = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController search_controller = new TextEditingController();
     final size = MediaQuery.of(context).size;
     final width_block = size.width / 100;
     final height_block = size.height / 100;
-    String search_text = "";
 
     return SafeArea(
       child: Scaffold(
@@ -36,6 +37,7 @@ class _search_screenState extends State<search_screen> {
                     child: home_search_bar(context, search_controller,
                         (String text) {
                       search_text = text;
+                      setState(() {});
                     }),
                   ),
                   Align(
@@ -52,7 +54,8 @@ class _search_screenState extends State<search_screen> {
                     ),
                   ),
                   SizedBox(height: 10),
-                  SingleChildScrollView(child: search_results(context))
+                  SingleChildScrollView(
+                      child: search_results(context, search_controller.text))
                 ],
               ),
             ),
@@ -63,18 +66,18 @@ class _search_screenState extends State<search_screen> {
   }
 }
 
-FutureBuilder search_results(BuildContext context) {
+FutureBuilder search_results(BuildContext context, String text) {
   final size = MediaQuery.of(context).size;
   final width_block = size.width / 100;
   final height_block = size.height / 100;
   return FutureBuilder(
-    future: search(""),
+    future: search(text),
     builder: ((context, snapshot) {
       if (snapshot.connectionState == ConnectionState.done) {
         final restaurant = snapshot.data;
         return SingleChildScrollView(
           child: Container(
-            child: Wrap(
+            child: Column(
               children: List.generate(
                 restaurant!.length,
                 (index) {
@@ -89,11 +92,10 @@ FutureBuilder search_results(BuildContext context) {
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.white,
                       ),
-                      width: 40 * width_block,
+                      width: 90 * width_block,
                       child: Padding(
                         padding: const EdgeInsets.all(10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Row(
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(10),
@@ -102,18 +104,23 @@ FutureBuilder search_results(BuildContext context) {
                                 height: size.height > 500
                                     ? 15 * height_block
                                     : 500 * 0.15,
+                                width: 40 * width_block,
                                 fit: BoxFit.fill,
                               ),
                             ),
-                            SizedBox(height: 10),
-                            Text(
-                              restaurant[index]['restaurantname'],
-                              style: TextStyle(
-                                fontSize: 6 * width_block,
-                                fontFamily: "Montserrat",
-                                fontVariations: <FontVariation>[
-                                  FontVariation('wght', 500)
-                                ],
+                            Container(
+                              width: 40 * width_block,
+                              child: Center(
+                                child: Text(
+                                  restaurant[index]['restaurantname'],
+                                  style: TextStyle(
+                                    fontSize: 4 * width_block,
+                                    fontFamily: "Montserrat",
+                                    fontVariations: <FontVariation>[
+                                      FontVariation('wght', 500)
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
                           ],
@@ -128,8 +135,13 @@ FutureBuilder search_results(BuildContext context) {
         );
       } else {
         return Center(
-          child: CircularProgressIndicator(
-            color: font_yellow_color,
+          child: Column(
+            children: [
+              SizedBox(height: 35 * height_block),
+              CircularProgressIndicator(
+                color: font_yellow_color,
+              ),
+            ],
           ),
         );
       }

@@ -243,6 +243,7 @@ class _cart_screenState extends State<cart_screen> {
             return Center(
                 child: Text(
               "Why Not Hungry? Add Items To Cart",
+              textAlign: TextAlign.center,
               style: TextStyle(
                   color: font_yellow_color,
                   fontSize: 7 * width_block,

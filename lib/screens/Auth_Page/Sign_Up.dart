@@ -39,8 +39,7 @@ class _signup_screenState extends State<signup_screen> {
           child: Column(
             children: [
               SizedBox(height: 2 * height_block),
-              skip_button(context),
-              SizedBox(height: height_block),
+          SizedBox(height: height_block),
               top_welcome_text(context, "Welcome to FOODORA"),
               SizedBox(
                 height: 7.5 * height_block,

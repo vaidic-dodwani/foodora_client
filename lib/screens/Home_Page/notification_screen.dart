@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:foodora/config/api_links.dart';
 import 'package:foodora/designing.dart';
@@ -21,7 +23,7 @@ class _notification_screenState extends State<notification_screen> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             final orders = snapshot.data['orderhistory'];
-            if (orders != []) {
+            if (orders.isNotEmpty) {
               return Column(
                 children: [
                   Container(
@@ -191,7 +193,23 @@ class _notification_screenState extends State<notification_screen> {
                 ],
               );
             } else {
-              return Center(child: Text("Nothing in your history"));
+              return Column(
+                children: [
+                  SizedBox(height: 30 * height_block),
+                  Center(
+                      child: Text(
+                    "Try Ordering Food From Us :D",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: font_yellow_color,
+                        fontSize: 7 * width_block,
+                        fontFamily: "Montserrat",
+                        fontVariations: <FontVariation>[
+                          FontVariation('wght', 500)
+                        ]),
+                  )),
+                ],
+              );
             }
           } else
             return Center(child: CircularProgressIndicator());

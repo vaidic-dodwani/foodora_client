@@ -41,7 +41,7 @@ class _signin_screenState extends State<signin_screen> {
             children: [
               SizedBox(height: 2 * height_block),
               //
-              skip_button(context),
+              
               //
 
               //
