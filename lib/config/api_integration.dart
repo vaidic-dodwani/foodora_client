@@ -241,7 +241,7 @@ Future<List?>? search(String text) async {
   }
 }
 
-dynamic view_count(String foodname, String seller_id) async {
+Future<int> view_count(String foodname, String seller_id) async {
   try {
     final storage = new FlutterSecureStorage();
     final id = await storage.read(key: 'token');
@@ -261,6 +261,7 @@ dynamic view_count(String foodname, String seller_id) async {
     return output['count'];
   } catch (er) {
     log("error caught: " + er.toString());
+    return 0;
   }
 }
 
@@ -268,9 +269,6 @@ dynamic add_to_cart(String seller_id, String food_id) async {
   try {
     final storage = new FlutterSecureStorage();
     final id = await storage.read(key: 'access_token');
-
-    log(seller_id);
-    log(food_id);
 
     final response = await post(Uri.parse(add_to_cart_link),
         headers: <String, String>{
@@ -293,9 +291,6 @@ dynamic remove_from_cart(String seller_id, String food_id) async {
   try {
     final storage = new FlutterSecureStorage();
     final id = await storage.read(key: 'access_token');
-
-    log(seller_id);
-    log(food_id);
 
     final response = await post(Uri.parse(remove_from_cart_link),
         headers: <String, String>{
