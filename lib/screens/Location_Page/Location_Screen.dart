@@ -126,14 +126,14 @@ class _location_screenState extends State<location_screen> {
                     SizedBox(
                       height: 2 * height_block,
                     ),
-                    button_style("ORDER FOR A FRIEND", context, function: () {
+                    button_style("ENTER MANUALLY", context, function: () {
                       Navigator.pushNamed(context, app_routes.manual_location);
                     })
                   ],
                 ),
               ),
             ),
-          );
+          ); 
         } else {
           return loading_screen(context);
         }

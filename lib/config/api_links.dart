@@ -1,3 +1,5 @@
+import 'package:foodora/screens/Location_Page/manual_location.dart';
+
 final backend_link = "https://foodorabackend-production.up.railway.app/";
 final sign_in_link =
     "https://foodorabackend-production.up.railway.app/user/signin";
@@ -49,3 +51,6 @@ final checkout_link =
 
 final profile_link =
     "https://foodorabackend-production.up.railway.app/user/profileimage";
+
+final manual_location_link =
+    "https://foodorabackend-production.up.railway.app/user/locationbyaddress";

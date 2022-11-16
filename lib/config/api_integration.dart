@@ -177,6 +177,34 @@ dynamic location_info(double? lat, double? long) async {
   }
 }
 
+Future<dynamic> manual_location_api(String address, String pincode) async {
+  try {
+    final storage = new FlutterSecureStorage();
+    final id = await storage.read(key: 'token');
+    final token = await storage.read(key: 'access_token');
+    if (id == null) {
+      return {"error": "ID IS NULL BROO"};
+    }
+    log("Initialised Manual Location get");
+    final response = await post(Uri.parse(manual_location_link),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          HttpHeaders.authorizationHeader: token!,
+        },
+        body: jsonEncode(<String, dynamic>{
+          "user_id": id,
+          "addr": address,
+          "pincode": pincode
+        }));
+    final output = jsonDecode(response.body);
+
+    log("response of the manual location : " + output.toString());
+    return output;
+  } catch (er) {
+    log("error caught: " + er.toString());
+  }
+}
+
 Future<Map?> get_restaurant_feed() async {
   try {
     final storage = new FlutterSecureStorage();

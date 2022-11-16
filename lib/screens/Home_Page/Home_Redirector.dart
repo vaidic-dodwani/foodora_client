@@ -66,7 +66,7 @@ class _homepage_redirectorState extends State<homepage_redirector> {
                         Container(
                           width: 40 * width_block,
                           child: Text(
-                            user_info['address'].toString(),
+                            user_info['useraddress'].toString(),
                             style: TextStyle(
                                 fontFamily: "Montserrat",
                                 fontSize: 3 * width_block,

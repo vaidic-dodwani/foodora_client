@@ -4,7 +4,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:foodora/app_routes.dart';
+import 'package:foodora/config/api_integration.dart';
 import 'package:foodora/designing.dart';
+import 'package:foodora/screens/Home_Page/restrauntpage.dart';
+import 'package:http/http.dart';
 
 class manual_location extends StatefulWidget {
   const manual_location({super.key});
@@ -116,7 +119,7 @@ class _manual_locationState extends State<manual_location> {
                       ),
                     ),
                     SizedBox(height: 5 * height_block),
-                    button_style("Proceed", context, function: () {
+                    button_style("Proceed", context, function: () async {
                       if (!RegExp(r'^[0-9]+$').hasMatch(_pincontroller.text)) {
                         setState(() {
                           pinerr = "Invalid Pin Code";
@@ -136,9 +139,16 @@ class _manual_locationState extends State<manual_location> {
                         });
                       }
                       if (adderr == "" && pinerr == "") {
-                        log("Proceed");
-                        Navigator.pushReplacementNamed(
-                            context, app_routes.homepage_redirector);
+                        final response = await manual_location_api(
+                            _addresscontroller.text, _pincontroller.text);
+                        if (response['success']) {
+                          Navigator.pushReplacementNamed(
+                              context, app_routes.homepage_redirector);
+                        } else {
+                          setState(() {
+                            pinerr = response['msg'];
+                          });
+                        }
                       }
                     })
                   ],

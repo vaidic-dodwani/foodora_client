@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:ui';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:foodora/config/api_integration.dart';
 import 'package:foodora/designing.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class cart_screen extends StatefulWidget {
   const cart_screen({super.key});
@@ -15,6 +17,9 @@ class cart_screen extends StatefulWidget {
 class _cart_screenState extends State<cart_screen> {
   @override
   Widget build(BuildContext context) {
+    Razorpay _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     final size = MediaQuery.of(context).size;
     final width_block = size.width / 100;
     final height_block = size.height / 100;
@@ -205,15 +210,24 @@ class _cart_screenState extends State<cart_screen> {
                             height: 5 * height_block,
                             child: ElevatedButton(
                                 onPressed: () async {
-                                  final response = await checkout();
-                                  Fluttertoast.showToast(
-                                      msg: response['msg'],
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.CENTER,
-                                      backgroundColor: Colors.black,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0);
-                                  setState(() {});
+                                  try {
+                                    
+                                    var options = {
+                                      'key': 'rzp_test_sIdyvJkmfQigjO',
+                                      'amount': 10,
+                                      'name': 'Foodora.',
+                                      // 'order_id': 'order_EMBFqjDHEEn80l',
+                                      'description': 'Food from Foodora',
+                                      'timeout': 30,
+                                      'prefill': {
+                                        'contact': '8888888888',
+                                        'email': 'test@razorpay.com'
+                                      }
+                                    };
+                                    // _razorpay.open(options);
+                                  } catch (er) {
+                                    log(er.toString());
+                                  }
                                 },
                                 style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(
@@ -262,4 +276,25 @@ class _cart_screenState extends State<cart_screen> {
       },
     );
   }
+}
+
+void _handlePaymentSuccess(PaymentSuccessResponse response) async {
+  final response = checkout();
+  Fluttertoast.showToast(
+      msg: response['msg'],
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      backgroundColor: Colors.black,
+      textColor: Colors.white,
+      fontSize: 16.0);
+}
+
+void _handlePaymentError(PaymentFailureResponse response) {
+  Fluttertoast.showToast(
+      msg: "Failed! Please Retry",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      backgroundColor: Colors.black,
+      textColor: Colors.white,
+      fontSize: 16.0);
 }

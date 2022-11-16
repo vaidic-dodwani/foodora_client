@@ -90,6 +90,18 @@ class _profile_pageState extends State<profile_page> {
                         )
                       ],
                     ),
+                    Center(
+                        child: Text(
+                      _user_info['username'],
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: font_yellow_color,
+                          fontFamily: "Montserrat",
+                          fontSize: 4 * width_block,
+                          fontVariations: const <FontVariation>[
+                            FontVariation('wght', 700)
+                          ]),
+                    )),
                     SizedBox(
                       height: 5 * height_block,
                       child: _isloading

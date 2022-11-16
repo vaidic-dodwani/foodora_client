@@ -41,10 +41,6 @@ class _signin_screenState extends State<signin_screen> {
             children: [
               SizedBox(height: 2 * height_block),
               //
-              
-              //
-
-              //
               SvgPicture.asset(
                 "assets/images/logo.svg",
                 height: height_block * 37,
@@ -58,6 +54,7 @@ class _signin_screenState extends State<signin_screen> {
                 isEmail: true,
                 controller: emailController,
                 function: (String input_text) {
+                  input_text = input_text.trim();
                   if (input_text.isEmpty)
                     _isEmail = null;
                   else {
