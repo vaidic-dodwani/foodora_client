@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodora/app_routes.dart';
 import 'package:foodora/config/api_integration.dart';
 import 'package:foodora/designing.dart';
+import 'package:foodora/screens/Location_Page/manual_location.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:location/location.dart' as location_package;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -118,22 +119,33 @@ class _location_screenState extends State<location_screen> {
                             },
                           )
                         : SizedBox(
-                            width: 3 * height_block,
-                            height: 3 * height_block,
-                            child: const CircularProgressIndicator(
-                              color: font_red_color,
-                            )),
+                            height: 13 * width_block,
+                            child: Center(
+                              child: SizedBox(
+                                width: 3 * height_block,
+                                height: 3 * height_block,
+                                child: const CircularProgressIndicator(
+                                  color: font_red_color,
+                                ),
+                              ),
+                            ),
+                          ),
                     SizedBox(
                       height: 2 * height_block,
                     ),
-                    button_style("ENTER MANUALLY", context, function: () {
-                      Navigator.pushNamed(context, app_routes.manual_location);
-                    })
+                    (IsLoading != null || IsLoading == false)
+                        ? SizedBox(
+                            height: 5,
+                          )
+                        : button_style("ENTER MANUALLY", context, function: () {
+                            Navigator.pushNamed(
+                                context, app_routes.manual_location);
+                          })
                   ],
                 ),
               ),
             ),
-          ); 
+          );
         } else {
           return loading_screen(context);
         }

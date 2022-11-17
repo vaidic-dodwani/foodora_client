@@ -54,3 +54,6 @@ final profile_link =
 
 final manual_location_link =
     "https://foodorabackend-production.up.railway.app/user/locationbyaddress";
+
+final food_list_link =
+    "https://foodorabackend-production.up.railway.app/user/category";

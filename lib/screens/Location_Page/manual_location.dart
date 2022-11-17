@@ -21,6 +21,7 @@ TextEditingController _addresscontroller = new TextEditingController();
 TextEditingController _pincontroller = new TextEditingController();
 String pinerr = " ";
 String adderr = " ";
+bool isloading = false;
 
 class _manual_locationState extends State<manual_location> {
   @override
@@ -37,7 +38,6 @@ class _manual_locationState extends State<manual_location> {
             backgroundColor: background_color,
             body: SingleChildScrollView(
               child: Container(
-                height: size.height,
                 width: size.width,
                 decoration: background_design(),
                 child: Column(
@@ -119,38 +119,56 @@ class _manual_locationState extends State<manual_location> {
                       ),
                     ),
                     SizedBox(height: 5 * height_block),
-                    button_style("Proceed", context, function: () async {
-                      if (!RegExp(r'^[0-9]+$').hasMatch(_pincontroller.text)) {
-                        setState(() {
-                          pinerr = "Invalid Pin Code";
-                        });
-                      } else {
-                        setState(() {
-                          pinerr = "";
-                        });
-                      }
-                      if (_addresscontroller.text.length < 10) {
-                        setState(() {
-                          adderr = "Enter Full Address";
-                        });
-                      } else {
-                        setState(() {
-                          adderr = "";
-                        });
-                      }
-                      if (adderr == "" && pinerr == "") {
-                        final response = await manual_location_api(
-                            _addresscontroller.text, _pincontroller.text);
-                        if (response['success']) {
-                          Navigator.pushReplacementNamed(
-                              context, app_routes.homepage_redirector);
-                        } else {
-                          setState(() {
-                            pinerr = response['msg'];
-                          });
-                        }
-                      }
-                    })
+                    isloading
+                        ? SizedBox(
+                            height: 3 * height_block,
+                            width: 3 * height_block,
+                            child: CircularProgressIndicator(
+                              color: font_red_color,
+                            ),
+                          )
+                        : button_style("Proceed", context, function: () async {
+                            if (!RegExp(r'^[0-9]+$')
+                                .hasMatch(_pincontroller.text)) {
+                              setState(() {
+                                pinerr = "Invalid Pin Code";
+                              });
+                            } else {
+                              setState(() {
+                                pinerr = "";
+                              });
+                            }
+                            if (_addresscontroller.text.length < 10) {
+                              setState(() {
+                                adderr = "Enter Full Address";
+                              });
+                            } else {
+                              setState(() {
+                                adderr = "";
+                              });
+                            }
+                            if (adderr == "" && pinerr == "") {
+                              setState(() {
+                                isloading = true;
+                              });
+                              final response = await manual_location_api(
+                                  _addresscontroller.text, _pincontroller.text);
+
+                              await put_user_info();
+
+                              setState(() {
+                                isloading = false;
+                              });
+                              if (response['success']) {
+                                Navigator.pushReplacementNamed(
+                                    context, app_routes.homepage_redirector);
+                              } else {
+                                setState(() {
+                                  pinerr = response['msg'];
+                                });
+                              }
+                            }
+                          })
                   ],
                 ),
               ),

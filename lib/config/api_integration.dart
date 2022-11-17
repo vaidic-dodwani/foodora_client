@@ -157,7 +157,7 @@ dynamic location_info(double? lat, double? long) async {
     if (id == null) {
       return {"error": "ID IS NULL BROO"};
     }
-    log("Initialised Location get");
+    log("Initialised Location get for ${lat} and ${long}");
     final response = await post(Uri.parse(location_link),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -224,6 +224,56 @@ Future<Map?> get_restaurant_feed() async {
     return output;
   } catch (er) {
     log("error caught: " + er.toString());
+  }
+}
+
+Future<Map?> get_food_feed(int category_index) async {
+  try {
+    String category;
+    switch (category_index) {
+      case 0:
+        category = 'all';
+        break;
+      case 1:
+        category = 'burger';
+        break;
+      case 2:
+        category = 'pizza';
+        break;
+      case 3:
+        category = 'noodles';
+        break;
+      case 4:
+        category = 'deserts';
+        break;
+      case 5:
+        category = 'beverages';
+        break;
+      default:
+        category = "others";
+        break;
+    }
+
+    final storage = new FlutterSecureStorage();
+
+    String? id = await storage.read(key: 'access_token');
+    log("Food Category of: " + category);
+    log("token- " + id!);
+    final response = await post(Uri.parse(food_list_link),
+        headers: {
+          HttpHeaders.authorizationHeader: id!,
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          "category": category,
+        }));
+
+    final Map output = jsonDecode(response.body);
+    log("response of the food feed : " + output.toString());
+
+    return output;
+  } catch (er) {
+    log("error caught in food feed: " + er.toString());
   }
 }
 

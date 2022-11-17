@@ -813,28 +813,26 @@ Widget category_list(context, category_tap_function(int index),
 
   var icons = [
     Icons.room_service_sharp,
-    Icons.fastfood_sharp,
-    Icons.cake_sharp,
-    Icons.local_pizza_sharp,
     Icons.lunch_dining_sharp,
+    Icons.local_pizza_sharp,
     Icons.ramen_dining_sharp,
-    Icons.set_meal_sharp,
-    Icons.soup_kitchen_sharp
+    Icons.cake_sharp,
+    Icons.fastfood_sharp,
+    Icons.local_dining_sharp,
   ];
   var description = [
     "All",
-    "FastFood",
-    "Cake",
-    "Pizza",
     "Burger",
+    "Pizza",
     "Noodles",
-    "Fish",
-    "Soup"
+    "Deserts",
+    "Beverages",
+    "Others",
   ];
   return SizedBox(
     height: size.height > 460 ? 12 * height_block : 460 * 0.12,
     child: ListView.builder(
-      itemCount: 8,
+      itemCount: 7,
       scrollDirection: Axis.horizontal,
       itemBuilder: (BuildContext context, int index) {
         return Padding(
@@ -878,132 +876,128 @@ Widget category_list(context, category_tap_function(int index),
   );
 }
 
-Widget food_suggested_list(context) {
+Widget food_suggested_list(context, active_category) {
   final size = MediaQuery.of(context).size;
   final width_block = size.width / 100;
   final height_block = size.height / 100;
 
-  var images_path = [
-    "assets/images/food_items/item1.png",
-    "assets/images/food_items/item2.png",
-    "assets/images/food_items/item3.png",
-    "assets/images/food_items/item4.png",
-    "assets/images/food_items/item5.png",
-    "assets/images/food_items/item6.png",
-    "assets/images/food_items/item7.png",
-    "assets/images/food_items/item8.png",
-    "assets/images/food_items/item9.png",
-  ];
-
-  var description = [
-    "All",
-    "FastFood",
-    "Cake",
-    "Pizza",
-    "Burger",
-    "Noodles",
-    "Fish",
-    "Soup",
-    "Rice"
-  ];
-  var ratings = [
-    3.6,
-    4.5,
-    1.6,
-    4,
-    2.3,
-    1.6,
-    2.6,
-    4,
-    6,
-  ];
-  return GestureDetector(
-    onTap: () {
-      Navigator.pushNamed(context, app_routes.food_description);
-    },
-    child: SizedBox(
-      height: size.height > 510 ? 30 * height_block : 510 * 0.3,
-      child: ListView.builder(
-        itemCount: 9,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            margin: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: card_background_color,
-            ),
-            width: 40 * width_block,
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      images_path[index],
-                      height:
-                          size.height > 500 ? 15 * height_block : 500 * 0.15,
-                      fit: BoxFit.fill,
+  return FutureBuilder(
+    future: get_food_feed(active_category),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.done) {
+        dynamic feed = snapshot.data;
+        feed = feed['resultcategory'];
+        if (feed.isNotEmpty) {
+          return SizedBox(
+            height: size.height > 510 ? 30 * height_block : 510 * 0.3,
+            child: ListView.builder(
+              itemCount: feed.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, app_routes.food_description,
+                        arguments: [feed[index]['sellerid'], feed[index]]);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: card_background_color,
                     ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      description[index],
-                      style: const TextStyle(
-                        fontFamily: "Montserrat",
-                        fontVariations: <FontVariation>[
-                          FontVariation('wght', 500)
+                    width: 40 * width_block,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(
+                              backend_link + feed[index]['imgpath'],
+                              height: size.height > 500
+                                  ? 15 * height_block
+                                  : 500 * 0.15,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              feed[index]['foodname'].toUpperCase(),
+                              style: TextStyle(
+                                fontFamily: "Montserrat",
+                                fontSize: 4 * width_block,
+                                fontVariations: <FontVariation>[
+                                  FontVariation('wght', 500)
+                                ],
+                              ),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 1.5, horizontal: 5),
+                                decoration: BoxDecoration(
+                                    color: rating_background_color,
+                                    border: Border.all(color: Colors.green),
+                                    borderRadius: BorderRadius.circular(50)),
+                                child: Row(children: [
+                                  Text(
+                                    feed[index]['food_rating'].toString(),
+                                    style: TextStyle(
+                                      fontSize: 4 * width_block,
+                                      color: Colors.white,
+                                      fontFamily: "Montserrat",
+                                      fontVariations: <FontVariation>[
+                                        FontVariation('wght', 500)
+                                      ],
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.star_border_sharp,
+                                    color: Colors.white,
+                                  )
+                                ]),
+                              ),
+                            ],
+                          )
                         ],
                       ),
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 1.5, horizontal: 5),
-                        decoration: BoxDecoration(
-                            color: rating_background_color,
-                            border: Border.all(color: Colors.green),
-                            borderRadius: BorderRadius.circular(50)),
-                        child: Row(children: [
-                          Text(
-                            ratings[index].toString(),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontFamily: "Montserrat",
-                              fontVariations: <FontVariation>[
-                                FontVariation('wght', 500)
-                              ],
-                            ),
-                          ),
-                          const Icon(
-                            Icons.star_border_sharp,
-                            color: Colors.white,
-                          )
-                        ]),
-                      ),
-                      IconButton(
-                          padding: EdgeInsets.all(2),
-                          constraints: BoxConstraints(),
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.add_circle_outline_sharp,
-                            color: rating_background_color,
-                          ))
-                    ],
-                  )
-                ],
+                );
+              },
+            ),
+          );
+        } else {
+          return SizedBox(
+            height: size.height > 510 ? 30 * height_block : 510 * 0.3,
+            child: Center(
+              child: Text(
+                "No Food Broo",
+                style: TextStyle(
+                    color: font_yellow_color,
+                    fontSize: 5 * width_block,
+                    fontFamily: "Montserrat",
+                    fontVariations: <FontVariation>[
+                      FontVariation('wght', 500),
+                    ]),
               ),
             ),
           );
-        },
-      ),
-    ),
+        }
+      } else {
+        return SizedBox(
+          height: size.height > 510 ? 30 * height_block : 510 * 0.3,
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      }
+    },
   );
 }
 

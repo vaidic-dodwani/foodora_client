@@ -10,6 +10,7 @@ import 'package:foodora/screens/Home_Page/Home_Screen.dart';
 import 'package:foodora/screens/Home_Page/cart_screen.dart';
 import 'package:foodora/screens/Home_Page/notification_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 
 class homepage_redirector extends StatefulWidget {
   const homepage_redirector({super.key});
@@ -218,13 +219,19 @@ class _homepage_redirectorState extends State<homepage_redirector> {
                   ),
                 ),
               ),
-              body: screen_returner(_screen),
+              body: DoubleBackToCloseApp(
+                child: screen_returner(_screen),
+                snackBar: SnackBar(
+                  content: Text("Press Back To Leave"),
+                ),
+              ),
               bottomNavigationBar: BottomNavigationBar(
                   backgroundColor: nav_bar_color,
                   selectedItemColor: Colors.white,
                   unselectedItemColor: Colors.white,
                   iconSize: 24,
-                  showSelectedLabels: false,
+                  selectedIconTheme: IconThemeData(color: font_yellow_color),
+                  showSelectedLabels: true,
                   showUnselectedLabels: false,
                   type: BottomNavigationBarType.fixed,
                   currentIndex: _screen,

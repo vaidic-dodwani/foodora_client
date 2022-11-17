@@ -78,14 +78,14 @@ class _food_descriptionState extends State<food_description> {
                                     padding:
                                         EdgeInsets.only(top: 5 * width_block),
                                     child: Text(
-                                      food_info['foodname'],
+                                      food_info['foodname'].toUpperCase(),
                                       style: TextStyle(
                                           fontFamily: "Montserrat",
                                           fontVariations: const <FontVariation>[
                                             FontVariation('wght', 500)
                                           ],
                                           color: font_yellow_color,
-                                          fontSize: 7.5 * width_block),
+                                          fontSize: 6 * width_block),
                                     ),
                                   ),
                                 ),
