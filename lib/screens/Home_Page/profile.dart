@@ -17,7 +17,6 @@ class profile_page extends StatefulWidget {
 
 class _profile_pageState extends State<profile_page> {
   String _password_error_line = "";
-  String _button_msg = "Submit";
   bool _isloading = false;
   dynamic _user_info;
   final ImagePicker _picker = ImagePicker();
@@ -91,6 +90,18 @@ class _profile_pageState extends State<profile_page> {
                         )
                       ],
                     ),
+                    Center(
+                        child: Text(
+                      _user_info['username'],
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: font_yellow_color,
+                          fontFamily: "Montserrat",
+                          fontSize: 4 * width_block,
+                          fontVariations: const <FontVariation>[
+                            FontVariation('wght', 700)
+                          ]),
+                    )),
                     SizedBox(
                       height: 5 * height_block,
                       child: _isloading
@@ -108,26 +119,37 @@ class _profile_pageState extends State<profile_page> {
                   ],
                 ),
               ),
-              Container(
-                width: 100 * width_block,
-                height: 5 * height_block,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    if (_profile_image != null) {
-                      File profile_file = File(_profile_image!.path);
-                      final response = await profile_photo_update(profile_file);
+              !_isloading
+                  ? Container(
+                      width: 100 * width_block,
+                      height: 5 * height_block,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (_profile_image != null) {
+                            setState(() {
+                              _isloading = true;
+                            });
+                            File profile_file = File(_profile_image!.path);
+                            final response =
+                                await profile_photo_update(profile_file);
+                            setState(() {
+                              _isloading = false;
+                            });
 
-                      await put_user_info();
-                      Navigator.pop(context);
-                    }
-                    setState(() {});
-                  },
-                  child: Text(_button_msg),
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(font_red_color)),
-                ),
-              )
+                            await put_user_info();
+                            Navigator.pop(context);
+                          }
+                          setState(() {});
+                        },
+                        child: Text("Submit"),
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(font_red_color)),
+                      ),
+                    )
+                  : SizedBox(
+                      height: 5,
+                    )
             ],
           ),
         ),

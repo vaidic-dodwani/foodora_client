@@ -112,7 +112,7 @@ class _otp_verify_screenState extends State<otp_verify_screen> {
                         value: JwtDecoder.decode(response['accesstoken'])['id']
                             .toString());
 
-                    put_user_info();
+                    await put_user_info();
 
                     Navigator.pushReplacementNamed(
                         context, app_routes.redirector);

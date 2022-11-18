@@ -149,6 +149,25 @@ Future<Map?> get_user_info() async {
   }
 }
 
+Future<Map?> get_past_orders() async {
+  try {
+    final storage = new FlutterSecureStorage();
+    String? id = await storage.read(key: 'access_token');
+    log("Initialised Orders get for: " + id!);
+    final response =
+        await get(Uri.parse(user_orders_link), headers: <String, String>{
+      HttpHeaders.authorizationHeader: id!,
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
+    final Map output = jsonDecode(response.body);
+    log("response of the Orders : " + output.toString());
+    return output;
+  } catch (er) {
+    log("error caught: " + er.toString());
+    return Map();
+  }
+}
+
 dynamic location_info(double? lat, double? long) async {
   try {
     final storage = new FlutterSecureStorage();
@@ -157,7 +176,7 @@ dynamic location_info(double? lat, double? long) async {
     if (id == null) {
       return {"error": "ID IS NULL BROO"};
     }
-    log("Initialised Location get");
+    log("Initialised Location get for ${lat} and ${long}");
     final response = await post(Uri.parse(location_link),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -171,6 +190,34 @@ dynamic location_info(double? lat, double? long) async {
     final output = jsonDecode(response.body);
 
     log("response of the location : " + output.toString());
+    return output;
+  } catch (er) {
+    log("error caught: " + er.toString());
+  }
+}
+
+Future<dynamic> manual_location_api(String address, String pincode) async {
+  try {
+    final storage = new FlutterSecureStorage();
+    final id = await storage.read(key: 'token');
+    final token = await storage.read(key: 'access_token');
+    if (id == null) {
+      return {"error": "ID IS NULL BROO"};
+    }
+    log("Initialised Manual Location get");
+    final response = await post(Uri.parse(manual_location_link),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          HttpHeaders.authorizationHeader: token!,
+        },
+        body: jsonEncode(<String, dynamic>{
+          "user_id": id,
+          "addr": address,
+          "pincode": pincode
+        }));
+    final output = jsonDecode(response.body);
+
+    log("response of the manual location : " + output.toString());
     return output;
   } catch (er) {
     log("error caught: " + er.toString());
@@ -196,6 +243,59 @@ Future<Map?> get_restaurant_feed() async {
     return output;
   } catch (er) {
     log("error caught: " + er.toString());
+  }
+}
+
+Future<Map?> get_food_feed(int category_index) async {
+  try {
+    String category;
+    switch (category_index) {
+      case 0:
+        category = 'all';
+        break;
+      case 1:
+        category = 'burger';
+        break;
+      case 2:
+        category = 'pizza';
+        break;
+      case 3:
+        category = 'noodles';
+        break;
+      case 4:
+        category = 'dessert';
+        break;
+      case 5:
+        category = 'beverages';
+        break;
+      case 6:
+        category = 'indian';
+        break;
+      default:
+        category = "others";
+        break;
+    }
+
+    final storage = new FlutterSecureStorage();
+
+    String? id = await storage.read(key: 'access_token');
+    log("Food Category of: " + category);
+    log("token- " + id!);
+    final response = await post(Uri.parse(food_list_link),
+        headers: {
+          HttpHeaders.authorizationHeader: id,
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          "category": category,
+        }));
+
+    final Map output = jsonDecode(response.body);
+    log("response of the food feed : " + output.toString());
+
+    return output;
+  } catch (er) {
+    log("error caught in food feed: " + er.toString());
   }
 }
 
@@ -241,7 +341,7 @@ Future<List?>? search(String text) async {
   }
 }
 
-dynamic view_count(String foodname, String seller_id) async {
+Future<int> view_count(String foodname, String seller_id) async {
   try {
     final storage = new FlutterSecureStorage();
     final id = await storage.read(key: 'token');
@@ -261,6 +361,7 @@ dynamic view_count(String foodname, String seller_id) async {
     return output['count'];
   } catch (er) {
     log("error caught: " + er.toString());
+    return 0;
   }
 }
 
@@ -268,9 +369,6 @@ dynamic add_to_cart(String seller_id, String food_id) async {
   try {
     final storage = new FlutterSecureStorage();
     final id = await storage.read(key: 'access_token');
-
-    log(seller_id);
-    log(food_id);
 
     final response = await post(Uri.parse(add_to_cart_link),
         headers: <String, String>{
@@ -293,9 +391,6 @@ dynamic remove_from_cart(String seller_id, String food_id) async {
   try {
     final storage = new FlutterSecureStorage();
     final id = await storage.read(key: 'access_token');
-
-    log(seller_id);
-    log(food_id);
 
     final response = await post(Uri.parse(remove_from_cart_link),
         headers: <String, String>{
@@ -350,6 +445,24 @@ dynamic checkout() async {
         body: jsonEncode(<String, String>{"_id": id}));
     final Map output = jsonDecode(response.body);
     log("checkout : " + output.toString());
+    return output;
+  } catch (er) {
+    log("error caught: " + er.toString());
+  }
+}
+
+dynamic user_orders() async {
+  try {
+    final storage = new FlutterSecureStorage();
+    String? id = await storage.read(key: 'access_token');
+    log("Initialised Order Get For: " + id!);
+    final response =
+        await get(Uri.parse(checkout_link), headers: <String, String>{
+      HttpHeaders.authorizationHeader: id,
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
+    final Map output = jsonDecode(response.body);
+    log("user_orders : " + output.toString());
     return output;
   } catch (er) {
     log("error caught: " + er.toString());
