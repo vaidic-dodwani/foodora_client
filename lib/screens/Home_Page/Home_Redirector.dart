@@ -245,7 +245,7 @@ class _homepage_redirectorState extends State<homepage_redirector> {
                     BottomNavigationBarItem(
                         icon: Icon(Icons.shopping_cart_sharp), label: ""),
                     BottomNavigationBarItem(
-                        icon: Icon(Icons.notifications), label: ""),
+                        icon: Icon(Icons.history_sharp), label: ""),
                   ],
                   onTap: (int s) {
                     setState(() {
