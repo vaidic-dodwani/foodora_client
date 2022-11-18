@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'dart:ui';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
@@ -211,20 +212,57 @@ class _cart_screenState extends State<cart_screen> {
                             child: ElevatedButton(
                                 onPressed: () async {
                                   try {
-                                    
-                                    var options = {
-                                      'key': 'rzp_test_sIdyvJkmfQigjO',
-                                      'amount': 10,
-                                      'name': 'Foodora.',
-                                      // 'order_id': 'order_EMBFqjDHEEn80l',
-                                      'description': 'Food from Foodora',
-                                      'timeout': 30,
-                                      'prefill': {
-                                        'contact': '8888888888',
-                                        'email': 'test@razorpay.com'
-                                      }
-                                    };
-                                    // _razorpay.open(options);
+                                    Future<void> generate_ODID() async {
+                                      var orderOptions = {
+                                        'amount': (total_cost * 118)
+                                            .round()
+                                            .toDouble(),
+                                        'currency': "INR",
+                                        'receipt': "order_rcptid_11"
+                                      };
+                                      final client = HttpClient();
+                                      final request = await client.postUrl(
+                                          Uri.parse(
+                                              'https://api.razorpay.com/v1/orders'));
+                                      request.headers.set(
+                                          HttpHeaders.contentTypeHeader,
+                                          "application/json; charset=UTF-8");
+                                      String basicAuth = 'Basic ' +
+                                          base64Encode(utf8.encode(
+                                              '${'rzp_test_sIdyvJkmfQigjO'}:${'CytHfdmSZuXebRA7VO4Oujmr'}'));
+                                      request.headers.set(
+                                          HttpHeaders.authorizationHeader,
+                                          basicAuth);
+                                      request.add(utf8
+                                          .encode(json.encode(orderOptions)));
+                                      final response = await request.close();
+                                      response
+                                          .transform(utf8.decoder)
+                                          .listen((contents) {
+                                        String orderId = contents
+                                            .split(',')[0]
+                                            .split(":")[1];
+                                        orderId = orderId.substring(
+                                            1, orderId.length - 1);
+
+                                        Map<String, dynamic> checkoutOptions = {
+                                          'key': 'rzp_test_sIdyvJkmfQigjO',
+                                          'amount': (total_cost * 118)
+                                              .round()
+                                              .toDouble(),
+                                          'name': 'Demo',
+                                          'description': 'Foodora Food',
+                                        };
+                                        try {
+                                          log("opening.............");
+                                          _razorpay.open(checkoutOptions);
+                                        } catch (e) {
+                                          print(e.toString());
+                                        }
+                                      });
+                                    }
+
+                                    generate_ODID();
                                   } catch (er) {
                                     log(er.toString());
                                   }
@@ -279,7 +317,7 @@ class _cart_screenState extends State<cart_screen> {
 }
 
 void _handlePaymentSuccess(PaymentSuccessResponse response) async {
-  final response = checkout();
+  final response = await checkout();
   Fluttertoast.showToast(
       msg: response['msg'],
       toastLength: Toast.LENGTH_SHORT,

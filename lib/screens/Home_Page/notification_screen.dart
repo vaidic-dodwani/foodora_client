@@ -71,7 +71,7 @@ class _notification_screenState extends State<notification_screen> {
                                                   ['rating']
                                               .toDouble();
                                           return Container(
-                                              height: 5 * height_block,
+                                              height: 8 * height_block,
                                               decoration: BoxDecoration(
                                                   color: Colors.white,
                                                   borderRadius:
@@ -134,18 +134,31 @@ class _notification_screenState extends State<notification_screen> {
                                   ),
                                 ),
                                 Expanded(
-                                  child: Center(
-                                    child: Text(
-                                        orders[index]['status']
-                                            .toString()
-                                            .toUpperCase(),
-                                        style: TextStyle(
-                                            color: font_yellow_color,
-                                            fontFamily: 'Montserrat',
-                                            fontSize: 6 * width_block,
-                                            fontVariations: <FontVariation>[
-                                              FontVariation('wght', 600)
-                                            ])),
+                                  child: Container(
+                                    color: (orders[index]['status']
+                                                .toString()
+                                                .toUpperCase() ==
+                                            "ACCEPTED")
+                                        ? Colors.green
+                                        : (orders[index]['status']
+                                                    .toString()
+                                                    .toUpperCase() ==
+                                                "REJECTED")
+                                            ? Colors.red
+                                            : Colors.transparent,
+                                    child: Center(
+                                      child: Text(
+                                          orders[index]['status']
+                                              .toString()
+                                              .toUpperCase(),
+                                          style: TextStyle(
+                                              color: font_yellow_color,
+                                              fontFamily: 'Montserrat',
+                                              fontSize: 6 * width_block,
+                                              fontVariations: <FontVariation>[
+                                                FontVariation('wght', 600)
+                                              ])),
+                                    ),
                                   ),
                                 )
                               ],

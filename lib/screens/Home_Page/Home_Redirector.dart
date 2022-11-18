@@ -124,113 +124,39 @@ class _homepage_redirectorState extends State<homepage_redirector> {
                               color: Colors.grey.withOpacity(0.05)),
                         ),
                       ),
-                    ],
-                  );
-                })
-              ],
-            ),
-            drawer: Container(
-              width: size.width,
-              child: Theme(
-                data:
-                    Theme.of(context).copyWith(canvasColor: Colors.transparent),
-                child: Drawer(
-                  child: Stack(children: [
-                    BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                      child: Container(
-                        decoration:
-                            BoxDecoration(color: Colors.grey.withOpacity(0.05)),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 5 * width_block),
-                      child: Container(
-                        width: 65 * width_block,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 5 * height_block),
-                            IconButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                icon: const Icon(
-                                  Icons.close,
-                                  color: Colors.white,
-                                )),
-                            SizedBox(height: height_block),
-                            CircleAvatar(
-                                backgroundColor: Colors.white,
-                                radius: 32,
-                                backgroundImage: NetworkImage(
-                                    backend_link + user_info['imagepath'])),
-                            SizedBox(height: height_block),
-                            Text(
-                              user_info['username'],
-                              style: TextStyle(
-                                  fontSize: 8 * width_block,
-                                  fontFamily: "Montserrat",
-                                  color: Colors.white70,
-                                  fontVariations: const <FontVariation>[
-                                    FontVariation('wght', 400)
-                                  ]),
-                            ),
-                            Container(
-                              child: Column(
-                                children: [
-                                  Navbar_Item(
-                                      context,
-                                      Icons.person_outline_sharp,
-                                      "Upload Photo", () async {
-                                    log("Profileeee");
-                                    if (user_info['username'] == "Guest User") {
-                                    } else {
-                                      Navigator.pushNamed(
-                                          context, app_routes.profile_page);
-                                    }
-                                  }),
-                                  const Divider(
-                                    thickness: 0.5,
+                      Padding(
+                        padding: EdgeInsets.only(left: 5 * width_block),
+                        child: Container(
+                          width: 65 * width_block,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 5 * height_block),
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  icon: const Icon(
+                                    Icons.close,
                                     color: Colors.white,
-                                  ),
-                                  Navbar_Item(
-                                      context,
-                                      Icons.privacy_tip_outlined,
-                                      "Privacy Policy", () {
-                                    log("Privacy Policy");
-                                    Navigator.pushNamed(
-                                          context, app_routes.privacy);
-                                  }),
-                                  const Divider(
-                                    thickness: 0.5,
-                                    color: Colors.white,
-                                  ),
-                                  Navbar_Item(
-                                      context,
-                                      Icons.sticky_note_2_outlined,
-                                      "About", () {
-                                    log("About");
-                                    Navigator.pushNamed(
-                                          context, app_routes.about);
-                                  }),
-                                  SizedBox(
-                                    height: 10 * height_block,
-                                  ),
-                                  Navbar_Item(context, Icons.arrow_back_sharp,
-                                      "Signout", () async {
-                                    await storage.deleteAll();
-                                    SharedPreferences preferences =
-                                        await SharedPreferences.getInstance();
-                                    await preferences.clear();
-                                    Navigator.pushReplacementNamed(
-                                        context, app_routes.auth_choice);
-                                  }),
-                                  SizedBox(
-                                    height: 10 * height_block,
-                                  ),
-                                ],
+                                  )),
+                              SizedBox(height: height_block),
+                              CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  radius: 32,
+                                  backgroundImage: NetworkImage(
+                                      backend_link + user_info['imagepath'])),
+                              SizedBox(height: height_block),
+                              Text(
+                                user_info['username'],
+                                style: TextStyle(
+                                    fontSize: 8 * width_block,
+                                    fontFamily: "Montserrat",
+                                    color: Colors.white70,
+                                    fontVariations: const <FontVariation>[
+                                      FontVariation('wght', 400)
+                                    ]),
                               ),
                               Container(
                                 child: Column(
@@ -256,6 +182,8 @@ class _homepage_redirectorState extends State<homepage_redirector> {
                                         Icons.privacy_tip_outlined,
                                         "Privacy Policy", () {
                                       log("Privacy Policy");
+                                      Navigator.pushNamed(
+                                          context, app_routes.privacy);
                                     }),
                                     const Divider(
                                       thickness: 0.5,
@@ -266,6 +194,8 @@ class _homepage_redirectorState extends State<homepage_redirector> {
                                         Icons.sticky_note_2_outlined,
                                         "About", () {
                                       log("About");
+                                      Navigator.pushNamed(
+                                          context, app_routes.about);
                                     }),
                                     SizedBox(
                                       height: 10 * height_block,
@@ -315,7 +245,7 @@ class _homepage_redirectorState extends State<homepage_redirector> {
                     BottomNavigationBarItem(
                         icon: Icon(Icons.shopping_cart_sharp), label: ""),
                     BottomNavigationBarItem(
-                        icon: Icon(Icons.notifications), label: ""),
+                        icon: Icon(Icons.history_sharp), label: ""),
                   ],
                   onTap: (int s) {
                     setState(() {
