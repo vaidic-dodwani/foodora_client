@@ -8,7 +8,9 @@ import 'package:foodora/screens/Auth_Page/forget_pass_verify_screen.dart';
 import 'package:foodora/screens/Auth_Page/otp_verify_screen.dart';
 import 'package:foodora/screens/Home_Page/Home_Redirector.dart';
 import 'package:foodora/screens/Home_Page/Search_Screen.dart';
+import 'package:foodora/screens/Home_Page/about.dart';
 import 'package:foodora/screens/Home_Page/food_description.dart';
+import 'package:foodora/screens/Home_Page/privacy.dart';
 import 'package:foodora/screens/Home_Page/profile.dart';
 import 'package:foodora/screens/Home_Page/restrauntpage.dart';
 import 'package:foodora/screens/Location_Page/location_screen.dart';
@@ -30,6 +32,8 @@ class app_routes {
   static const profile_page = '/profile_page';
   static const restraunt_page = '/restraunt_page';
   static const search_screen = '/search_screen';
+  static const privacy = '/privacy';
+  static const about = '/about';
   static const manual_location = '/manual_location';
 }
 
@@ -39,6 +43,16 @@ Route? getRoute(RouteSettings settings) {
       return MaterialPageRoute(
         settings: settings,
         builder: (context) => const auth_choice(),
+      );
+      case app_routes.about:
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (context) => const About(),
+      );
+      case app_routes.privacy:
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (context) => const Privacy(),
       );
     case app_routes.signin_screen:
       return MaterialPageRoute(
