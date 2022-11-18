@@ -149,6 +149,25 @@ Future<Map?> get_user_info() async {
   }
 }
 
+Future<Map?> get_past_orders() async {
+  try {
+    final storage = new FlutterSecureStorage();
+    String? id = await storage.read(key: 'access_token');
+    log("Initialised Orders get for: " + id!);
+    final response =
+        await get(Uri.parse(user_orders_link), headers: <String, String>{
+      HttpHeaders.authorizationHeader: id!,
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
+    final Map output = jsonDecode(response.body);
+    log("response of the Orders : " + output.toString());
+    return output;
+  } catch (er) {
+    log("error caught: " + er.toString());
+    return Map();
+  }
+}
+
 dynamic location_info(double? lat, double? long) async {
   try {
     final storage = new FlutterSecureStorage();
@@ -426,6 +445,24 @@ dynamic checkout() async {
         body: jsonEncode(<String, String>{"_id": id}));
     final Map output = jsonDecode(response.body);
     log("checkout : " + output.toString());
+    return output;
+  } catch (er) {
+    log("error caught: " + er.toString());
+  }
+}
+
+dynamic user_orders() async {
+  try {
+    final storage = new FlutterSecureStorage();
+    String? id = await storage.read(key: 'access_token');
+    log("Initialised Order Get For: " + id!);
+    final response =
+        await get(Uri.parse(checkout_link), headers: <String, String>{
+      HttpHeaders.authorizationHeader: id,
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
+    final Map output = jsonDecode(response.body);
+    log("user_orders : " + output.toString());
     return output;
   } catch (er) {
     log("error caught: " + er.toString());

@@ -2,6 +2,8 @@ import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_stars/flutter_rating_stars.dart';
+import 'package:foodora/config/api_integration.dart';
 import 'package:foodora/config/api_links.dart';
 import 'package:foodora/designing.dart';
 
@@ -20,10 +22,10 @@ class _notification_screenState extends State<notification_screen> {
     final height_block = size.height / 100;
     return SingleChildScrollView(
       child: FutureBuilder(
-        future: userinfograbber(),
+        future: get_past_orders(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            final orders = snapshot.data['orderhistory'];
+            final orders = snapshot.data!['orders'];
             if (orders.isNotEmpty) {
               return SingleChildScrollView(
                 child: Container(
@@ -59,11 +61,17 @@ class _notification_screenState extends State<notification_screen> {
                                       vertical: 18.0),
                                   child: SingleChildScrollView(
                                     child: Container(
-                                      height: 30 * height_block,
+                                      height: 25 * height_block,
                                       child: ListView.builder(
-                                        itemCount: orders[index].length,
+                                        itemCount:
+                                            orders[index]['order'].length,
                                         itemBuilder: (context, food_number) {
+                                          double _rating = orders[index]
+                                                      ['order'][food_number]
+                                                  ['rating']
+                                              .toDouble();
                                           return Container(
+                                              height: 5 * height_block,
                                               decoration: BoxDecoration(
                                                   color: Colors.white,
                                                   borderRadius:
@@ -79,11 +87,13 @@ class _notification_screenState extends State<notification_screen> {
                                                         const EdgeInsets.all(
                                                             8.0),
                                                     child: Text(
-                                                      orders[index][food_number]
+                                                      orders[index]['order'][
+                                                                      food_number]
                                                                   ['quantity']
                                                               .toString() +
                                                           ' X ' +
-                                                          orders[index][
+                                                          orders[index]['order']
+                                                                      [
                                                                       food_number]
                                                                   ['foodname']
                                                               .toUpperCase(),
@@ -103,10 +113,18 @@ class _notification_screenState extends State<notification_screen> {
                                                       padding:
                                                           const EdgeInsets.all(
                                                               8.0),
-                                                      child: Text(
-                                                          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
+                                                      child: RatingStars(
+                                                        value: _rating,
+                                                        valueLabelVisibility:
+                                                            false,
+                                                        onValueChanged:
+                                                            (value) {
+                                                          if (_rating == 0) {
+                                                            log("Rateing me bro? that to with ${value}");
+                                                          }
+                                                        },
+                                                      ),
                                                     ),
-                                                    width: 40 * width_block,
                                                   )
                                                 ],
                                               ));
@@ -115,6 +133,21 @@ class _notification_screenState extends State<notification_screen> {
                                     ),
                                   ),
                                 ),
+                                Expanded(
+                                  child: Center(
+                                    child: Text(
+                                        orders[index]['status']
+                                            .toString()
+                                            .toUpperCase(),
+                                        style: TextStyle(
+                                            color: font_yellow_color,
+                                            fontFamily: 'Montserrat',
+                                            fontSize: 6 * width_block,
+                                            fontVariations: <FontVariation>[
+                                              FontVariation('wght', 600)
+                                            ])),
+                                  ),
+                                )
                               ],
                             ),
                           ),
