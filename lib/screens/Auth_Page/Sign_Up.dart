@@ -39,7 +39,6 @@ class _signup_screenState extends State<signup_screen> {
           child: Column(
             children: [
               SizedBox(height: 2 * height_block),
-              skip_button(context),
               SizedBox(height: height_block),
               top_welcome_text(context, "Welcome to FOODORA"),
               SizedBox(
@@ -51,6 +50,7 @@ class _signup_screenState extends State<signup_screen> {
                 'Your Name',
                 controller: nameController,
                 function: (text) {
+                  text = text.trim();
                   text.length == 0 ? _emptyName = true : _emptyName = false;
                   setState(() {});
                 },
@@ -62,6 +62,7 @@ class _signup_screenState extends State<signup_screen> {
               form_field(context, 'example@email.com',
                   isEmail: true,
                   controller: emailController, function: (input_text) {
+                input_text = input_text.trim();
                 if (input_text.toString().length == 0) {
                   _isEmail = null;
                 } else {

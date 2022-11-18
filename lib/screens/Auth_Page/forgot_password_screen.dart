@@ -22,14 +22,13 @@ class _forgot_password_screenState extends State<forgot_password_screen> {
     final width_block = size.width / 100;
     final height_block = size.height / 100;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: background_color,
       body: SingleChildScrollView(
         child: Container(
           decoration: background_design(),
           width: size.width,
           child: Column(children: [
             SizedBox(height: 2 * height_block),
-            skip_button(context),
             SizedBox(height: 2 * height_block),
             SvgPicture.asset(
               "assets/images/forget_password_vector.svg",

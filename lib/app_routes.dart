@@ -13,8 +13,8 @@ import 'package:foodora/screens/Home_Page/food_description.dart';
 import 'package:foodora/screens/Home_Page/privacy.dart';
 import 'package:foodora/screens/Home_Page/profile.dart';
 import 'package:foodora/screens/Home_Page/restrauntpage.dart';
-
 import 'package:foodora/screens/Location_Page/location_screen.dart';
+import 'package:foodora/screens/Location_Page/manual_location.dart';
 import 'package:foodora/screens/redirector.dart';
 
 class app_routes {
@@ -34,7 +34,7 @@ class app_routes {
   static const search_screen = '/search_screen';
   static const privacy = '/privacy';
   static const about = '/about';
-  
+  static const manual_location = '/manual_location';
 }
 
 Route? getRoute(RouteSettings settings) {
@@ -84,6 +84,11 @@ Route? getRoute(RouteSettings settings) {
       return MaterialPageRoute(
         settings: settings,
         builder: (context) => const forgot_password_screen(),
+      );
+    case app_routes.manual_location:
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (context) => const manual_location(),
       );
     case app_routes.profile_page:
       return MaterialPageRoute(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:foodora/designing.dart';
 
@@ -28,19 +30,19 @@ class _homepage_screenState extends State<homepage_screen> {
             children: [
               AutoScroll(context),
               SizedBox(height: 2 * height_block),
-              home_heading(context, "Order From Your Favourite Restaurant"),
+              home_heading(context, "Order From Your Favourite Dish"),
+              category_list(context, (cat) {
+                setState(
+                  () {
+                    _active_category = cat;
+                  },
+                );
+              }, active_category: _active_category),
               SizedBox(height: height_block),
-
-              // category_list(context, (int index) {
-              //   setState(
-              //     () {
-              //       _active_category = index;
-              //     },
-              //   );
-              // }, active_category: _active_category),
-              // home_section_heading(context, "Our Top Picks"),
-              // food_suggested_list(context),
-
+              food_suggested_list(context, _active_category),
+              SizedBox(height: height_block),
+              home_heading(context, "Order Your Favourite Restaurant"),
+              SizedBox(height: height_block),
               SizedBox(height: 3 * height_block),
               restraunt_suggested_list(context)
             ],
