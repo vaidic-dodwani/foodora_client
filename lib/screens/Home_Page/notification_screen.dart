@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -24,173 +25,104 @@ class _notification_screenState extends State<notification_screen> {
           if (snapshot.connectionState == ConnectionState.done) {
             final orders = snapshot.data['orderhistory'];
             if (orders.isNotEmpty) {
-              return Column(
-                children: [
-                  Container(
-                    // color: Colors.white38,
-                    margin: EdgeInsets.only(top: 30, left: 10, right: 10),
-                    padding: EdgeInsets.all(10),
-                    height: MediaQuery.of(context).size.height * 0.85,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Color.fromARGB(255, 110, 110, 110),
-                            width: 2),
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          child: Column(
-                            children: [
-                              textgenerator(
-                                  'Your Past Orders',
-                                  MediaQuery.of(context).size.width / 15,
-                                  'RaleWay',
-                                  200,
-                                  Colors.white),
-                              Divider(
-                                color: Colors.white38,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.7,
-                          child: ListView.builder(
-                              itemCount: orders.length,
-                              scrollDirection: Axis.vertical,
-                              itemBuilder: ((context, index) => Padding(
-                                    padding: const EdgeInsets.all(20.0),
+              return SingleChildScrollView(
+                child: Container(
+                  height: 80 * height_block,
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: orders.length,
+                    itemBuilder: (context, index) {
+                      return SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Container(
+                            height: 40 * height_block,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(width: 1, color: Colors.grey),
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Order Number #" + (index + 1).toString(),
+                                  style: TextStyle(
+                                      color: font_yellow_color,
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 6 * width_block,
+                                      fontVariations: <FontVariation>[
+                                        FontVariation('wght', 600)
+                                      ]),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 18.0),
+                                  child: SingleChildScrollView(
                                     child: Container(
-                                      width: double.infinity,
-                                      margin: EdgeInsets.only(bottom: 10),
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Color.fromARGB(
-                                                  255, 110, 110, 110)),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20))),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [],
-                                            ),
-                                          ),
-                                          Container(
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                    height: 130,
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.7,
-                                                    decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: Color.fromARGB(
-                                                              255,
-                                                              110,
-                                                              110,
-                                                              110)),
-                                                      // borderRadius: BorderRadius.all(Radius.circular(20))
+                                      height: 30 * height_block,
+                                      child: ListView.builder(
+                                        itemCount: orders[index].length,
+                                        itemBuilder: (context, food_number) {
+                                          return Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Text(
+                                                      orders[index][food_number]
+                                                                  ['quantity']
+                                                              .toString() +
+                                                          ' X ' +
+                                                          orders[index][
+                                                                      food_number]
+                                                                  ['foodname']
+                                                              .toUpperCase(),
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontFamily:
+                                                              'Montserrat',
+                                                          fontVariations: <
+                                                              FontVariation>[
+                                                            FontVariation(
+                                                                'wght', 500)
+                                                          ]),
                                                     ),
-                                                    child: Column(
-                                                      children: [
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceEvenly,
-                                                          children: [
-                                                            textgenerator(
-                                                                'Food',
-                                                                20,
-                                                                'Raleway',
-                                                                500,
-                                                                Colors.white),
-                                                            Divider(
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        255,
-                                                                        255,
-                                                                        255)),
-                                                            textgenerator(
-                                                                'Quantity',
-                                                                20,
-                                                                'Raleway',
-                                                                500,
-                                                                Colors.white),
-                                                          ],
-                                                        ),
-                                                        Container(
-                                                          height: 80,
-                                                          child:
-                                                              ListView.builder(
-                                                            itemCount:
-                                                                orders[index]
-                                                                    .length,
-                                                            itemBuilder: ((context,
-                                                                    food_index) =>
-                                                                Container(
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    border: Border.all(
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            110,
-                                                                            110,
-                                                                            110)),
-                                                                    // borderRadius: BorderRadius.all(Radius.circular(20))
-                                                                  ),
-                                                                  child: Column(
-                                                                    children: [
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceAround,
-                                                                        children: [
-                                                                          textgenerator(
-                                                                              orders[index][food_index]['foodname'],
-                                                                              18,
-                                                                              'Raleway',
-                                                                              500,
-                                                                              Colors.white),
-                                                                          textgenerator(
-                                                                              orders[index][food_index]['quantity'].toString(),
-                                                                              18,
-                                                                              'Raleway',
-                                                                              500,
-                                                                              Colors.white),
-                                                                        ],
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                )),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ))
-                                              ],
-                                            ),
-                                          ),
-                                        ],
+                                                  ),
+                                                  Container(
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Text(
+                                                          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
+                                                    ),
+                                                    width: 40 * width_block,
+                                                  )
+                                                ],
+                                              ));
+                                        },
                                       ),
                                     ),
-                                  ))),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        SizedBox(
-                          height: 10,
-                        )
-                      ],
-                    ),
+                      );
+                    },
                   ),
-                ],
+                ),
               );
             } else {
               return Column(

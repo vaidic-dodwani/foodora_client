@@ -818,6 +818,7 @@ Widget category_list(context, category_tap_function(int index),
     Icons.ramen_dining_sharp,
     Icons.cake_sharp,
     Icons.fastfood_sharp,
+    Icons.kebab_dining_sharp,
     Icons.local_dining_sharp,
   ];
   var description = [
@@ -825,14 +826,15 @@ Widget category_list(context, category_tap_function(int index),
     "Burger",
     "Pizza",
     "Noodles",
-    "Deserts",
+    "Desserts",
     "Beverages",
+    "Indian",
     "Others",
   ];
   return SizedBox(
     height: size.height > 460 ? 12 * height_block : 460 * 0.12,
     child: ListView.builder(
-      itemCount: 7,
+      itemCount: 8,
       scrollDirection: Axis.horizontal,
       itemBuilder: (BuildContext context, int index) {
         return Padding(

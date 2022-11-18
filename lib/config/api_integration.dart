@@ -244,10 +244,13 @@ Future<Map?> get_food_feed(int category_index) async {
         category = 'noodles';
         break;
       case 4:
-        category = 'deserts';
+        category = 'dessert';
         break;
       case 5:
         category = 'beverages';
+        break;
+      case 6:
+        category = 'indian';
         break;
       default:
         category = "others";
@@ -261,7 +264,7 @@ Future<Map?> get_food_feed(int category_index) async {
     log("token- " + id!);
     final response = await post(Uri.parse(food_list_link),
         headers: {
-          HttpHeaders.authorizationHeader: id!,
+          HttpHeaders.authorizationHeader: id,
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
