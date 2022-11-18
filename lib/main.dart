@@ -3,7 +3,10 @@ import 'package:flutter/services.dart';
 import 'app_routes.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+      .then((value) => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -14,6 +17,7 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         systemNavigationBarColor: Colors.transparent));
+
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Foodora',
@@ -22,4 +26,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

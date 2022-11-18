@@ -317,7 +317,7 @@ class _cart_screenState extends State<cart_screen> {
 }
 
 void _handlePaymentSuccess(PaymentSuccessResponse response) async {
-  final response = checkout();
+  final response = await checkout();
   Fluttertoast.showToast(
       msg: response['msg'],
       toastLength: Toast.LENGTH_SHORT,
